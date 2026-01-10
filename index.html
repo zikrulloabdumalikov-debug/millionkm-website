@@ -3,206 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Million KM | Premium Service</title>
+    <title>Million KM | Ro'yxatdan o'tish</title>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --apple-bg: #f5f5f7;
-            --apple-card: rgba(255, 255, 255, 0.8);
             --apple-blue: #0071e3;
-            --text-main: #1d1d1f;
-            --radius: 28px; /* iOS uslubidagi yumaloq burchaklar */
+            --radius: 28px;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
         body {
-            font-family: 'SF Pro Display', -apple-system, sans-serif;
+            font-family: 'SF Pro Display', sans-serif;
             background-color: var(--apple-bg);
-            color: var(--text-main);
-            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
         }
 
-        /* Silliq animatsiya */
-        .fade-in {
-            animation: fadeIn 1.2s ease-out;
+        .auth-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: slideUp 0.8s ease-out;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Navigatsiya paneli */
-        nav {
-            position: fixed;
-            top: 0; width: 100%;
-            height: 50px;
-            background: rgba(245, 245, 247, 0.8);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-bottom: 0.5px solid rgba(0,0,0,0.1);
-        }
-        nav a { color: var(--text-main); text-decoration: none; margin: 0 15px; font-size: 14px; opacity: 0.8; transition: 0.3s; }
-        nav a:hover { opacity: 1; }
+        h2 { text-align: center; font-weight: 600; margin-bottom: 30px; }
 
-        /* Hero Section */
-        .hero {
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-        .hero h1 { font-size: 56px; font-weight: 600; letter-spacing: -1px; margin-bottom: 10px; }
-        .hero p { font-size: 24px; font-weight: 400; color: #86868b; max-width: 600px; }
-
-        /* Kartochkalar bo'limi (Grid) */
-        .section-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 80px 20px;
+        .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
-        .card {
-            background: var(--apple-card);
-            border-radius: var(--radius);
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-            backdrop-filter: blur(10px);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .card:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .card h3 { font-size: 28px; margin-bottom: 15px; }
-        .card p { color: #86868b; margin-bottom: 25px; line-height: 1.5; }
+        .form-group { margin-bottom: 15px; }
+        .full-width { grid-column: span 2; }
 
-        .btn-link { color: var(--apple-blue); text-decoration: none; font-weight: 500; display: block; margin: 10px 0; font-size: 17px; }
-        .btn-link:hover { text-decoration: underline; }
+        label { display: block; margin-bottom: 5px; font-size: 13px; color: #86868b; padding-left: 10px; }
 
-        /* Filiallar va Xarita */
-        .map-section {
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid #d2d2d7;
             background: #fff;
-            padding: 100px 20px;
-            text-align: center;
-            border-radius: 50px 50px 0 0;
-        }
-        .map-placeholder {
-            width: 100%; max-width: 800px;
-            height: 400px;
-            background: #e5e5e7;
-            border-radius: 30px;
-            margin: 40px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #86868b;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
         }
 
-        /* Footer */
-        footer {
-            padding: 60px 20px;
-            background: #f5f5f7;
+        input:focus { border-color: var(--apple-blue); box-shadow: 0 0 0 4px rgba(0,113,227,0.1); }
+
+        .btn-main {
+            width: 100%;
+            padding: 16px;
+            background: var(--apple-blue);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .toggle-link {
             text-align: center;
-            border-top: 1px solid rgba(0,0,0,0.1);
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--apple-blue);
+            cursor: pointer;
         }
-        .social-links a { margin: 0 10px; color: var(--apple-blue); text-decoration: none; font-weight: 500; }
-        .call-center { margin-top: 20px; font-size: 20px; font-weight: 600; }
-        
-        /* Auth Overlay (Login/Register) */
-        #authOverlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(15px);
-            z-index: 2000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .auth-box { width: 90%; max-width: 400px; }
+
+        .msg { padding: 10px; border-radius: 10px; text-align: center; display: none; margin-bottom: 15px; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#">Bosh sahifa</a>
-        <a href="#services">Xizmatlar</a>
-        <a href="#" onclick="showAuth()">Shaxsiy kabinet</a>
-    </nav>
-
-    <div class="hero fade-in">
-        <h1>Million km</h1>
-        <p>Dvigatel uchun yangi avlod ishonchi. Bu shunchaki servis emas, bu — fikrlash tarzi.</p>
+<div class="auth-card">
+    <div id="message" class="msg"></div>
+    
+    <div id="registerForm">
+        <h2>Ro'yxatdan o'tish</h2>
+        <div class="form-grid">
+            <div class="form-group full-width">
+                <label>To'liq ismingiz</label>
+                <input type="text" id="regName" placeholder="Ism Sharif">
+            </div>
+            <div class="form-group">
+                <label>Telefon</label>
+                <input type="tel" id="regTel" placeholder="+998">
+            </div>
+            <div class="form-group">
+                <label>Jinsi</label>
+                <select id="regGender">
+                    <option value="Erkak">Erkak</option>
+                    <option value="Ayol">Ayol</option>
+                </select>
+            </div>
+            <div class="form-group full-width">
+                <label>Email</label>
+                <input type="email" id="regEmail" placeholder="example@mail.com">
+            </div>
+            <div class="form-group">
+                <label>Mashina Brand</label>
+                <select id="regBrand">
+                    <option value="Chevrolet">Chevrolet</option>
+                    <option value="KIA">KIA</option>
+                    <option value="Li Auto">Li Auto</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Mashina Yili</label>
+                <input type="number" id="regYear" placeholder="2024">
+            </div>
+            <div class="form-group full-width">
+                <label>Yurgan masofasi (KM)</label>
+                <input type="number" id="regKm" placeholder="0">
+            </div>
+            <div class="form-group full-width">
+                <label>Parol yaratish</label>
+                <input type="password" id="regPass" placeholder="Kamida 6 belgi">
+            </div>
+        </div>
+        <button class="btn-main" onclick="handleRegister()">Tizimga qo'shilish</button>
+        <div class="toggle-link" onclick="location.href='index.html'">Asosiy sahifaga qaytish</div>
     </div>
+</div>
 
-    <div class="section-container" id="services">
-        <div class="card fade-in">
-            <h3>Chevrolet</h3>
-            <p>Million km standartlariga mos eng so‘nggi Chevrolet modellari.</p>
-            <a href="#" class="btn-link">Batafsil ma’lumot</a>
-            <a href="#" class="btn-link">Modelni tanlash ></a>
-        </div>
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+    import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        <div class="card fade-in">
-            <h3>Kia</h3>
-            <p>Million km standartlariga mos eng so‘nggi Kia modellari.</p>
-            <a href="#" class="btn-link">Batafsil ma’lumot</a>
-            <a href="#" class="btn-link">Modelni tanlash ></a>
-        </div>
+    // Sizning Firebase Config (avvalgi koddan olingan)
+    const firebaseConfig = {
+        apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
+        authDomain: "millionkm-a42ee.firebaseapp.com",
+        projectId: "millionkm-a42ee",
+        storageBucket: "millionkm-a42ee.firebasestorage.app",
+        messagingSenderId: "594685468082",
+        appId: "1:594685468082:web:e44c081e0617f0016998ab"
+    };
 
-        <div class="card fade-in">
-            <h3>Li Auto</h3>
-            <p>Million km standartlariga mos eng so‘nggi Li auto modellari.</p>
-            <a href="#" class="btn-link">Batafsil ma’lumot</a>
-            <a href="#" class="btn-link">Modelni tanlash ></a>
-        </div>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        <div class="card fade-in">
-            <h3>Million km express</h3>
-            <p>Million km standardi asosida, manzilga borib xizmat ko’rsatish xizmati.</p>
-            <a href="#" class="btn-link">Batafsil ma’lumot</a>
-            <a href="#" class="btn-link">Xizmatni tanlash ></a>
-        </div>
+    // Telegram Ma'lumotlari
+    const BOT_TOKEN = '7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM';
+    const CHAT_ID = '-1003461463026';
 
-        <div class="card fade-in">
-            <h3>Million km fuel</h3>
-            <p>Million km talablariga mos, sifatli yoqilg’i yetkazib berish xizmati.</p>
-            <a href="#" class="btn-link">Batafsil ma’lumot</a>
-            <a href="#" class="btn-link">Xarid qilish ></a>
-        </div>
-    </div>
+    window.handleRegister = async function() {
+        const data = {
+            name: document.getElementById('regName').value,
+            tel: document.getElementById('regTel').value,
+            gender: document.getElementById('regGender').value,
+            email: document.getElementById('regEmail').value,
+            brand: document.getElementById('regBrand').value,
+            year: document.getElementById('regYear').value,
+            km: document.getElementById('regKm').value,
+            pass: document.getElementById('regPass').value
+        };
 
-    <div class="map-section">
-        <h2>Million km filiallari</h2>
-        <div class="map-placeholder">
-            [O'zbekiston xaritasi rasmi joylashadi]
-        </div>
-        <button class="btn-link" style="border:none; background:none; cursor:pointer; margin: 0 auto;">Eng yaqin filialni topish</button>
-    </div>
-
-    <footer>
-        <div class="social-links">
-            <a href="#">Instagram</a>
-            <a href="#">Telegram</a>
-            <a href="#">Youtube</a>
-        </div>
-        <div class="call-center">Call sentr: +998 (XX) XXX-XX-XX</div>
-        <a href="#" class="btn-link">Yordamchi bilan bog’lanish</a>
-    </footer>
-
-    <script>
-        function showAuth() {
-            alert("Keyingi bosqichda marketing ma'lumotlari (tel, mashina yili) bilan ro'yxatdan o'tish oynasini ochamiz.");
+        if(!data.email || data.pass.length < 6) {
+            showMsg("Ma'lumotlar to'liq emas!", "red");
+            return;
         }
-    </script>
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.pass);
+            const user = userCredential.user;
+
+            await updateProfile(user, { displayName: data.name });
+
+            // Firestorega marketing ma'lumotlarini saqlash
+            await setDoc(doc(db, "users", user.uid), {
+                ...data,
+                uid: user.uid,
+                createdAt: new Date().toISOString()
+            });
+
+            // Telegramga barcha marketing ma'lumotlarini yuborish
+            const tgMsg = `🌟 YANGI MIJOZ!\n👤 Ism: ${data.name}\n📞 Tel: ${data.tel}\n🚻 Jins: ${data.gender}\n🚗 Mashina: ${data.brand} (${data.year})\n🛣 Masofa: ${data.km} KM`;
+            
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: tgMsg })
+            });
+
+            showMsg("Muvaffaqiyatli ro'yxatdan o'tdingiz!", "green");
+            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+
+        } catch (e) { showMsg("Xatolik: " + e.message, "red"); }
+    };
+
+    function showMsg(t, c) {
+        const m = document.getElementById('message');
+        m.textContent = t; m.style.display = 'block'; m.style.background = c === 'green' ? '#d4edda' : '#f8d7da';
+    }
+</script>
+
 </body>
 </html>
