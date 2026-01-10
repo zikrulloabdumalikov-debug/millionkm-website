@@ -50,6 +50,7 @@
         .card-image { width: 100%; height: 180px; object-fit: contain; margin-bottom: 20px; border-radius: 15px; }
         .card-title { font-size: 28px; font-weight: 600; margin-bottom: 12px; }
         .card-text { color: #86868b; margin-bottom: 25px; font-size: 17px; }
+        .service-info { font-size: 14px; color: #34c759; font-weight: 600; margin-bottom: 15px; }
 
         /* Tugmalar */
         .btn-ios {
@@ -63,6 +64,9 @@
         .btn-ios:hover:not(:disabled) { opacity: 0.9; transform: scale(0.98); }
         .btn-ios-secondary { background: #e8e8ed; color: var(--apple-blue); }
 
+        .btn-flex-container { display: flex; gap: 10px; }
+        .btn-flex-container .btn-ios { flex: 1; }
+
         /* Status va Xarita */
         .status-badge { display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: 600; margin-top: 15px; }
         .status-green { background: #e3f9e5; color: #34c759; }
@@ -70,14 +74,14 @@
 
         #map-container { width: 100%; height: 450px; border-radius: var(--radius); overflow: hidden; margin-top: 20px; border: 1px solid #d2d2d7; }
 
-        /* Footer va Ijtimoiy tarmoqlar */
+        /* Footer */
         footer { background: #fff; padding: 60px 20px; text-align: center; border-top: 0.5px solid #d2d2d7; margin-top: 50px; }
         .social-links { margin-bottom: 30px; }
         .social-links a { text-decoration: none; color: #1d1d1f; margin: 0 15px; font-size: 18px; font-weight: 600; }
         .social-links a:hover { color: var(--apple-blue); }
         .call-center { font-size: 24px; font-weight: 600; color: var(--apple-blue); margin: 20px 0; }
 
-        /* Avtorizatsiya va Chat */
+        /* Overlay */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(245,245,247,0.9); backdrop-filter: blur(20px); z-index: 20000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .auth-box { background: white; padding: 40px; border-radius: 35px; width: 100%; max-width: 420px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); max-height: 90vh; overflow-y: auto; }
         input, select { width: 100%; padding: 14px; margin-top: 10px; border-radius: 12px; border: 1px solid #d2d2d7; background: #f5f5f7; font-size: 15px; outline: none; }
@@ -89,7 +93,8 @@
 
     <nav>
         <a onclick="showSection('mainPage')">Million km</a>
-        <a href="#brand-section">Modellar</a>
+        <a onclick="showSection('chevroletPage')">Chevrolet</a>
+        <a onclick="showSection('kiaPage')">Kia</a>
         <a href="#services-section">Xizmatlar</a>
         <a href="#map-section">Filiallar</a>
         <span id="authLinks">
@@ -114,7 +119,7 @@
                         <p class="card-text">Million km standartlariga mos eng so‘nggi Chevrolet modellari.</p>
                     </div>
                     <div>
-                        <button class="btn-ios-secondary btn-ios" onclick="alert('Nexia 3, Cobalt, Gentra, Onix, Tracker, Malibu')">Batafsil ma’lumot</button>
+                        <button class="btn-ios-secondary btn-ios" onclick="showSection('chevroletPage')">Batafsil ma’lumot</button>
                         <button class="btn-ios" onclick="toggleAuth(true)">Modelni tanlash</button>
                     </div>
                 </div>
@@ -126,7 +131,7 @@
                         <p class="card-text">Million km standartlariga mos eng so‘nggi Kia modellari.</p>
                     </div>
                     <div>
-                        <button class="btn-ios-secondary btn-ios">Batafsil ma’lumot</button>
+                        <button class="btn-ios-secondary btn-ios" onclick="showSection('kiaPage')">Batafsil ma’lumot</button>
                         <button class="btn-ios" onclick="toggleAuth(true)">Modelni tanlash</button>
                     </div>
                 </div>
@@ -147,42 +152,126 @@
             <header style="text-align: center; margin: 80px 0 40px 0;" id="services-section">
                 <h2 style="font-size: 42px;">Eksklyuziv Xizmatlar</h2>
             </header>
-
             <div class="grid">
                 <div class="apple-card fade-in">
-                    <div>
-                        <h2 class="card-title">Million km express</h2>
-                        <p class="card-text">Million km standardi asosida, manzilga borib xizmat ko’rsatish xizmati.</p>
-                    </div>
-                    <div>
-                        <button class="btn-ios-secondary btn-ios">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xizmatni tanlash</button>
-                    </div>
+                    <h2 class="card-title">Million km express</h2>
+                    <p class="card-text">Million km standardi asosida, manzilga borib xizmat ko’rsatish xizmati.</p>
+                    <button class="btn-ios">Xizmatni tanlash</button>
                 </div>
-
                 <div class="apple-card fade-in">
-                    <div>
-                        <h2 class="card-title">Million km fuel</h2>
-                        <p class="card-text">Million km talablariga mos, sifatli yoqilg’i yetkazib berish xizmati.</p>
-                    </div>
-                    <div>
-                        <button class="btn-ios-secondary btn-ios">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish</button>
-                    </div>
+                    <h2 class="card-title">Million km fuel</h2>
+                    <p class="card-text">Million km talablariga mos, sifatli yoqilg’i yetkazib berish xizmati.</p>
+                    <button class="btn-ios">Xarid qilish</button>
                 </div>
             </div>
 
             <header style="text-align: center; margin: 80px 0 40px 0;" id="map-section">
                 <h2 style="font-size: 42px;">Million km filiallari</h2>
-                <p style="color: #86868b;">O'zbekiston bo'ylab eng yaqin servis markazini toping</p>
+                <div id="map-container">
+                    <iframe src="https://yandex.uz/map-widget/v1/?ll=69.2401%2C41.2995&z=12" width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn-ios" style="max-width: 300px;" onclick="toggleAuth(true)">Ro’yxatdan o’tish</button>
+                </div>
             </header>
-            
-            <div id="map-container">
-                <iframe src="https://yandex.uz/map-widget/v1/?ll=69.2401%2C41.2995&z=12" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>
+        </div>
+    </div>
+
+    <div id="chevroletPage" class="page-section">
+        <div class="container">
+            <button class="btn-ios-secondary" style="width: 100px; padding: 10px; border-radius: 10px; margin-bottom: 20px;" onclick="showSection('mainPage')">< Orqaga</button>
+            <h1 style="font-size: 42px; margin-bottom: 30px;">Chevrolet modellari</h1>
+            <div class="grid">
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">Nexia 3</h2>
+                    <p class="card-text">Oddiy, ishonchli va shahar hayoti uchun mo‘ljallangan avtomobil.</p>
+                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">Cobalt</h2>
+                    <p class="card-text">Keng salon, yumshoq yurish va doimiy qulaylik bilan har kuni yangi maromda.</p>
+                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">Gentra</h2>
+                    <p class="card-text">Har yo‘l sharoitida siz bilan bo‘lishga mos, barqaror va oddiy haydovchilik tajribasi.</p>
+                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">Onix</h2>
+                    <p class="card-text">Zamonaviy interyer va yorqin dizaynga ega, hayotingizni qulaylashtiruvchi o‘rtacha klass avtomobil.</p>
+                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">Malibu</h2>
+                    <p class="card-text">Barqaror va tekis yurish, keng salon va ishonchli texnologiyalar bilan oila va ish uchun ideal.</p>
+                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">Tahoe</h2>
+                    <p class="card-text">Premium klass SUV, kuch va qulaylikni bir avtomobilda his eting.</p>
+                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
             </div>
-            <div style="margin-top: 20px; display: flex; gap: 15px;">
-                <button class="btn-ios" style="flex: 1;" onclick="toggleAuth(true)">Ro’yxatdan o’tish</button>
-                <button class="btn-ios-secondary btn-ios" style="flex: 1;">Eng yaqin filialni topish</button>
+        </div>
+    </div>
+
+    <div id="kiaPage" class="page-section">
+        <div class="container">
+            <button class="btn-ios-secondary" style="width: 100px; padding: 10px; border-radius: 10px; margin-bottom: 20px;" onclick="showSection('mainPage')">< Orqaga</button>
+            <h1 style="font-size: 42px; margin-bottom: 30px;">KIA modellari</h1>
+            <div class="grid">
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">KIA Sonet</h2>
+                    <p class="card-text">Shahar uchun yaratilgan ixcham SUV. Zamonaviy, qulay va energiya tejovchi.</p>
+                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">KIA K5</h2>
+                    <p class="card-text">Uslub va kuch birlashgan biznes sedan. Barqaror yurish, keng salon va ilg‘or texnologiyalar.</p>
+                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">KIA Sportage</h2>
+                    <p class="card-text">Ishonchli va keng SUV. Oila uchun ideal, xavfsiz va zamonaviy.</p>
+                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -203,7 +292,6 @@
                 </div>
                 <div id="statusBadge" class="status-badge">Tekshirilmoqda...</div>
             </div>
-
             <div class="apple-card fade-in" style="margin-top:25px; text-align: left;">
                 <h3>Servis xizmatini band qilish</h3>
                 <input type="text" id="orderNote" placeholder="Xizmat turini yozing (masalan: Moy almashtirish)">
@@ -215,7 +303,6 @@
     <div id="authOverlay" class="overlay">
         <div class="auth-box">
             <h2 style="text-align:center;">Ro'yxatdan o'tish</h2>
-            <p style="text-align:center; color:#86868b; font-size:13px; margin-bottom:10px;">Barcha maydonlarni to'ldiring</p>
             <input type="text" id="regName" placeholder="Ism Sharif">
             <input type="tel" id="regTel" placeholder="Telefon (+998...)">
             <select id="regBrand">
@@ -238,12 +325,11 @@
 
     <footer>
         <div class="social-links">
-            <a href="https://instagram.com" target="_blank">Instagram</a>
+            <a href="#">Instagram</a>
             <a href="https://t.me/Zikrullo_Abdumalikov" target="_blank">Telegram</a>
-            <a href="https://youtube.com" target="_blank">Youtube</a>
+            <a href="#">Youtube</a>
         </div>
         <div class="call-center">Call sentr: +998 90 000 00 00</div>
-        <p style="color: #86868b; margin-top: 10px;">© 2026 Million KM. Barcha huquqlar himoyalangan.</p>
     </footer>
 
     <div class="chat-widget" onclick="window.open('https://t.me/Zikrullo_Abdumalikov', '_blank')">💬</div>
@@ -285,42 +371,26 @@
                 email: document.getElementById('regEmail').value.trim(),
                 pass: document.getElementById('regPass').value
             };
-
-            if(!data.name || !data.tel || !data.brand || !data.year || !data.km || !data.email || !data.pass) {
-                alert("Iltimos, barcha maydonlarni to'ldiring!"); return;
-            }
-
-            btn.disabled = true; btn.textContent = "Yuklanmoqda...";
-
+            if(!data.name || !data.email || !data.pass) return alert("To'ldiring!");
+            btn.disabled = true;
             try {
                 const res = await createUserWithEmailAndPassword(auth, data.email, data.pass);
-                await setDoc(doc(db, "users", res.user.uid), {
-                    name: data.name, tel: data.tel, brand: data.brand, year: data.year, km: data.km, email: data.email,
-                    uid: res.user.uid, createdAt: new Date().toISOString()
-                });
-                alert("Muvaffaqiyatli ro'yxatdan o'tdingiz!");
-                toggleAuth(false);
-            } catch (e) {
-                alert("Xatolik: " + e.message);
-            } finally {
-                btn.disabled = false; btn.textContent = "Ro'yxatdan o'tish";
-            }
+                await setDoc(doc(db, "users", res.user.uid), { ...data, uid: res.user.uid });
+                alert("Tayyor!"); toggleAuth(false);
+            } catch (e) { alert(e.message); } finally { btn.disabled = false; }
         };
 
         window.sendOrder = async function() {
             const note = document.getElementById('orderNote').value.trim();
-            if(!note) return alert("Iltimos, xizmat turini yozing!");
-            const btn = document.getElementById('btnOrder');
-            btn.disabled = true;
+            if(!note) return;
             try {
                 const user = auth.currentUser;
                 const snap = await getDoc(doc(db, "users", user.uid));
                 const d = snap.data();
-                const msg = `🚀 YANGI BUYURTMA!\n👤 Mijoz: ${d.name}\n📞 Tel: ${d.tel}\n🚗 Mashina: ${d.brand} (${d.year})\n📝 Izoh: ${note}`;
+                const msg = `🚀 BUYURTMA!\nMijoz: ${d.name}\nTel: ${d.tel}\nMashina: ${d.brand}\nIzoh: ${note}`;
                 await fetch(`https://api.telegram.org/bot7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM/sendMessage?chat_id=-1003461463026&text=${encodeURIComponent(msg)}`);
-                alert("Zayavka yuborildi!");
-                document.getElementById('orderNote').value = "";
-            } catch (e) { alert("Xatolik!"); } finally { btn.disabled = false; }
+                alert("Yuborildi!");
+            } catch (e) { alert("Xato!"); }
         };
 
         window.logout = () => signOut(auth).then(() => location.reload());
@@ -336,11 +406,6 @@
                     document.getElementById('welcomeUser').textContent = `Salom, ${d.name}!`;
                     document.getElementById('dashCar').textContent = d.brand;
                     document.getElementById('dashKm').textContent = d.km + " km";
-                    const age = new Date().getFullYear() - parseInt(d.year);
-                    const isOk = (age <= 5 && parseInt(d.km) <= 100000);
-                    const badge = document.getElementById('statusBadge');
-                    badge.textContent = isOk ? "Million KM Kafolatiga mos" : "Bir martalik xizmatga mos";
-                    badge.className = `status-badge ${isOk ? 'status-green' : 'status-yellow'}`;
                     showSection('dashboard');
                 }
             }
