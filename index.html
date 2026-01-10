@@ -105,8 +105,10 @@
             <a onclick="toggleOverlay('authOverlay', true)">Ro‘yxatdan o‘tish</a>
             <a onclick="toggleOverlay('loginOverlay', true)">Kirish</a>
         </span>
-        <a id="dashLink" style="display:none;" onclick="showSection('dashboard')">Kabinet</a>
-        <a id="logoutBtn" style="display:none; color:red;" onclick="logout()">Chiqish</a>
+        <span id="userLinks" style="display: none;">
+            <a onclick="showSection('dashboard')" style="font-weight: 600; color: var(--apple-blue);">Kabinet (Holat)</a>
+            <a onclick="logout()" style="color:red;">Chiqish</a>
+        </span>
     </nav>
 
     <div id="mainPage" class="page-section active-section">
@@ -125,7 +127,7 @@
                     </div>
                     <div>
                         <button class="btn-ios-secondary btn-ios" onclick="showSection('chevroletPage')">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleOverlay('authOverlay', true)">Modelni tanlash</button>
+                        <button class="btn-ios action-btn" onclick="handleMainAction()">Tanlash</button>
                     </div>
                 </div>
 
@@ -137,7 +139,7 @@
                     </div>
                     <div>
                         <button class="btn-ios-secondary btn-ios" onclick="showSection('kiaPage')">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleOverlay('authOverlay', true)">Modelni tanlash</button>
+                        <button class="btn-ios action-btn" onclick="handleMainAction()">Tanlash</button>
                     </div>
                 </div>
 
@@ -149,7 +151,7 @@
                     </div>
                     <div>
                         <button class="btn-ios-secondary btn-ios" onclick="showSection('liPage')">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleOverlay('authOverlay', true)">Modelni tanlash</button>
+                        <button class="btn-ios action-btn" onclick="handleMainAction()">Tanlash</button>
                     </div>
                 </div>
             </div>
@@ -189,10 +191,10 @@
                     <p class="card-text">2.0 Turbo, 253 ot kuchi. Business klass sedani.</p>
                     <div class="btn-flex-container">
                         <button class="btn-ios-secondary btn-ios" onclick="openDetails('Malibu Turbo', 'Dvigatel: 2.0L Turbo\nOt kuchi: 253\n0-100 km/s: 6.3 sek\nPremium salon.')">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleOverlay('authOverlay', true)">Xarid</button>
+                        <button class="btn-ios action-btn" onclick="handleMainAction()">Xarid / Tanlash</button>
                     </div>
                 </div>
-                </div>
+            </div>
         </div>
     </div>
 
@@ -200,12 +202,14 @@
         <div class="container">
             <div class="apple-card fade-in" style="text-align: left;">
                 <h1 id="welcomeUser" style="font-size: 38px;">Xush kelibsiz!</h1>
-                <div style="margin-top: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div style="background:#fbfbfd; padding:20px; border-radius:18px;">
+                <p style="color: #86868b; margin-bottom: 20px;">Avtomobilingiz holati va servis xizmatlarini shu yerdan boshqaring.</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="background:#fbfbfd; padding:20px; border-radius:18px; border: 1px solid #eee;">
                         <p style="color:#86868b; font-size:13px;">Avtomobil:</p>
                         <h3 id="dashCar">---</h3>
                     </div>
-                    <div style="background:#fbfbfd; padding:20px; border-radius:18px;">
+                    <div style="background:#fbfbfd; padding:20px; border-radius:18px; border: 1px solid #eee;">
                         <p style="color:#86868b; font-size:13px;">Yurgan masofasi:</p>
                         <h3 id="dashKm">--- km</h3>
                     </div>
@@ -223,7 +227,8 @@
 
             <div class="apple-card fade-in" style="margin-top:25px; text-align: left;">
                 <h3>Servis xizmatini band qilish</h3>
-                <input type="text" id="orderNote" placeholder="Xizmat turini yozing (masalan: Moy almashtirish)">
+                <p style="font-size: 14px; color: #86868b; margin-bottom: 10px;">Mutaxassislarimiz siz bilan bog'lanishadi.</p>
+                <input type="text" id="orderNote" placeholder="Xizmat turini yozing (masalan: Moy almashtirish, Diagnostika)">
                 <button class="btn-ios" id="btnOrder" style="margin-top:15px;" onclick="sendOrder()">Zayavka yuborish</button>
                 
                 <div style="margin-top: 30px;">
@@ -299,6 +304,8 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        let currentUserData = null;
+
         // UI Funksiyalari
         window.showSection = (id) => {
             document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
@@ -312,6 +319,15 @@
             document.getElementById('detTitle').textContent = title;
             document.getElementById('detText').textContent = text;
             toggleOverlay('detailsOverlay', true);
+        };
+
+        // Asosiy mantiq: Agar foydalanuvchi kirgan bo'lsa dashboardga, kirmagan bo'lsa authga
+        window.handleMainAction = () => {
+            if(auth.currentUser) {
+                showSection('dashboard');
+            } else {
+                toggleOverlay('authOverlay', true);
+            }
         };
 
         // Auth: Ro'yxatdan o'tish va Kirish
@@ -351,7 +367,6 @@
                 const snap = await getDoc(doc(db, "users", user.uid));
                 const d = snap.data();
                 
-                // Firestore-ga saqlash (Tarix uchun)
                 await addDoc(collection(db, "orders"), {
                     uid: user.uid,
                     note: note,
@@ -359,7 +374,6 @@
                     status: "Kutilmoqda"
                 });
 
-                // Telegramga yuborish
                 const msg = `🚀 YANGI BUYURTMA!\nMijoz: ${d.name}\nTel: ${d.tel}\nMashina: ${d.brand}\nIzoh: ${note}`;
                 await fetch(`https://api.telegram.org/bot7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM/sendMessage?chat_id=-1003461463026&text=${encodeURIComponent(msg)}`);
                 
@@ -374,6 +388,7 @@
             const snap = await getDocs(q);
             const historyDiv = document.getElementById('orderHistory');
             historyDiv.innerHTML = "";
+            if(snap.empty) historyDiv.innerHTML = "Buyurtmalar mavjud emas.";
             snap.forEach(doc => {
                 const o = doc.data();
                 historyDiv.innerHTML += `<div style="padding:10px; border-bottom:0.5px solid #eee;">${o.date} - ${o.note} <b>(${o.status})</b></div>`;
@@ -387,9 +402,11 @@
                 const snap = await getDoc(doc(db, "users", user.uid));
                 if(snap.exists()) {
                     const d = snap.data();
+                    currentUserData = d;
+                    
+                    // UI almashtirish
                     document.getElementById('authLinks').style.display = 'none';
-                    document.getElementById('dashLink').style.display = 'inline';
-                    document.getElementById('logoutBtn').style.display = 'inline';
+                    document.getElementById('userLinks').style.display = 'inline';
                     
                     // Dashboard ma'lumotlari
                     document.getElementById('welcomeUser').textContent = `Salom, ${d.name}!`;
@@ -404,8 +421,10 @@
                     document.getElementById('oilStatusText').textContent = `Moy almashtirishga ${oilLimit - currentOilKm} km qoldi`;
 
                     loadOrders(user.uid);
-                    showSection('dashboard');
                 }
+            } else {
+                document.getElementById('authLinks').style.display = 'inline';
+                document.getElementById('userLinks').style.display = 'none';
             }
         });
     </script>
