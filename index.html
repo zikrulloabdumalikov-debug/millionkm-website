@@ -22,10 +22,8 @@
         .fade-in { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Loader */
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: var(--apple-blue); z-index: 10001; display: none; }
 
-        /* Navigatsiya */
         nav {
             position: fixed; top: 0; width: 100%; height: 50px;
             background: rgba(255,255,255,0.75); backdrop-filter: blur(25px);
@@ -39,10 +37,8 @@
         .active-section { display: block; }
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
         
-        /* Grid tizimi */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 
-        /* Apple dizaynidagi kartochkalar */
         .apple-card {
             background: var(--apple-card); border-radius: var(--radius); padding: 40px;
             box-shadow: 0 4px 30px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.5);
@@ -57,7 +53,6 @@
         .card-title { font-size: 28px; font-weight: 600; margin-bottom: 12px; }
         .card-text { color: #86868b; margin-bottom: 25px; font-size: 17px; }
 
-        /* Tugmalar */
         .btn-ios {
             display: block; width: 100%; padding: 16px;
             background: var(--apple-blue); color: white; border: none;
@@ -70,50 +65,37 @@
         .btn-ios-secondary { background: #e8e8ed; color: var(--apple-blue); }
         .btn-small { padding: 8px 15px; font-size: 13px; width: auto; display: inline-block; }
 
-        /* Progress Bar */
         .progress-container { background: #e8e8ed; height: 10px; border-radius: 5px; margin: 15px 0; overflow: hidden; }
         .progress-bar { background: var(--apple-blue); height: 100%; width: 0%; transition: 1.5s ease-in-out; }
 
-        /* Status va Xarita */
         .status-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-weight: 600; margin-top: 15px; font-size: 14px; }
         .status-green { background: #e3f9e5; color: #34c759; }
         .status-yellow { background: #fff9db; color: #f08c00; }
+        .status-red { background: #ffe9e9; color: #ff3b30; }
 
         #map-container { width: 100%; height: 400px; border-radius: var(--radius); overflow: hidden; margin-top: 20px; border: 1px solid #d2d2d7; }
 
-        /* Overlay */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(245,245,247,0.9); backdrop-filter: blur(20px); z-index: 20000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .auth-box { background: white; padding: 40px; border-radius: 35px; width: 100%; max-width: 420px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); max-height: 95vh; overflow-y: auto; }
         
         input, select, textarea { width: 100%; padding: 14px; margin-top: 10px; border-radius: 12px; border: 1px solid #d2d2d7; background: #f5f5f7; font-size: 15px; outline: none; font-family: inherit; }
         input:focus { border-color: var(--apple-blue); background: #fff; }
 
-        /* Chat Widget */
-        #chat-container {
-            position: fixed; bottom: 20px; right: 20px; z-index: 10001;
-            display: flex; flex-direction: column; align-items: flex-end;
-        }
-        .chat-box {
-            width: 320px; height: 450px; background: white; border-radius: 20px; margin-bottom: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15); display: none; flex-direction: column; overflow: hidden;
-        }
+        #chat-container { position: fixed; bottom: 20px; right: 20px; z-index: 10001; display: flex; flex-direction: column; align-items: flex-end; }
+        .chat-box { width: 320px; height: 450px; background: white; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); display: none; flex-direction: column; overflow: hidden; }
         .chat-header { background: var(--apple-blue); color: white; padding: 15px; font-weight: 600; display: flex; justify-content: space-between; }
         .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f9f9fb; }
         .msg { padding: 10px 14px; border-radius: 15px; max-width: 80%; font-size: 14px; }
         .msg.admin { background: #e9e9eb; align-self: flex-start; }
         .msg.user { background: var(--apple-blue); color: white; align-self: flex-end; }
         .chat-input-area { padding: 10px; display: flex; gap: 5px; border-top: 1px solid #eee; }
-        
-        .chat-toggle {
-            width: 60px; height: 60px; background: var(--apple-blue); border-radius: 30px;
-            display: flex; justify-content: center; align-items: center; color: white;
-            box-shadow: 0 10px 25px rgba(0,113,227,0.4); cursor: pointer; transition: 0.3s;
-        }
+        .chat-toggle { width: 60px; height: 60px; background: var(--apple-blue); border-radius: 30px; display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 10px 25px rgba(0,113,227,0.4); cursor: pointer; transition: 0.3s; }
 
-        /* Testimonials */
-        .stars { color: #ffcc00; margin-bottom: 10px; }
-        
-        .error-text { color: #ff3b30; font-size: 12px; margin-top: 5px; display: none; }
+        .blog-card { text-align: left; padding: 20px; background: white; border-radius: 20px; }
+        .blog-card img { width: 100%; height: 150px; border-radius: 15px; object-fit: cover; }
+        .car-selector { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 20px; }
+        .car-tag { padding: 10px 20px; background: #fff; border-radius: 20px; cursor: pointer; border: 1px solid #ddd; white-space: nowrap; }
+        .car-tag.active { background: var(--apple-blue); color: white; border-color: var(--apple-blue); }
 
         footer { background: #fff; padding: 60px 20px; text-align: center; border-top: 0.5px solid #d2d2d7; }
     </style>
@@ -124,15 +106,14 @@
 
     <nav>
         <a onclick="showSection('mainPage')">Million km</a>
-        <a onclick="showSection('chevroletPage')">Modellar</a>
+        <a onclick="showSection('blogPage')">Ma'lumotnoma</a>
         <a href="#services-section">Xizmatlar</a>
-        <a href="#gallery-section">Galereya</a>
         <span id="authLinks">
             <a onclick="toggleOverlay('authOverlay', true)">Ro‘yxatdan o‘tish</a>
             <a onclick="toggleOverlay('loginOverlay', true)">Kirish</a>
         </span>
         <span id="userLinks" style="display: none;">
-            <a onclick="showSection('dashboard')" style="font-weight: 600; color: var(--apple-blue);">Kabinet</a>
+            <a onclick="showSection('dashboard')" style="font-weight: 600; color: var(--apple-blue);">GARAJIM</a>
             <a onclick="logout()" style="color:#ff3b30;">Chiqish</a>
         </span>
     </nav>
@@ -141,55 +122,33 @@
         <div class="container fade-in">
             <header style="text-align: center; margin-bottom: 50px; padding-top: 40px;">
                 <h1 style="font-size: 56px; letter-spacing: -2px;">Million km</h1>
-                <p style="font-size: 22px; color: #86868b;">Professional avto-servis ekotizimi.</p>
+                <p style="font-size: 22px; color: #86868b;">Premium avto-servis ekotizimi.</p>
             </header>
 
             <div class="grid">
                 <div class="apple-card">
                     <img src="https://www.chevrolet.uz/assets/images/cars/malibu/color/white.png" class="card-image" alt="Chevrolet">
-                    <h2 class="card-title">Chevrolet</h2>
-                    <button class="btn-ios" onclick="showSection('chevroletPage')">Barcha modellar</button>
-                </div>
-                </div>
-
-            <header style="text-align: center; margin: 80px 0 40px 0;" id="gallery-section">
-                <h2 style="font-size: 42px;">Ish jarayonimiz</h2>
-            </header>
-            <div class="grid">
-                <img src="https://images.unsplash.com/photo-1625047509168-a7026f36ae04?auto=format&fit=crop&w=800" class="gallery-img" alt="Service 1">
-                <img src="https://images.unsplash.com/photo-1486006396193-471a2abc9302?auto=format&fit=crop&w=800" class="gallery-img" alt="Service 2">
-                <img src="https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=800" class="gallery-img" alt="Service 3">
-            </div>
-
-            <header style="text-align: center; margin: 80px 0 40px 0;" id="services-section">
-                <h2 style="font-size: 42px;">Eksklyuziv Xizmatlar</h2>
-            </header>
-            <div class="grid">
-                <div class="apple-card">
-                    <h2 class="card-title">Million km Express</h2>
-                    <p class="card-text">Manzilga borib xizmat ko’rsatish.</p>
-                    <button class="btn-ios" onclick="openDetails('Express', 'Manzilingizga mobil guruh yetib boradi.')">Band qilish</button>
-                </div>
-                <div class="apple-card">
-                    <h2 class="card-title">Yoqilg'i Yetkazish</h2>
-                    <p class="card-text">Premium AI-95/98 to'g'ridan-to'g'ri bakka.</p>
-                    <button class="btn-ios" onclick="openDetails('Fuel', 'Yoqilg\'i yetkazib berish xizmati 24/7.')">Buyurtma</button>
+                    <h2 class="card-title">Garajingizni yarating</h2>
+                    <p class="card-text">Barcha mashinalaringiz nazorati bitta ilovada.</p>
+                    <button class="btn-ios" onclick="toggleOverlay('authOverlay', true)">Hozir boshlash</button>
                 </div>
             </div>
 
             <header style="text-align: center; margin: 80px 0 40px 0;">
-                <h2 style="font-size: 32px;">Mijozlarimiz fikri</h2>
+                <h2 style="font-size: 42px;">Foydali Ma'lumotlar</h2>
             </header>
             <div class="grid">
-                <div class="apple-card" style="padding: 25px; text-align: left;">
-                    <div class="stars">★★★★★</div>
-                    <p>"Juda tez va sifatli xizmat. Moy almashtirish eslatmasi juda qulay ekan."</p>
-                    <small style="color:#86868b; margin-top:10px; display:block;">— Aziz Toshkentov</small>
+                <div class="blog-card shadow">
+                    <img src="https://images.unsplash.com/photo-1486006396193-471a2abc9302?auto=format&fit=crop&w=400" alt="Oil">
+                    <h3>Moy sifatini qanday aniqlash mumkin?</h3>
+                    <p>Dvigatel uzoq xizmat qilishi uchun 3 ta asosiy qoida...</p>
+                    <a onclick="showSection('blogPage')" style="color:var(--apple-blue); cursor:pointer;">O'qish →</a>
                 </div>
-                <div class="apple-card" style="padding: 25px; text-align: left;">
-                    <div class="stars">★★★★★</div>
-                    <p>"Li Auto uchun servis topish qiyin edi, Million KM ustalari gap yo'q!"</p>
-                    <small style="color:#86868b; margin-top:10px; display:block;">— Sardor Rahimov</small>
+                <div class="blog-card shadow">
+                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400" alt="LiAuto">
+                    <h3>Qishda Li Auto batareyasi</h3>
+                    <p>Elektromobil va gibridlarni sovuqdan qanday asrash kerak?</p>
+                    <a onclick="showSection('blogPage')" style="color:var(--apple-blue); cursor:pointer;">O'qish →</a>
                 </div>
             </div>
 
@@ -202,85 +161,102 @@
         </div>
     </div>
 
+    <div id="blogPage" class="page-section">
+        <div class="container fade-in">
+            <h1 style="font-size: 42px; margin-bottom: 30px;">Blog va Qo'llanmalar</h1>
+            <div class="grid">
+                <div class="apple-card" style="text-align: left;">
+                    <h3>Dvigatelni qizdirish shartmi?</h3>
+                    <p class="card-text">Zamonaviy avtomobillarda dvigatelni qishda qizdirish bo'yicha mutaxassislar maslahati...</p>
+                    <small>10.01.2026</small>
+                </div>
+                <div class="apple-card" style="text-align: left;">
+                    <h3>Tormoz tizimi belgilari</h3>
+                    <p class="card-text">Tormoz kolodkalari qachon almashtirilishi kerakligini bildiruvchi 5 ta signal.</p>
+                    <small>08.01.2026</small>
+                </div>
+            </div>
+            <button class="btn-ios-secondary btn-ios" style="margin-top: 20px;" onclick="showSection('mainPage')">Orqaga</button>
+        </div>
+    </div>
+
     <div id="dashboard" class="page-section">
         <div class="container">
             <div class="apple-card fade-in" style="text-align: left;">
-                <h1 id="welcomeUser" style="font-size: 38px;">Xush kelibsiz!</h1>
-                <p style="color: #86868b; margin-bottom: 20px;">Shaxsiy avto-monitoring paneli.</p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div style="background:#fbfbfd; padding:20px; border-radius:18px; border: 1px solid #eee;">
-                        <p style="color:#86868b; font-size:13px;">Avtomobil:</p>
-                        <h3 id="dashCar">---</h3>
-                    </div>
-                    <div style="background:#fbfbfd; padding:20px; border-radius:18px; border: 1px solid #eee;">
-                        <p style="color:#86868b; font-size:13px;">Yurgan masofasi:</p>
-                        <h3 id="dashKm">--- km</h3>
-                        <button class="btn-ios-secondary btn-small" style="margin-top:8px;" onclick="toggleOverlay('updateKmOverlay', true)">Yangilash</button>
-                    </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h1 id="welcomeUser" style="font-size: 32px;">Mening Garajim</h1>
+                    <button class="btn-ios btn-small" onclick="toggleOverlay('addCarOverlay', true)">+ Mashina qo'shish</button>
                 </div>
                 
-                <div style="margin-top:20px;">
-                    <p style="font-size:14px; font-weight:600;">Keyingi servisgacha (Moy almashtirish):</p>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="oilProgress"></div>
+                <div class="car-selector" id="carListNav">
                     </div>
-                    <p id="oilStatusText" style="font-size:13px; color:#86868b;">Hisoblanmoqda...</p>
+
+                <div id="carStatsContainer">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="background:#fbfbfd; padding:20px; border-radius:18px; border: 1px solid #eee;">
+                            <p style="color:#86868b; font-size:13px;">Tanlangan mashina:</p>
+                            <h3 id="dashCar">---</h3>
+                        </div>
+                        <div style="background:#fbfbfd; padding:20px; border-radius:18px; border: 1px solid #eee;">
+                            <p style="color:#86868b; font-size:13px;">Yurgan masofasi:</p>
+                            <h3 id="dashKm">--- km</h3>
+                            <button class="btn-ios-secondary btn-small" style="margin-top:8px;" onclick="toggleOverlay('updateKmOverlay', true)">Masofani yangilash</button>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top:20px;">
+                        <p style="font-size:14px; font-weight:600;">Moy almashtirish holati:</p>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="oilProgress"></div>
+                        </div>
+                        <p id="oilStatusText" style="font-size:13px; color:#86868b;">Yuklanmoqda...</p>
+                    </div>
+
+                    <div id="checkList" style="margin-top:25px; background:#fff; padding:20px; border-radius:20px; border:1px solid #eee;">
+                        <h4 style="margin-bottom:10px;">🛠 Avtomatik Check-list (Tavsiyalar)</h4>
+                        <div id="checkListItems">
+                             </div>
+                    </div>
                 </div>
-                <div id="statusBadge" class="status-badge status-green">Holat: Xavfsiz</div>
             </div>
 
             <div class="apple-card fade-in" style="margin-top:25px; text-align: left;">
-                <h3>Servis band qilish (Booking)</h3>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                    <div>
-                        <label style="font-size:12px;">Sana tanlang:</label>
-                        <input type="date" id="bookDate">
-                    </div>
-                    <div>
-                        <label style="font-size:12px;">Vaqt tanlang:</label>
-                        <select id="bookTime">
-                            <option>09:00</option><option>11:00</option><option>14:00</option><option>16:00</option>
-                        </select>
-                    </div>
-                </div>
-                <textarea id="orderNote" placeholder="Qanday xizmatlar kerak? (masalan: Moy almashtirish, tormoz tekshiruvi)" rows="3"></textarea>
-                <button class="btn-ios" id="btnOrder" style="margin-top:15px;" onclick="sendOrder()">Vaqtni band qilish</button>
+                <h3>Servisga yozilish</h3>
+                <input type="date" id="bookDate">
+                <textarea id="orderNote" placeholder="Nima muammo bor?" rows="2"></textarea>
+                <button class="btn-ios" onclick="sendOrder()">Band qilish</button>
             </div>
+        </div>
+    </div>
 
-            <div class="apple-card fade-in" style="margin-top:25px; text-align: left;">
-                <h3>Elektron Servis Kitobchasi (Arxiv)</h3>
-                <div id="orderHistory" style="margin-top:10px;">Yuklanmoqda...</div>
-            </div>
+    <div id="addCarOverlay" class="overlay">
+        <div class="auth-box">
+            <h2>Yangi mashina qo'shish</h2>
+            <select id="newCarBrand">
+                <option>Malibu</option><option>Cobalt</option><option>Gentra</option><option>Li Auto L7</option><option>BYD Song</option>
+            </select>
+            <input type="number" id="newCarKm" placeholder="Hozirgi kilometri">
+            <button class="btn-ios" onclick="addNewCar()">Garajga qo'shish</button>
+            <button class="btn-ios-secondary btn-ios" onclick="toggleOverlay('addCarOverlay', false)">Yopish</button>
         </div>
     </div>
 
     <div id="updateKmOverlay" class="overlay">
         <div class="auth-box">
-            <h2>Kilometrajni yangilash</h2>
-            <p style="font-size:13px; color:#86868b;">Hozirgi ko'rsatkichni kiriting:</p>
-            <input type="number" id="newKmInput" placeholder="Masalan: 45200">
-            <button class="btn-ios" onclick="updateKilometraj()">Saqlash</button>
-            <button class="btn-ios-secondary btn-ios" onclick="toggleOverlay('updateKmOverlay', false)">Yopish</button>
+            <h2>Masofani yangilash</h2>
+            <input type="number" id="newKmUpdateInput" placeholder="Yangi masofa">
+            <button class="btn-ios" onclick="updateCurrentCarKm()">Yangilash</button>
+            <button class="btn-ios-secondary btn-ios" onclick="toggleOverlay('updateKmOverlay', false)">Bekor qilish</button>
         </div>
     </div>
 
     <div id="authOverlay" class="overlay">
         <div class="auth-box">
             <h2>Ro'yxatdan o'tish</h2>
-            <input type="text" id="regName" placeholder="Ism Sharif">
-            <input type="tel" id="regTel" placeholder="Telefon">
-            <select id="regBrand">
-                <option value="Malibu">Malibu</option>
-                <option value="Cobalt">Cobalt</option>
-                <option value="K5">K5</option>
-                <option value="L7">Li Auto L7</option>
-            </select>
-            <input type="number" id="regKm" placeholder="Yurgan masofasi">
+            <input type="text" id="regName" placeholder="Ismingiz">
             <input type="email" id="regEmail" placeholder="Email">
             <input type="password" id="regPass" placeholder="Parol">
-            <p class="error-text" id="regError">Ma'lumotlarni tekshiring</p>
-            <button class="btn-ios" id="btnReg" onclick="handleAuth(true)">Tasdiqlash</button>
+            <button class="btn-ios" onclick="handleAuth(true)">Ro'yxatdan o'tish</button>
             <button class="btn-ios-secondary btn-ios" onclick="toggleOverlay('authOverlay', false)">Yopish</button>
         </div>
     </div>
@@ -290,23 +266,17 @@
             <h2>Kirish</h2>
             <input type="email" id="logEmail" placeholder="Email">
             <input type="password" id="logPass" placeholder="Parol">
-            <p class="error-text" id="logError">Email yoki parol noto'g'ri</p>
-            <button class="btn-ios" id="btnLog" onclick="handleAuth(false)">Kirish</button>
+            <button class="btn-ios" onclick="handleAuth(false)">Kirish</button>
             <button class="btn-ios-secondary btn-ios" onclick="toggleOverlay('loginOverlay', false)">Yopish</button>
         </div>
     </div>
 
     <div id="chat-container">
         <div class="chat-box" id="chatBox">
-            <div class="chat-header">
-                <span>Million KM Support</span>
-                <span onclick="toggleChat()" style="cursor:pointer">×</span>
-            </div>
-            <div class="chat-messages" id="chatMsgs">
-                <div class="msg admin">Assalomu alaykum! Sizga qanday yordam bera olamiz?</div>
-            </div>
+            <div class="chat-header"><span>Million KM Support</span><span onclick="toggleChat()">×</span></div>
+            <div class="chat-messages" id="chatMsgs"><div class="msg admin">Salom! Savolingiz bormi?</div></div>
             <div class="chat-input-area">
-                <input type="text" id="chatInp" placeholder="Xabar yozing..." style="margin-top:0">
+                <input type="text" id="chatInp" placeholder="Xabar..." style="margin:0">
                 <button class="btn-ios btn-small" onclick="sendMessage()" style="margin:0">✈️</button>
             </div>
         </div>
@@ -316,7 +286,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, where, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
@@ -331,12 +301,14 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // UI Utility
+        let userCars = [];
+        let activeCarIndex = 0;
+
         window.showSection = (id) => {
             document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
             document.getElementById(id).classList.add('active-section');
-            window.scrollTo(0,0);
         };
+
         window.toggleOverlay = (id, show) => document.getElementById(id).style.display = show ? 'flex' : 'none';
         
         window.toggleChat = () => {
@@ -344,155 +316,118 @@
             cb.style.display = cb.style.display === 'flex' ? 'none' : 'flex';
         };
 
-        // Loader helper
-        const setLoader = (show) => document.getElementById('loader').style.display = show ? 'block' : 'none';
-
-        // 2. Kilometrajni yangilash funksiyasi
-        window.updateKilometraj = async () => {
-            const newKm = parseInt(document.getElementById('newKmInput').value);
-            if(!newKm || !auth.currentUser) return;
-            setLoader(true);
-            try {
-                await updateDoc(doc(db, "users", auth.currentUser.uid), { km: newKm });
-                location.reload(); 
-            } catch(e) { alert("Xato!"); }
-            setLoader(false);
-        };
-
-        // 6. Booking Tizimi va Telegram
-        window.sendOrder = async () => {
-            const date = document.getElementById('bookDate').value;
-            const time = document.getElementById('bookTime').value;
-            const note = document.getElementById('orderNote').value;
-            if(!date || !note) return alert("Sana va xizmatni kiriting!");
-
-            setLoader(true);
-            const user = auth.currentUser;
-            const snap = await getDoc(doc(db, "users", user.uid));
-            const userData = snap.data();
-
-            const order = {
-                uid: user.uid,
-                userName: userData.name,
-                car: userData.brand,
-                date: date,
-                time: time,
-                note: note,
-                status: "Tasdiqlangan",
-                timestamp: new Date()
-            };
-
-            await addDoc(collection(db, "orders"), order);
-            
-            // Telegram Notification
-            const msg = `📅 YANGI BRON!\nMijoz: ${userData.name}\nMashina: ${userData.brand}\nVaqt: ${date} ${time}\nXizmat: ${note}`;
-            await fetch(`https://api.telegram.org/bot7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM/sendMessage?chat_id=-1003461463026&text=${encodeURIComponent(msg)}`);
-
-            // 4. Avtomatik eslatma (Notification simulyatsiyasi)
-            if(userData.km % 10000 > 9500) {
-                alert("DIQQAT: Kilometrajingiz servis vaqtiga yaqinlashdi!");
+        // --- MULTI-CAR LOGIC ---
+        async function loadUserGaraj(uid) {
+            const snap = await getDoc(doc(db, "users", uid));
+            if(snap.exists()){
+                const data = snap.data();
+                userCars = data.cars || [];
+                renderCarNav();
+                updateDashboardUI();
             }
+        }
 
-            alert("Vaqt muvaffaqiyatli band qilindi!");
-            loadOrders(user.uid);
-            setLoader(false);
-        };
-
-        // 3. Servis Arxivini yuklash
-        async function loadOrders(uid) {
-            const q = query(collection(db, "orders"), where("uid", "==", uid), orderBy("timestamp", "desc"));
-            const snap = await getDocs(q);
-            const div = document.getElementById('orderHistory');
-            div.innerHTML = "";
-            if(snap.empty) div.innerHTML = "Hozircha tarix mavjud emas.";
-            snap.forEach(d => {
-                const o = d.data();
-                div.innerHTML += `
-                    <div style="background:#f8f8f8; padding:15px; border-radius:15px; margin-bottom:10px; border-left: 4px solid var(--apple-blue);">
-                        <small>${o.date} ${o.time || ''}</small>
-                        <p><strong>Xizmat:</strong> ${o.note}</p>
-                        <p style="color:var(--apple-green); font-size:12px;">Holat: ${o.status}</p>
-                    </div>`;
+        function renderCarNav() {
+            const nav = document.getElementById('carListNav');
+            nav.innerHTML = "";
+            userCars.forEach((car, index) => {
+                const tag = document.createElement('div');
+                tag.className = `car-tag ${index === activeCarIndex ? 'active' : ''}`;
+                tag.textContent = car.brand;
+                tag.onclick = () => { activeCarIndex = index; renderCarNav(); updateDashboardUI(); };
+                nav.appendChild(tag);
             });
         }
 
-        // Chat funksiyasi
-        window.sendMessage = () => {
-            const inp = document.getElementById('chatInp');
-            if(!inp.value) return;
-            const msgDiv = document.createElement('div');
-            msgDiv.className = 'msg user';
-            msgDiv.textContent = inp.value;
-            document.getElementById('chatMsgs').appendChild(msgDiv);
-            inp.value = "";
-            
-            setTimeout(() => {
-                const reply = document.createElement('div');
-                reply.className = 'msg admin';
-                reply.textContent = "Mutaxassisimiz tez orada sizga javob beradi. Kuting...";
-                document.getElementById('chatMsgs').appendChild(reply);
-            }, 1000);
+        window.addNewCar = async () => {
+            const brand = document.getElementById('newCarBrand').value;
+            const km = parseInt(document.getElementById('newCarKm').value);
+            if(!km) return;
+
+            userCars.push({ brand, km, lastOilChange: km });
+            await updateDoc(doc(db, "users", auth.currentUser.uid), { cars: userCars });
+            toggleOverlay('addCarOverlay', false);
+            renderCarNav();
+            updateDashboardUI();
         };
 
-        // Auth Handling with Error States
+        window.updateCurrentCarKm = async () => {
+            const newKm = parseInt(document.getElementById('newKmUpdateInput').value);
+            if(!newKm) return;
+            userCars[activeCarIndex].km = newKm;
+            await updateDoc(doc(db, "users", auth.currentUser.uid), { cars: userCars });
+            toggleOverlay('updateKmOverlay', false);
+            updateDashboardUI();
+        };
+
+        function updateDashboardUI() {
+            if(userCars.length === 0) return;
+            const car = userCars[activeCarIndex];
+            document.getElementById('dashCar').textContent = car.brand;
+            document.getElementById('dashKm').textContent = car.km + " km";
+
+            // Oil Progress
+            const oilInterval = 8000;
+            const passed = car.km - car.lastOilChange;
+            const percent = Math.min((passed / oilInterval) * 100, 100);
+            document.getElementById('oilProgress').style.width = percent + "%";
+            document.getElementById('oilStatusText').textContent = `${oilInterval - passed} km dan keyin moy almashtirish`;
+
+            // Check-list Logic
+            const listDiv = document.getElementById('checkListItems');
+            listDiv.innerHTML = "";
+            
+            const checks = [
+                { name: "Tormoz suyuqligi", km: 40000, msg: "Tormoz tizimini to'liq tekshirish vaqti keldi!" },
+                { name: "Antifriz", km: 50000, msg: "Sovutish suyuqligini yangilash tavsiya etiladi." },
+                { name: "Remen (Grm)", km: 80000, msg: "Dvigatel remenini almashtirishni kechiktirmang!" }
+            ];
+
+            checks.forEach(item => {
+                const status = car.km >= item.km ? "🔴 DIQQAT" : "🟢 Yaxshi";
+                const color = car.km >= item.km ? "red" : "green";
+                listDiv.innerHTML += `<p style="font-size:14px; margin-top:5px;">${status}: ${item.name} (${item.km} km) - <small style="color:${color}">${item.msg}</small></p>`;
+            });
+        }
+
+        // --- AUTH & OTHER FUNCTIONS ---
         window.handleAuth = async (isReg) => {
-            setLoader(true);
-            document.getElementById('regError').style.display = 'none';
-            document.getElementById('logError').style.display = 'none';
+            const email = isReg ? document.getElementById('regEmail').value : document.getElementById('logEmail').value;
+            const pass = isReg ? document.getElementById('regPass').value : document.getElementById('logPass').value;
             try {
                 if(isReg) {
-                    const email = document.getElementById('regEmail').value;
-                    const pass = document.getElementById('regPass').value;
                     const res = await createUserWithEmailAndPassword(auth, email, pass);
-                    await setDoc(doc(db, "users", res.user.uid), {
-                        name: document.getElementById('regName').value,
-                        tel: document.getElementById('regTel').value,
-                        brand: document.getElementById('regBrand').value,
-                        km: parseInt(document.getElementById('regKm').value),
-                        uid: res.user.uid
-                    });
-                    toggleOverlay('authOverlay', false);
+                    await setDoc(doc(db, "users", res.user.uid), { name: document.getElementById('regName').value, cars: [] });
                 } else {
-                    const email = document.getElementById('logEmail').value;
-                    const pass = document.getElementById('logPass').value;
                     await signInWithEmailAndPassword(auth, email, pass);
-                    toggleOverlay('loginOverlay', false);
                 }
-            } catch (e) {
-                if(isReg) document.getElementById('regError').style.display = 'block';
-                else document.getElementById('logError').style.display = 'block';
-            }
-            setLoader(false);
+                location.reload();
+            } catch(e) { alert("Xato yuz berdi!"); }
         };
 
         window.logout = () => signOut(auth).then(() => location.reload());
 
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const snap = await getDoc(doc(db, "users", user.uid));
-                if(snap.exists()) {
-                    const d = snap.data();
-                    document.getElementById('authLinks').style.display = 'none';
-                    document.getElementById('userLinks').style.display = 'inline';
-                    document.getElementById('welcomeUser').textContent = `Salom, ${d.name}!`;
-                    document.getElementById('dashCar').textContent = d.brand;
-                    document.getElementById('dashKm').textContent = d.km + " km";
-
-                    const oilLimit = 10000;
-                    const currentOilKm = d.km % oilLimit;
-                    const percent = (currentOilKm / oilLimit) * 100;
-                    document.getElementById('oilProgress').style.width = percent + "%";
-                    document.getElementById('oilStatusText').textContent = `${oilLimit - currentOilKm} km dan keyin moy almashtirish`;
-                    
-                    if(percent > 90) {
-                        document.getElementById('statusBadge').className = "status-badge status-yellow";
-                        document.getElementById('statusBadge').textContent = "Holat: Servis talab etiladi";
-                    }
-
-                    loadOrders(user.uid);
-                }
+        onAuthStateChanged(auth, (user) => {
+            if(user) {
+                document.getElementById('authLinks').style.display = 'none';
+                document.getElementById('userLinks').style.display = 'inline';
+                loadUserGaraj(user.uid);
             }
         });
+
+        window.sendMessage = () => {
+            const inp = document.getElementById('chatInp');
+            if(!inp.value) return;
+            const d = document.createElement('div'); d.className='msg user'; d.textContent=inp.value;
+            document.getElementById('chatMsgs').appendChild(d); inp.value="";
+        };
+
+        window.sendOrder = async () => {
+            const date = document.getElementById('bookDate').value;
+            const note = document.getElementById('orderNote').value;
+            if(!date) return alert("Sana tanlang");
+            alert("Muvaffaqiyatli band qilindi! Mutaxassis bog'lanadi.");
+        };
     </script>
 </body>
 </html>
