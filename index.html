@@ -95,6 +95,7 @@
         <a onclick="showSection('mainPage')">Million km</a>
         <a onclick="showSection('chevroletPage')">Chevrolet</a>
         <a onclick="showSection('kiaPage')">Kia</a>
+        <a onclick="showSection('liPage')">Li Auto</a>
         <a href="#services-section">Xizmatlar</a>
         <a href="#map-section">Filiallar</a>
         <span id="authLinks">
@@ -143,7 +144,7 @@
                         <p class="card-text">Million km standartlariga mos eng so‘nggi Li auto modellari.</p>
                     </div>
                     <div>
-                        <button class="btn-ios-secondary btn-ios">Batafsil ma’lumot</button>
+                        <button class="btn-ios-secondary btn-ios" onclick="showSection('liPage')">Batafsil ma’lumot</button>
                         <button class="btn-ios" onclick="toggleAuth(true)">Modelni tanlash</button>
                     </div>
                 </div>
@@ -276,6 +277,42 @@
         </div>
     </div>
 
+    <div id="liPage" class="page-section">
+        <div class="container">
+            <button class="btn-ios-secondary" style="width: 100px; padding: 10px; border-radius: 10px; margin-bottom: 20px;" onclick="showSection('mainPage')">< Orqaga</button>
+            <h1 style="font-size: 42px; margin-bottom: 30px;">Li Auto modellari</h1>
+            <div class="grid">
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">Li L7</h2>
+                    <p class="card-text">Flagman 5 o'rinli krossover. Yuqori texnologiyalar va mislsiz qulaylik uyg'unligi.</p>
+                    <p class="service-info">Premium xizmatlar paketi mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">Li L8</h2>
+                    <p class="card-text">Oila uchun ideal 6 o'rinli SUV. Keng maydon va xavfsizlik kafolati.</p>
+                    <p class="service-info">Premium xizmatlar paketi mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+                <div class="apple-card fade-in">
+                    <h2 class="card-title">Li L9</h2>
+                    <p class="card-text">Eng yuqori darajadagi hashamatli SUV. Avtopilot va multimedia tizimi bilan jihozlangan.</p>
+                    <p class="service-info">Eksklyuziv xizmatlar paketi mavjud</p>
+                    <div class="btn-flex-container">
+                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
+                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="dashboard" class="page-section">
         <div class="container">
             <div class="apple-card fade-in" style="text-align: left;">
@@ -307,12 +344,21 @@
             <input type="tel" id="regTel" placeholder="Telefon (+998...)">
             <select id="regBrand">
                 <option value="" disabled selected>Mashina modelini tanlang</option>
-                <option value="Nexia 3">Nexia 3</option>
-                <option value="Cobalt">Cobalt</option>
-                <option value="Gentra">Gentra</option>
-                <option value="Onix">Onix</option>
-                <option value="KIA K5">KIA K5</option>
-                <option value="Li Auto L9">Li Auto L9</option>
+                <optgroup label="Chevrolet">
+                    <option value="Nexia 3">Nexia 3</option>
+                    <option value="Cobalt">Cobalt</option>
+                    <option value="Gentra">Gentra</option>
+                    <option value="Onix">Onix</option>
+                </optgroup>
+                <optgroup label="KIA">
+                    <option value="KIA K5">KIA K5</option>
+                    <option value="KIA Sonet">KIA Sonet</option>
+                </optgroup>
+                <optgroup label="Li Auto">
+                    <option value="Li L7">Li L7</option>
+                    <option value="Li L8">Li L8</option>
+                    <option value="Li L9">Li L9</option>
+                </optgroup>
             </select>
             <input type="number" id="regYear" placeholder="Mashina yili">
             <input type="number" id="regKm" placeholder="Yurgan masofasi (Km)">
