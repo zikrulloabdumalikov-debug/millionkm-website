@@ -52,6 +52,10 @@
         .card-text { color: #86868b; margin-bottom: 25px; font-size: 17px; }
         .service-info { font-size: 14px; color: #34c759; font-weight: 600; margin-bottom: 15px; }
 
+        /* Progress Bar */
+        .progress-container { background: #e8e8ed; height: 10px; border-radius: 5px; margin: 15px 0; overflow: hidden; }
+        .progress-bar { background: var(--apple-blue); height: 100%; width: 0%; transition: 1s; }
+
         /* Tugmalar */
         .btn-ios {
             display: block; width: 100%; padding: 16px;
@@ -67,26 +71,29 @@
         .btn-flex-container { display: flex; gap: 10px; }
         .btn-flex-container .btn-ios { flex: 1; }
 
-        /* Status va Xarita */
-        .status-badge { display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: 600; margin-top: 15px; }
+        /* Statuslar */
+        .status-badge { display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: 600; margin-top: 15px; font-size: 14px; }
         .status-green { background: #e3f9e5; color: #34c759; }
         .status-yellow { background: #fff9db; color: #f08c00; }
 
         #map-container { width: 100%; height: 450px; border-radius: var(--radius); overflow: hidden; margin-top: 20px; border: 1px solid #d2d2d7; }
 
-        /* Footer */
-        footer { background: #fff; padding: 60px 20px; text-align: center; border-top: 0.5px solid #d2d2d7; margin-top: 50px; }
-        .social-links { margin-bottom: 30px; }
-        .social-links a { text-decoration: none; color: #1d1d1f; margin: 0 15px; font-size: 18px; font-weight: 600; }
-        .social-links a:hover { color: var(--apple-blue); }
-        .call-center { font-size: 24px; font-weight: 600; color: var(--apple-blue); margin: 20px 0; }
+        /* Overlay & Modals */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(15px); z-index: 20000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .auth-box { background: white; padding: 40px; border-radius: 35px; width: 100%; max-width: 420px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
+        
+        .info-modal { background: white; padding: 40px; border-radius: 35px; width: 100%; max-width: 600px; position: relative; }
 
-        /* Overlay */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(245,245,247,0.9); backdrop-filter: blur(20px); z-index: 20000; display: none; justify-content: center; align-items: center; padding: 20px; }
-        .auth-box { background: white; padding: 40px; border-radius: 35px; width: 100%; max-width: 420px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); max-height: 90vh; overflow-y: auto; }
         input, select { width: 100%; padding: 14px; margin-top: 10px; border-radius: 12px; border: 1px solid #d2d2d7; background: #f5f5f7; font-size: 15px; outline: none; }
         
         .chat-widget { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--apple-blue); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 10px 30px rgba(0,113,227,0.3); cursor: pointer; z-index: 10001; }
+
+        /* Admin Styles */
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 15px; overflow: hidden; }
+        .admin-table th, .admin-table td { padding: 15px; border: 1px solid #eee; text-align: left; }
+        .admin-table th { background: #f5f5f7; }
+
+        footer { background: #fff; padding: 60px 20px; text-align: center; border-top: 0.5px solid #d2d2d7; margin-top: 50px; }
     </style>
 </head>
 <body>
@@ -96,12 +103,12 @@
         <a onclick="showSection('chevroletPage')">Chevrolet</a>
         <a onclick="showSection('kiaPage')">Kia</a>
         <a onclick="showSection('liPage')">Li Auto</a>
-        <a href="#services-section">Xizmatlar</a>
-        <a href="#map-section">Filiallar</a>
         <span id="authLinks">
-            <a onclick="toggleAuth(true)">Ro‘yxatdan o‘tish</a>
+            <a onclick="openAuth('login')">Kirish</a>
+            <a onclick="openAuth('reg')">Ro‘yxatdan o‘tish</a>
         </span>
         <a id="dashLink" style="display:none;" onclick="showSection('dashboard')">Kabinet</a>
+        <a id="adminLink" style="display:none; color: #0071e3; font-weight: bold;" onclick="showSection('adminPage')">Admin</a>
         <a id="logoutBtn" style="display:none; color:red;" onclick="logout()">Chiqish</a>
     </nav>
 
@@ -121,7 +128,7 @@
                     </div>
                     <div>
                         <button class="btn-ios-secondary btn-ios" onclick="showSection('chevroletPage')">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Modelni tanlash</button>
+                        <button class="btn-ios" onclick="openAuth('reg')">Modelni tanlash</button>
                     </div>
                 </div>
 
@@ -133,7 +140,7 @@
                     </div>
                     <div>
                         <button class="btn-ios-secondary btn-ios" onclick="showSection('kiaPage')">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Modelni tanlash</button>
+                        <button class="btn-ios" onclick="openAuth('reg')">Modelni tanlash</button>
                     </div>
                 </div>
 
@@ -145,34 +152,15 @@
                     </div>
                     <div>
                         <button class="btn-ios-secondary btn-ios" onclick="showSection('liPage')">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Modelni tanlash</button>
+                        <button class="btn-ios" onclick="openAuth('reg')">Modelni tanlash</button>
                     </div>
                 </div>
             </div>
 
-            <header style="text-align: center; margin: 80px 0 40px 0;" id="services-section">
-                <h2 style="font-size: 42px;">Eksklyuziv Xizmatlar</h2>
-            </header>
-            <div class="grid">
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Million km express</h2>
-                    <p class="card-text">Million km standardi asosida, manzilga borib xizmat ko’rsatish xizmati.</p>
-                    <button class="btn-ios">Xizmatni tanlash</button>
-                </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Million km fuel</h2>
-                    <p class="card-text">Million km talablariga mos, sifatli yoqilg’i yetkazib berish xizmati.</p>
-                    <button class="btn-ios">Xarid qilish</button>
-                </div>
-            </div>
-
-            <header style="text-align: center; margin: 80px 0 40px 0;" id="map-section">
-                <h2 style="font-size: 42px;">Million km filiallari</h2>
+            <header style="text-align: center; margin: 80px 0 40px 0;">
+                <h2 style="font-size: 42px;">Filiallarimiz</h2>
                 <div id="map-container">
                     <iframe src="https://yandex.uz/map-widget/v1/?ll=69.2401%2C41.2995&z=12" width="100%" height="100%" frameborder="0"></iframe>
-                </div>
-                <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
-                    <button class="btn-ios" style="max-width: 300px;" onclick="toggleAuth(true)">Ro’yxatdan o’tish</button>
                 </div>
             </header>
         </div>
@@ -180,134 +168,18 @@
 
     <div id="chevroletPage" class="page-section">
         <div class="container">
-            <button class="btn-ios-secondary" style="width: 100px; padding: 10px; border-radius: 10px; margin-bottom: 20px;" onclick="showSection('mainPage')">< Orqaga</button>
-            <h1 style="font-size: 42px; margin-bottom: 30px;">Chevrolet modellari</h1>
+            <button class="btn-ios-secondary" style="width: 100px; padding: 10px; margin-bottom: 20px;" onclick="showSection('mainPage')">< Orqaga</button>
+            <h1 style="font-size: 42px; margin-bottom: 30px;">Chevrolet</h1>
             <div class="grid">
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Nexia 3</h2>
-                    <p class="card-text">Oddiy, ishonchli va shahar hayoti uchun mo‘ljallangan avtomobil.</p>
-                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
+                <div class="apple-card">
+                    <h2 class="card-title">Malibu XL</h2>
+                    <p class="card-text">2.0 Turbo, 253 ot kuchi.</p>
+                    <button class="btn-ios" onclick="showCarDetails('Malibu XL', '253 HP', '7.5s (0-100)', '$35,000')">Texnik ko'rsatkichlar</button>
                 </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Cobalt</h2>
-                    <p class="card-text">Keng salon, yumshoq yurish va doimiy qulaylik bilan har kuni yangi maromda.</p>
-                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Gentra</h2>
-                    <p class="card-text">Har yo‘l sharoitida siz bilan bo‘lishga mos, barqaror va oddiy haydovchilik tajribasi.</p>
-                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Onix</h2>
-                    <p class="card-text">Zamonaviy interyer va yorqin dizaynga ega, hayotingizni qulaylashtiruvchi o‘rtacha klass avtomobil.</p>
-                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Malibu</h2>
-                    <p class="card-text">Barqaror va tekis yurish, keng salon va ishonchli texnologiyalar bilan oila va ish uchun ideal.</p>
-                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-                <div class="apple-card fade-in">
+                <div class="apple-card">
                     <h2 class="card-title">Tahoe</h2>
-                    <p class="card-text">Premium klass SUV, kuch va qulaylikni bir avtomobilda his eting.</p>
-                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="kiaPage" class="page-section">
-        <div class="container">
-            <button class="btn-ios-secondary" style="width: 100px; padding: 10px; border-radius: 10px; margin-bottom: 20px;" onclick="showSection('mainPage')">< Orqaga</button>
-            <h1 style="font-size: 42px; margin-bottom: 30px;">KIA modellari</h1>
-            <div class="grid">
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">KIA Sonet</h2>
-                    <p class="card-text">Shahar uchun yaratilgan ixcham SUV. Zamonaviy, qulay va energiya tejovchi.</p>
-                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">KIA K5</h2>
-                    <p class="card-text">Uslub va kuch birlashgan biznes sedan. Barqaror yurish, keng salon va ilg‘or texnologiyalar.</p>
-                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">KIA Sportage</h2>
-                    <p class="card-text">Ishonchli va keng SUV. Oila uchun ideal, xavfsiz va zamonaviy.</p>
-                    <p class="service-info">1 martalik va 1 yillik xizmat mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="liPage" class="page-section">
-        <div class="container">
-            <button class="btn-ios-secondary" style="width: 100px; padding: 10px; border-radius: 10px; margin-bottom: 20px;" onclick="showSection('mainPage')">< Orqaga</button>
-            <h1 style="font-size: 42px; margin-bottom: 30px;">Li Auto modellari</h1>
-            <div class="grid">
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Li L7</h2>
-                    <p class="card-text">Flagman 5 o'rinli krossover. Yuqori texnologiyalar va mislsiz qulaylik uyg'unligi.</p>
-                    <p class="service-info">Premium xizmatlar paketi mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Li L8</h2>
-                    <p class="card-text">Oila uchun ideal 6 o'rinli SUV. Keng maydon va xavfsizlik kafolati.</p>
-                    <p class="service-info">Premium xizmatlar paketi mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
-                </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Li L9</h2>
-                    <p class="card-text">Eng yuqori darajadagi hashamatli SUV. Avtopilot va multimedia tizimi bilan jihozlangan.</p>
-                    <p class="service-info">Eksklyuziv xizmatlar paketi mavjud</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios">Batafsil</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Xarid qilish ></button>
-                    </div>
+                    <p class="card-text">5.3L V8, 343 ot kuchi.</p>
+                    <button class="btn-ios" onclick="showCarDetails('Tahoe', '343 HP', '8.1s (0-100)', '$80,000')">Texnik ko'rsatkichlar</button>
                 </div>
             </div>
         </div>
@@ -316,7 +188,7 @@
     <div id="dashboard" class="page-section">
         <div class="container">
             <div class="apple-card fade-in" style="text-align: left;">
-                <h1 id="welcomeUser" style="font-size: 38px;">Xush kelibsiz!</h1>
+                <h1 id="welcomeUser">Xush kelibsiz!</h1>
                 <div style="margin-top: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div style="background:#fbfbfd; padding:20px; border-radius:18px;">
                         <p style="color:#86868b; font-size:13px;">Avtomobil:</p>
@@ -327,45 +199,77 @@
                         <h3 id="dashKm">--- km</h3>
                     </div>
                 </div>
-                <div id="statusBadge" class="status-badge">Tekshirilmoqda...</div>
+
+                <div style="margin-top: 20px;">
+                    <p style="font-size: 14px; font-weight: 600;">Moy almashtirish holati (10,000 km servis):</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="oilProgress"></div>
+                    </div>
+                    <p id="oilText" style="font-size: 13px; color: #86868b;">Moyni almashtirishga ... km qoldi</p>
+                </div>
             </div>
+
             <div class="apple-card fade-in" style="margin-top:25px; text-align: left;">
-                <h3>Servis xizmatini band qilish</h3>
-                <input type="text" id="orderNote" placeholder="Xizmat turini yozing (masalan: Moy almashtirish)">
-                <button class="btn-ios" id="btnOrder" style="margin-top:15px;" onclick="sendOrder()">Zayavka yuborish</button>
+                <h3>Xizmatga yozilish</h3>
+                <input type="text" id="orderNote" placeholder="Nima muammo bor?">
+                <button class="btn-ios" style="margin-top:15px;" onclick="sendOrder()">Zayavka yuborish</button>
             </div>
+        </div>
+    </div>
+
+    <div id="adminPage" class="page-section">
+        <div class="container">
+            <h1>Admin Panel - Buyurtmalar</h1>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Ism</th>
+                        <th>Mashina</th>
+                        <th>Muammo</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="adminOrdersBody">
+                    </tbody>
+            </table>
         </div>
     </div>
 
     <div id="authOverlay" class="overlay">
         <div class="auth-box">
-            <h2 style="text-align:center;">Ro'yxatdan o'tish</h2>
-            <input type="text" id="regName" placeholder="Ism Sharif">
-            <input type="tel" id="regTel" placeholder="Telefon (+998...)">
-            <select id="regBrand">
-                <option value="" disabled selected>Mashina modelini tanlang</option>
-                <optgroup label="Chevrolet">
-                    <option value="Nexia 3">Nexia 3</option>
-                    <option value="Cobalt">Cobalt</option>
-                    <option value="Gentra">Gentra</option>
-                    <option value="Onix">Onix</option>
-                </optgroup>
-                <optgroup label="KIA">
-                    <option value="KIA K5">KIA K5</option>
-                    <option value="KIA Sonet">KIA Sonet</option>
-                </optgroup>
-                <optgroup label="Li Auto">
+            <h2 id="authTitle">Kirish</h2>
+            <div id="loginFields">
+                <input type="email" id="logEmail" placeholder="Email">
+                <input type="password" id="logPass" placeholder="Parol">
+                <button class="btn-ios" style="margin-top:20px;" onclick="handleLogin()">Kirish</button>
+                <p style="text-align:center; font-size:14px; margin-top:10px; cursor:pointer;" onclick="switchAuth('reg')">Ro'yxatdan o'tish</p>
+            </div>
+            <div id="regFields" style="display:none;">
+                <input type="text" id="regName" placeholder="Ism Sharif">
+                <input type="tel" id="regTel" placeholder="+998...">
+                <select id="regBrand">
+                    <option value="Chevrolet Malibu">Chevrolet Malibu</option>
+                    <option value="Kia K5">Kia K5</option>
                     <option value="Li L7">Li L7</option>
-                    <option value="Li L8">Li L8</option>
-                    <option value="Li L9">Li L9</option>
-                </optgroup>
-            </select>
-            <input type="number" id="regYear" placeholder="Mashina yili">
-            <input type="number" id="regKm" placeholder="Yurgan masofasi (Km)">
-            <input type="email" id="regEmail" placeholder="Email manzilingiz">
-            <input type="password" id="regPass" placeholder="Parol (min 6 ta belgi)">
-            <button class="btn-ios" id="btnReg" style="margin-top:20px;" onclick="handleAuth()">Ro'yxatdan o'tish</button>
+                </select>
+                <input type="number" id="regKm" placeholder="Yurgan masofasi">
+                <input type="email" id="regEmail" placeholder="Email">
+                <input type="password" id="regPass" placeholder="Parol">
+                <button class="btn-ios" style="margin-top:20px;" onclick="handleAuth()">Ro'yxatdan o'tish</button>
+                <p style="text-align:center; font-size:14px; margin-top:10px; cursor:pointer;" onclick="switchAuth('login')">Kirishga qaytish</p>
+            </div>
             <button class="btn-ios-secondary btn-ios" onclick="toggleAuth(false)">Yopish</button>
+        </div>
+    </div>
+
+    <div id="detailsOverlay" class="overlay">
+        <div class="info-modal">
+            <h2 id="modalCarTitle">Model nomi</h2>
+            <hr style="margin: 20px 0;">
+            <p><strong>Ot kuchi:</strong> <span id="modalHP">---</span></p>
+            <p><strong>Tezlanish (0-100):</strong> <span id="modalAccel">---</span></p>
+            <p><strong>Taxminiy narxi:</strong> <span id="modalPrice">---</span></p>
+            <button class="btn-ios" style="margin-top:30px;" onclick="document.getElementById('detailsOverlay').style.display='none'">Yopish</button>
         </div>
     </div>
 
@@ -373,17 +277,14 @@
         <div class="social-links">
             <a href="#">Instagram</a>
             <a href="https://t.me/Zikrullo_Abdumalikov" target="_blank">Telegram</a>
-            <a href="#">Youtube</a>
         </div>
-        <div class="call-center">Call sentr: +998 90 000 00 00</div>
+        <div>© 2026 Million KM Service.</div>
     </footer>
-
-    <div class="chat-widget" onclick="window.open('https://t.me/Zikrullo_Abdumalikov', '_blank')">💬</div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
@@ -398,49 +299,105 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // UI Funksiyalari
         window.showSection = (id) => {
             document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
             document.getElementById(id).classList.add('active-section');
-            window.scrollTo(0,0);
+            if(id === 'adminPage') loadAdminOrders();
+        };
+
+        window.openAuth = (mode) => {
+            document.getElementById('authOverlay').style.display = 'flex';
+            switchAuth(mode);
         };
 
         window.toggleAuth = (show) => document.getElementById('authOverlay').style.display = show ? 'flex' : 'none';
 
-        window.handleAuth = async function() {
-            const btn = document.getElementById('btnReg');
-            const data = {
-                name: document.getElementById('regName').value.trim(),
-                tel: document.getElementById('regTel').value.trim(),
-                brand: document.getElementById('regBrand').value,
-                year: document.getElementById('regYear').value,
-                km: document.getElementById('regKm').value,
-                email: document.getElementById('regEmail').value.trim(),
-                pass: document.getElementById('regPass').value
-            };
-            if(!data.name || !data.email || !data.pass) return alert("To'ldiring!");
-            btn.disabled = true;
-            try {
-                const res = await createUserWithEmailAndPassword(auth, data.email, data.pass);
-                await setDoc(doc(db, "users", res.user.uid), { ...data, uid: res.user.uid });
-                alert("Tayyor!"); toggleAuth(false);
-            } catch (e) { alert(e.message); } finally { btn.disabled = false; }
+        window.switchAuth = (mode) => {
+            const isLogin = mode === 'login';
+            document.getElementById('authTitle').innerText = isLogin ? "Kirish" : "Ro'yxatdan o'tish";
+            document.getElementById('loginFields').style.display = isLogin ? 'block' : 'none';
+            document.getElementById('regFields').style.display = isLogin ? 'none' : 'block';
         };
 
-        window.sendOrder = async function() {
-            const note = document.getElementById('orderNote').value.trim();
-            if(!note) return;
-            try {
-                const user = auth.currentUser;
-                const snap = await getDoc(doc(db, "users", user.uid));
-                const d = snap.data();
-                const msg = `🚀 BUYURTMA!\nMijoz: ${d.name}\nTel: ${d.tel}\nMashina: ${d.brand}\nIzoh: ${note}`;
-                await fetch(`https://api.telegram.org/bot7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM/sendMessage?chat_id=-1003461463026&text=${encodeURIComponent(msg)}`);
-                alert("Yuborildi!");
-            } catch (e) { alert("Xato!"); }
+        window.showCarDetails = (name, hp, accel, price) => {
+            document.getElementById('modalCarTitle').innerText = name;
+            document.getElementById('modalHP').innerText = hp;
+            document.getElementById('modalAccel').innerText = accel;
+            document.getElementById('modalPrice').innerText = price;
+            document.getElementById('detailsOverlay').style.display = 'flex';
         };
+
+        // Firebase Auth: Register
+        window.handleAuth = async function() {
+            const data = {
+                name: document.getElementById('regName').value,
+                tel: document.getElementById('regTel').value,
+                brand: document.getElementById('regBrand').value,
+                km: parseInt(document.getElementById('regKm').value),
+                email: document.getElementById('regEmail').value,
+                pass: document.getElementById('regPass').value
+            };
+            try {
+                const res = await createUserWithEmailAndPassword(auth, data.email, data.pass);
+                await setDoc(doc(db, "users", res.user.uid), { ...data, uid: res.user.uid, role: 'user' });
+                alert("Ro'yxatdan o'tdingiz!");
+                toggleAuth(false);
+            } catch (e) { alert(e.message); }
+        };
+
+        // Firebase Auth: Login
+        window.handleLogin = async function() {
+            const email = document.getElementById('logEmail').value;
+            const pass = document.getElementById('logPass').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                toggleAuth(false);
+            } catch (e) { alert("Xato: " + e.message); }
+        };
+
+        // Order yuborish
+        window.sendOrder = async function() {
+            const note = document.getElementById('orderNote').value;
+            if(!note) return alert("Muammoni yozing");
+            const user = auth.currentUser;
+            const snap = await getDoc(doc(db, "users", user.uid));
+            const userData = snap.data();
+
+            await addDoc(collection(db, "orders"), {
+                name: userData.name,
+                car: userData.brand,
+                note: note,
+                status: 'Kutilmoqda',
+                time: new Date().toLocaleString()
+            });
+
+            const msg = `🚀 BUYURTMA!\nMijoz: ${userData.name}\nMashina: ${userData.brand}\nMuammo: ${note}`;
+            fetch(`https://api.telegram.org/bot7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM/sendMessage?chat_id=-1003461463026&text=${encodeURIComponent(msg)}`);
+            
+            alert("Yuborildi!");
+            document.getElementById('orderNote').value = "";
+        };
+
+        // Admin: Buyurtmalarni yuklash
+        async function loadAdminOrders() {
+            const querySnapshot = await getDocs(collection(db, "orders"));
+            const tbody = document.getElementById('adminOrdersBody');
+            tbody.innerHTML = "";
+            querySnapshot.forEach((doc) => {
+                const o = doc.data();
+                tbody.innerHTML += `<tr>
+                    <td>${o.name}</td>
+                    <td>${o.car}</td>
+                    <td>${o.note}</td>
+                    <td style="color:orange">${o.status}</td>
+                </tr>`;
+            });
+        }
 
         window.logout = () => signOut(auth).then(() => location.reload());
 
+        // Foydalanuvchi holatini tekshirish
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const snap = await getDoc(doc(db, "users", user.uid));
@@ -449,10 +406,19 @@
                     document.getElementById('authLinks').style.display = 'none';
                     document.getElementById('dashLink').style.display = 'inline';
                     document.getElementById('logoutBtn').style.display = 'inline';
+                    
+                    if(d.role === 'admin') document.getElementById('adminLink').style.display = 'inline';
+
+                    // Dashboard ma'lumotlari
                     document.getElementById('welcomeUser').textContent = `Salom, ${d.name}!`;
                     document.getElementById('dashCar').textContent = d.brand;
                     document.getElementById('dashKm').textContent = d.km + " km";
-                    showSection('dashboard');
+
+                    // Progress bar hisobi (10,000 km servis uchun)
+                    let currentKm = d.km % 10000;
+                    let percent = (currentKm / 10000) * 100;
+                    document.getElementById('oilProgress').style.width = percent + "%";
+                    document.getElementById('oilText').innerText = `Moyni almashtirishga ${10000 - currentKm} km qoldi.`;
                 }
             }
         });
