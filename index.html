@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Million KM | Premium Auto Service</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJzY29wZSI6ICIvIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJuYW1lIjogIk1pbGxpb24gS00iLAogICJzaG9ydF9uYW1lIjogIk1pbGxpb24iCn0=">
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --apple-bg: #f5f5f7;
             --apple-card: rgba(255, 255, 255, 0.9);
             --apple-blue: #0071e3;
+            --apple-green: #34c759;
             --radius: 28px;
             --btn-radius: 14px;
         }
@@ -20,6 +22,9 @@
         .fade-in { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Loader */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: var(--apple-blue); z-index: 10001; display: none; }
+
         /* Navigatsiya */
         nav {
             position: fixed; top: 0; width: 100%; height: 50px;
@@ -27,7 +32,7 @@
             z-index: 10000; display: flex; justify-content: center; align-items: center;
             border-bottom: 0.5px solid rgba(0,0,0,0.1);
         }
-        nav a { color: #1d1d1f; text-decoration: none; margin: 0 15px; font-size: 14px; font-weight: 400; cursor: pointer; transition: 0.3s; }
+        nav a { color: #1d1d1f; text-decoration: none; margin: 0 15px; font-size: 13px; font-weight: 400; cursor: pointer; transition: 0.3s; }
         nav a:hover { color: var(--apple-blue); }
 
         .page-section { display: none; padding-top: 60px; }
@@ -45,12 +50,12 @@
             display: flex; flex-direction: column; justify-content: space-between;
             overflow: hidden; position: relative;
         }
-        .apple-card:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+        .apple-card:hover { transform: scale(1.01); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
         
+        .gallery-img { width: 100%; height: 250px; border-radius: 20px; object-fit: cover; margin-bottom: 15px; }
         .card-image { width: 100%; height: 180px; object-fit: contain; margin-bottom: 20px; border-radius: 15px; }
         .card-title { font-size: 28px; font-weight: 600; margin-bottom: 12px; }
         .card-text { color: #86868b; margin-bottom: 25px; font-size: 17px; }
-        .service-info { font-size: 14px; color: #34c759; font-weight: 600; margin-bottom: 15px; }
 
         /* Tugmalar */
         .btn-ios {
@@ -61,53 +66,74 @@
             transition: 0.3s; text-align: center;
         }
         .btn-ios:disabled { background: #b2d7ff; cursor: not-allowed; }
-        .btn-ios:hover:not(:disabled) { opacity: 0.9; transform: scale(0.98); }
+        .btn-ios:active { transform: scale(0.96); }
         .btn-ios-secondary { background: #e8e8ed; color: var(--apple-blue); }
-
-        .btn-flex-container { display: flex; gap: 10px; }
-        .btn-flex-container .btn-ios { flex: 1; }
+        .btn-small { padding: 8px 15px; font-size: 13px; width: auto; display: inline-block; }
 
         /* Progress Bar */
-        .progress-container { background: #e8e8ed; height: 12px; border-radius: 6px; margin: 15px 0; overflow: hidden; }
-        .progress-bar { background: var(--apple-blue); height: 100%; width: 0%; transition: 1s ease-in-out; }
+        .progress-container { background: #e8e8ed; height: 10px; border-radius: 5px; margin: 15px 0; overflow: hidden; }
+        .progress-bar { background: var(--apple-blue); height: 100%; width: 0%; transition: 1.5s ease-in-out; }
 
         /* Status va Xarita */
-        .status-badge { display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: 600; margin-top: 15px; }
+        .status-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-weight: 600; margin-top: 15px; font-size: 14px; }
         .status-green { background: #e3f9e5; color: #34c759; }
         .status-yellow { background: #fff9db; color: #f08c00; }
 
-        #map-container { width: 100%; height: 450px; border-radius: var(--radius); overflow: hidden; margin-top: 20px; border: 1px solid #d2d2d7; }
-
-        /* Footer */
-        footer { background: #fff; padding: 60px 20px; text-align: center; border-top: 0.5px solid #d2d2d7; margin-top: 50px; }
-        .social-links { margin-bottom: 30px; }
-        .social-links a { text-decoration: none; color: #1d1d1f; margin: 0 15px; font-size: 18px; font-weight: 600; }
-        .social-links a:hover { color: var(--apple-blue); }
-        .call-center { font-size: 24px; font-weight: 600; color: var(--apple-blue); margin: 20px 0; }
+        #map-container { width: 100%; height: 400px; border-radius: var(--radius); overflow: hidden; margin-top: 20px; border: 1px solid #d2d2d7; }
 
         /* Overlay */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(245,245,247,0.9); backdrop-filter: blur(20px); z-index: 20000; display: none; justify-content: center; align-items: center; padding: 20px; }
-        .auth-box { background: white; padding: 40px; border-radius: 35px; width: 100%; max-width: 420px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); max-height: 90vh; overflow-y: auto; }
-        input, select { width: 100%; padding: 14px; margin-top: 10px; border-radius: 12px; border: 1px solid #d2d2d7; background: #f5f5f7; font-size: 15px; outline: none; }
+        .auth-box { background: white; padding: 40px; border-radius: 35px; width: 100%; max-width: 420px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); max-height: 95vh; overflow-y: auto; }
         
-        .chat-widget { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--apple-blue); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 10px 30px rgba(0,113,227,0.3); cursor: pointer; z-index: 10001; }
+        input, select, textarea { width: 100%; padding: 14px; margin-top: 10px; border-radius: 12px; border: 1px solid #d2d2d7; background: #f5f5f7; font-size: 15px; outline: none; font-family: inherit; }
+        input:focus { border-color: var(--apple-blue); background: #fff; }
+
+        /* Chat Widget */
+        #chat-container {
+            position: fixed; bottom: 20px; right: 20px; z-index: 10001;
+            display: flex; flex-direction: column; align-items: flex-end;
+        }
+        .chat-box {
+            width: 320px; height: 450px; background: white; border-radius: 20px; margin-bottom: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15); display: none; flex-direction: column; overflow: hidden;
+        }
+        .chat-header { background: var(--apple-blue); color: white; padding: 15px; font-weight: 600; display: flex; justify-content: space-between; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f9f9fb; }
+        .msg { padding: 10px 14px; border-radius: 15px; max-width: 80%; font-size: 14px; }
+        .msg.admin { background: #e9e9eb; align-self: flex-start; }
+        .msg.user { background: var(--apple-blue); color: white; align-self: flex-end; }
+        .chat-input-area { padding: 10px; display: flex; gap: 5px; border-top: 1px solid #eee; }
+        
+        .chat-toggle {
+            width: 60px; height: 60px; background: var(--apple-blue); border-radius: 30px;
+            display: flex; justify-content: center; align-items: center; color: white;
+            box-shadow: 0 10px 25px rgba(0,113,227,0.4); cursor: pointer; transition: 0.3s;
+        }
+
+        /* Testimonials */
+        .stars { color: #ffcc00; margin-bottom: 10px; }
+        
+        .error-text { color: #ff3b30; font-size: 12px; margin-top: 5px; display: none; }
+
+        footer { background: #fff; padding: 60px 20px; text-align: center; border-top: 0.5px solid #d2d2d7; }
     </style>
 </head>
 <body>
 
+    <div id="loader"></div>
+
     <nav>
         <a onclick="showSection('mainPage')">Million km</a>
-        <a onclick="showSection('chevroletPage')">Chevrolet</a>
-        <a onclick="showSection('kiaPage')">Kia</a>
-        <a onclick="showSection('liPage')">Li Auto</a>
+        <a onclick="showSection('chevroletPage')">Modellar</a>
         <a href="#services-section">Xizmatlar</a>
+        <a href="#gallery-section">Galereya</a>
         <span id="authLinks">
             <a onclick="toggleOverlay('authOverlay', true)">Ro‘yxatdan o‘tish</a>
             <a onclick="toggleOverlay('loginOverlay', true)">Kirish</a>
         </span>
         <span id="userLinks" style="display: none;">
-            <a onclick="showSection('dashboard')" style="font-weight: 600; color: var(--apple-blue);">Kabinet (Holat)</a>
-            <a onclick="logout()" style="color:red;">Chiqish</a>
+            <a onclick="showSection('dashboard')" style="font-weight: 600; color: var(--apple-blue);">Kabinet</a>
+            <a onclick="logout()" style="color:#ff3b30;">Chiqish</a>
         </span>
     </nav>
 
@@ -115,84 +141,62 @@
         <div class="container fade-in">
             <header style="text-align: center; margin-bottom: 50px; padding-top: 40px;">
                 <h1 style="font-size: 56px; letter-spacing: -2px;">Million km</h1>
-                <p style="font-size: 22px; color: #86868b;">Premium avtoservis standartlari.</p>
+                <p style="font-size: 22px; color: #86868b;">Professional avto-servis ekotizimi.</p>
             </header>
 
             <div class="grid">
-                <div class="apple-card fade-in">
-                    <div>
-                        <img src="https://www.chevrolet.uz/assets/images/cars/malibu/color/white.png" class="card-image" alt="Chevrolet">
-                        <h2 class="card-title">Chevrolet</h2>
-                        <p class="card-text">Million km standartlariga mos eng so‘nggi Chevrolet modellari.</p>
-                    </div>
-                    <div>
-                        <button class="btn-ios-secondary btn-ios" onclick="showSection('chevroletPage')">Batafsil ma’lumot</button>
-                        <button class="btn-ios action-btn" onclick="handleMainAction()">Tanlash</button>
-                    </div>
+                <div class="apple-card">
+                    <img src="https://www.chevrolet.uz/assets/images/cars/malibu/color/white.png" class="card-image" alt="Chevrolet">
+                    <h2 class="card-title">Chevrolet</h2>
+                    <button class="btn-ios" onclick="showSection('chevroletPage')">Barcha modellar</button>
+                </div>
                 </div>
 
-                <div class="apple-card fade-in">
-                    <div>
-                        <img src="https://kia.uz/upload/iblock/5b4/5b4125b29b9e54a93c78028746f3438a.png" class="card-image" alt="Kia">
-                        <h2 class="card-title">Kia</h2>
-                        <p class="card-text">Million km standartlariga mos eng so‘nggi Kia modellari.</p>
-                    </div>
-                    <div>
-                        <button class="btn-ios-secondary btn-ios" onclick="showSection('kiaPage')">Batafsil ma’lumot</button>
-                        <button class="btn-ios action-btn" onclick="handleMainAction()">Tanlash</button>
-                    </div>
-                </div>
-
-                <div class="apple-card fade-in">
-                    <div>
-                        <img src="https://img.auto-che.com/img/202302/08/9b0d23f13661be49.jpg" class="card-image" alt="Li Auto" style="object-fit: cover;">
-                        <h2 class="card-title">Li Auto</h2>
-                        <p class="card-text">Million km standartlariga mos eng so‘nggi Li auto modellari.</p>
-                    </div>
-                    <div>
-                        <button class="btn-ios-secondary btn-ios" onclick="showSection('liPage')">Batafsil ma’lumot</button>
-                        <button class="btn-ios action-btn" onclick="handleMainAction()">Tanlash</button>
-                    </div>
-                </div>
+            <header style="text-align: center; margin: 80px 0 40px 0;" id="gallery-section">
+                <h2 style="font-size: 42px;">Ish jarayonimiz</h2>
+            </header>
+            <div class="grid">
+                <img src="https://images.unsplash.com/photo-1625047509168-a7026f36ae04?auto=format&fit=crop&w=800" class="gallery-img" alt="Service 1">
+                <img src="https://images.unsplash.com/photo-1486006396193-471a2abc9302?auto=format&fit=crop&w=800" class="gallery-img" alt="Service 2">
+                <img src="https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=800" class="gallery-img" alt="Service 3">
             </div>
 
             <header style="text-align: center; margin: 80px 0 40px 0;" id="services-section">
                 <h2 style="font-size: 42px;">Eksklyuziv Xizmatlar</h2>
             </header>
             <div class="grid">
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Million km express</h2>
-                    <p class="card-text">Million km standardi asosida, manzilga borib xizmat ko’rsatish xizmati.</p>
-                    <button class="btn-ios" onclick="openDetails('Express Xizmat', 'Manzilingizga borib, barcha turdagi tezkor texnik yordam ko\'rsatamiz. Vaqtingizni tejang!')">Batafsil</button>
+                <div class="apple-card">
+                    <h2 class="card-title">Million km Express</h2>
+                    <p class="card-text">Manzilga borib xizmat ko’rsatish.</p>
+                    <button class="btn-ios" onclick="openDetails('Express', 'Manzilingizga mobil guruh yetib boradi.')">Band qilish</button>
                 </div>
-                <div class="apple-card fade-in">
-                    <h2 class="card-title">Million km fuel</h2>
-                    <p class="card-text">Million km talablariga mos, sifatli yoqilg’i yetkazib berish xizmati.</p>
-                    <button class="btn-ios" onclick="openDetails('Yoqilg\'i Xizmati', 'Yuqori sifatli AI-95 va AI-98 yoqilg\'ilarini to\'g\'ridan-to\'g\'ri bakka yetkazib beramiz.')">Xarid qilish</button>
+                <div class="apple-card">
+                    <h2 class="card-title">Yoqilg'i Yetkazish</h2>
+                    <p class="card-text">Premium AI-95/98 to'g'ridan-to'g'ri bakka.</p>
+                    <button class="btn-ios" onclick="openDetails('Fuel', 'Yoqilg\'i yetkazib berish xizmati 24/7.')">Buyurtma</button>
                 </div>
             </div>
 
-            <header style="text-align: center; margin: 80px 0 40px 0;" id="map-section">
-                <h2 style="font-size: 42px;">Million km filiallari</h2>
+            <header style="text-align: center; margin: 80px 0 40px 0;">
+                <h2 style="font-size: 32px;">Mijozlarimiz fikri</h2>
+            </header>
+            <div class="grid">
+                <div class="apple-card" style="padding: 25px; text-align: left;">
+                    <div class="stars">★★★★★</div>
+                    <p>"Juda tez va sifatli xizmat. Moy almashtirish eslatmasi juda qulay ekan."</p>
+                    <small style="color:#86868b; margin-top:10px; display:block;">— Aziz Toshkentov</small>
+                </div>
+                <div class="apple-card" style="padding: 25px; text-align: left;">
+                    <div class="stars">★★★★★</div>
+                    <p>"Li Auto uchun servis topish qiyin edi, Million KM ustalari gap yo'q!"</p>
+                    <small style="color:#86868b; margin-top:10px; display:block;">— Sardor Rahimov</small>
+                </div>
+            </div>
+
+            <div id="map-section" style="margin-top: 80px;">
+                <h2 style="text-align:center; font-size:32px; margin-bottom:20px;">Bizning Manzil</h2>
                 <div id="map-container">
                     <iframe src="https://yandex.uz/map-widget/v1/?ll=69.2401%2C41.2995&z=12" width="100%" height="100%" frameborder="0"></iframe>
-                </div>
-            </header>
-        </div>
-    </div>
-
-    <div id="chevroletPage" class="page-section">
-        <div class="container">
-            <button class="btn-ios-secondary" style="width: 100px; padding: 10px; border-radius: 10px; margin-bottom: 20px;" onclick="showSection('mainPage')">< Orqaga</button>
-            <h1 style="font-size: 42px; margin-bottom: 30px;">Chevrolet modellari</h1>
-            <div class="grid" id="chevroletGrid">
-                <div class="apple-card">
-                    <h2 class="card-title">Malibu</h2>
-                    <p class="card-text">2.0 Turbo, 253 ot kuchi. Business klass sedani.</p>
-                    <div class="btn-flex-container">
-                        <button class="btn-ios-secondary btn-ios" onclick="openDetails('Malibu Turbo', 'Dvigatel: 2.0L Turbo\nOt kuchi: 253\n0-100 km/s: 6.3 sek\nPremium salon.')">Batafsil</button>
-                        <button class="btn-ios action-btn" onclick="handleMainAction()">Xarid / Tanlash</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -202,7 +206,7 @@
         <div class="container">
             <div class="apple-card fade-in" style="text-align: left;">
                 <h1 id="welcomeUser" style="font-size: 38px;">Xush kelibsiz!</h1>
-                <p style="color: #86868b; margin-bottom: 20px;">Avtomobilingiz holati va servis xizmatlarini shu yerdan boshqaring.</p>
+                <p style="color: #86868b; margin-bottom: 20px;">Shaxsiy avto-monitoring paneli.</p>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div style="background:#fbfbfd; padding:20px; border-radius:18px; border: 1px solid #eee;">
@@ -212,6 +216,7 @@
                     <div style="background:#fbfbfd; padding:20px; border-radius:18px; border: 1px solid #eee;">
                         <p style="color:#86868b; font-size:13px;">Yurgan masofasi:</p>
                         <h3 id="dashKm">--- km</h3>
+                        <button class="btn-ios-secondary btn-small" style="margin-top:8px;" onclick="toggleOverlay('updateKmOverlay', true)">Yangilash</button>
                     </div>
                 </div>
                 
@@ -222,20 +227,41 @@
                     </div>
                     <p id="oilStatusText" style="font-size:13px; color:#86868b;">Hisoblanmoqda...</p>
                 </div>
-                <div id="statusBadge" class="status-badge status-green">Sizning avto xavfsiz holatda</div>
+                <div id="statusBadge" class="status-badge status-green">Holat: Xavfsiz</div>
             </div>
 
             <div class="apple-card fade-in" style="margin-top:25px; text-align: left;">
-                <h3>Servis xizmatini band qilish</h3>
-                <p style="font-size: 14px; color: #86868b; margin-bottom: 10px;">Mutaxassislarimiz siz bilan bog'lanishadi.</p>
-                <input type="text" id="orderNote" placeholder="Xizmat turini yozing (masalan: Moy almashtirish, Diagnostika)">
-                <button class="btn-ios" id="btnOrder" style="margin-top:15px;" onclick="sendOrder()">Zayavka yuborish</button>
-                
-                <div style="margin-top: 30px;">
-                    <h4>Oxirgi buyurtmalar:</h4>
-                    <div id="orderHistory" style="margin-top:10px; font-size:14px; color:#86868b;">Buyurtmalar mavjud emas.</div>
+                <h3>Servis band qilish (Booking)</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div>
+                        <label style="font-size:12px;">Sana tanlang:</label>
+                        <input type="date" id="bookDate">
+                    </div>
+                    <div>
+                        <label style="font-size:12px;">Vaqt tanlang:</label>
+                        <select id="bookTime">
+                            <option>09:00</option><option>11:00</option><option>14:00</option><option>16:00</option>
+                        </select>
+                    </div>
                 </div>
+                <textarea id="orderNote" placeholder="Qanday xizmatlar kerak? (masalan: Moy almashtirish, tormoz tekshiruvi)" rows="3"></textarea>
+                <button class="btn-ios" id="btnOrder" style="margin-top:15px;" onclick="sendOrder()">Vaqtni band qilish</button>
             </div>
+
+            <div class="apple-card fade-in" style="margin-top:25px; text-align: left;">
+                <h3>Elektron Servis Kitobchasi (Arxiv)</h3>
+                <div id="orderHistory" style="margin-top:10px;">Yuklanmoqda...</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="updateKmOverlay" class="overlay">
+        <div class="auth-box">
+            <h2>Kilometrajni yangilash</h2>
+            <p style="font-size:13px; color:#86868b;">Hozirgi ko'rsatkichni kiriting:</p>
+            <input type="number" id="newKmInput" placeholder="Masalan: 45200">
+            <button class="btn-ios" onclick="updateKilometraj()">Saqlash</button>
+            <button class="btn-ios-secondary btn-ios" onclick="toggleOverlay('updateKmOverlay', false)">Yopish</button>
         </div>
     </div>
 
@@ -243,16 +269,18 @@
         <div class="auth-box">
             <h2>Ro'yxatdan o'tish</h2>
             <input type="text" id="regName" placeholder="Ism Sharif">
-            <input type="tel" id="regTel" placeholder="Telefon (+998...)">
+            <input type="tel" id="regTel" placeholder="Telefon">
             <select id="regBrand">
-                <option value="" disabled selected>Mashina modelini tanlang</option>
-                <optgroup label="Chevrolet"><option value="Malibu">Malibu</option><option value="Cobalt">Cobalt</option></optgroup>
-                <optgroup label="KIA"><option value="K5">K5</option><option value="Sportage">Sportage</option></optgroup>
+                <option value="Malibu">Malibu</option>
+                <option value="Cobalt">Cobalt</option>
+                <option value="K5">K5</option>
+                <option value="L7">Li Auto L7</option>
             </select>
-            <input type="number" id="regKm" placeholder="Yurgan masofasi (Km)">
-            <input type="email" id="regEmail" placeholder="Email manzilingiz">
+            <input type="number" id="regKm" placeholder="Yurgan masofasi">
+            <input type="email" id="regEmail" placeholder="Email">
             <input type="password" id="regPass" placeholder="Parol">
-            <button class="btn-ios" id="btnReg" style="margin-top:20px;" onclick="handleAuth(true)">Ro'yxatdan o'tish</button>
+            <p class="error-text" id="regError">Ma'lumotlarni tekshiring</p>
+            <button class="btn-ios" id="btnReg" onclick="handleAuth(true)">Tasdiqlash</button>
             <button class="btn-ios-secondary btn-ios" onclick="toggleOverlay('authOverlay', false)">Yopish</button>
         </div>
     </div>
@@ -262,34 +290,33 @@
             <h2>Kirish</h2>
             <input type="email" id="logEmail" placeholder="Email">
             <input type="password" id="logPass" placeholder="Parol">
-            <button class="btn-ios" id="btnLog" style="margin-top:20px;" onclick="handleAuth(false)">Kirish</button>
+            <p class="error-text" id="logError">Email yoki parol noto'g'ri</p>
+            <button class="btn-ios" id="btnLog" onclick="handleAuth(false)">Kirish</button>
             <button class="btn-ios-secondary btn-ios" onclick="toggleOverlay('loginOverlay', false)">Yopish</button>
         </div>
     </div>
 
-    <div id="detailsOverlay" class="overlay">
-        <div class="auth-box">
-            <h2 id="detTitle">---</h2>
-            <p id="detText" style="margin-top:20px; white-space: pre-wrap;"></p>
-            <button class="btn-ios" style="margin-top:25px;" onclick="toggleOverlay('detailsOverlay', false)">Yopish</button>
+    <div id="chat-container">
+        <div class="chat-box" id="chatBox">
+            <div class="chat-header">
+                <span>Million KM Support</span>
+                <span onclick="toggleChat()" style="cursor:pointer">×</span>
+            </div>
+            <div class="chat-messages" id="chatMsgs">
+                <div class="msg admin">Assalomu alaykum! Sizga qanday yordam bera olamiz?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInp" placeholder="Xabar yozing..." style="margin-top:0">
+                <button class="btn-ios btn-small" onclick="sendMessage()" style="margin:0">✈️</button>
+            </div>
         </div>
+        <div class="chat-toggle" onclick="toggleChat()">💬</div>
     </div>
-
-    <footer>
-        <div class="social-links">
-            <a href="#">Instagram</a>
-            <a href="https://t.me/Zikrullo_Abdumalikov" target="_blank">Telegram</a>
-            <a href="#">Youtube</a>
-        </div>
-        <div class="call-center">Call sentr: +998 90 000 00 00</div>
-    </footer>
-
-    <div class="chat-widget" onclick="window.open('https://t.me/Zikrullo_Abdumalikov', '_blank')">💬</div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, where, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, addDoc, query, where, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
@@ -304,49 +331,126 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let currentUserData = null;
-
-        // UI Funksiyalari
+        // UI Utility
         window.showSection = (id) => {
             document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
             document.getElementById(id).classList.add('active-section');
             window.scrollTo(0,0);
         };
-
         window.toggleOverlay = (id, show) => document.getElementById(id).style.display = show ? 'flex' : 'none';
-
-        window.openDetails = (title, text) => {
-            document.getElementById('detTitle').textContent = title;
-            document.getElementById('detText').textContent = text;
-            toggleOverlay('detailsOverlay', true);
+        
+        window.toggleChat = () => {
+            const cb = document.getElementById('chatBox');
+            cb.style.display = cb.style.display === 'flex' ? 'none' : 'flex';
         };
 
-        // Asosiy mantiq: Agar foydalanuvchi kirgan bo'lsa dashboardga, kirmagan bo'lsa authga
-        window.handleMainAction = () => {
-            if(auth.currentUser) {
-                showSection('dashboard');
-            } else {
-                toggleOverlay('authOverlay', true);
+        // Loader helper
+        const setLoader = (show) => document.getElementById('loader').style.display = show ? 'block' : 'none';
+
+        // 2. Kilometrajni yangilash funksiyasi
+        window.updateKilometraj = async () => {
+            const newKm = parseInt(document.getElementById('newKmInput').value);
+            if(!newKm || !auth.currentUser) return;
+            setLoader(true);
+            try {
+                await updateDoc(doc(db, "users", auth.currentUser.uid), { km: newKm });
+                location.reload(); 
+            } catch(e) { alert("Xato!"); }
+            setLoader(false);
+        };
+
+        // 6. Booking Tizimi va Telegram
+        window.sendOrder = async () => {
+            const date = document.getElementById('bookDate').value;
+            const time = document.getElementById('bookTime').value;
+            const note = document.getElementById('orderNote').value;
+            if(!date || !note) return alert("Sana va xizmatni kiriting!");
+
+            setLoader(true);
+            const user = auth.currentUser;
+            const snap = await getDoc(doc(db, "users", user.uid));
+            const userData = snap.data();
+
+            const order = {
+                uid: user.uid,
+                userName: userData.name,
+                car: userData.brand,
+                date: date,
+                time: time,
+                note: note,
+                status: "Tasdiqlangan",
+                timestamp: new Date()
+            };
+
+            await addDoc(collection(db, "orders"), order);
+            
+            // Telegram Notification
+            const msg = `📅 YANGI BRON!\nMijoz: ${userData.name}\nMashina: ${userData.brand}\nVaqt: ${date} ${time}\nXizmat: ${note}`;
+            await fetch(`https://api.telegram.org/bot7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM/sendMessage?chat_id=-1003461463026&text=${encodeURIComponent(msg)}`);
+
+            // 4. Avtomatik eslatma (Notification simulyatsiyasi)
+            if(userData.km % 10000 > 9500) {
+                alert("DIQQAT: Kilometrajingiz servis vaqtiga yaqinlashdi!");
             }
+
+            alert("Vaqt muvaffaqiyatli band qilindi!");
+            loadOrders(user.uid);
+            setLoader(false);
         };
 
-        // Auth: Ro'yxatdan o'tish va Kirish
-        window.handleAuth = async function(isReg) {
-            const btn = isReg ? document.getElementById('btnReg') : document.getElementById('btnLog');
-            btn.disabled = true;
+        // 3. Servis Arxivini yuklash
+        async function loadOrders(uid) {
+            const q = query(collection(db, "orders"), where("uid", "==", uid), orderBy("timestamp", "desc"));
+            const snap = await getDocs(q);
+            const div = document.getElementById('orderHistory');
+            div.innerHTML = "";
+            if(snap.empty) div.innerHTML = "Hozircha tarix mavjud emas.";
+            snap.forEach(d => {
+                const o = d.data();
+                div.innerHTML += `
+                    <div style="background:#f8f8f8; padding:15px; border-radius:15px; margin-bottom:10px; border-left: 4px solid var(--apple-blue);">
+                        <small>${o.date} ${o.time || ''}</small>
+                        <p><strong>Xizmat:</strong> ${o.note}</p>
+                        <p style="color:var(--apple-green); font-size:12px;">Holat: ${o.status}</p>
+                    </div>`;
+            });
+        }
 
+        // Chat funksiyasi
+        window.sendMessage = () => {
+            const inp = document.getElementById('chatInp');
+            if(!inp.value) return;
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'msg user';
+            msgDiv.textContent = inp.value;
+            document.getElementById('chatMsgs').appendChild(msgDiv);
+            inp.value = "";
+            
+            setTimeout(() => {
+                const reply = document.createElement('div');
+                reply.className = 'msg admin';
+                reply.textContent = "Mutaxassisimiz tez orada sizga javob beradi. Kuting...";
+                document.getElementById('chatMsgs').appendChild(reply);
+            }, 1000);
+        };
+
+        // Auth Handling with Error States
+        window.handleAuth = async (isReg) => {
+            setLoader(true);
+            document.getElementById('regError').style.display = 'none';
+            document.getElementById('logError').style.display = 'none';
             try {
                 if(isReg) {
-                    const data = {
+                    const email = document.getElementById('regEmail').value;
+                    const pass = document.getElementById('regPass').value;
+                    const res = await createUserWithEmailAndPassword(auth, email, pass);
+                    await setDoc(doc(db, "users", res.user.uid), {
                         name: document.getElementById('regName').value,
                         tel: document.getElementById('regTel').value,
                         brand: document.getElementById('regBrand').value,
                         km: parseInt(document.getElementById('regKm').value),
-                        email: document.getElementById('regEmail').value.trim(),
-                        pass: document.getElementById('regPass').value
-                    };
-                    const res = await createUserWithEmailAndPassword(auth, data.email, data.pass);
-                    await setDoc(doc(db, "users", res.user.uid), { ...data, uid: res.user.uid });
+                        uid: res.user.uid
+                    });
                     toggleOverlay('authOverlay', false);
                 } else {
                     const email = document.getElementById('logEmail').value;
@@ -354,46 +458,12 @@
                     await signInWithEmailAndPassword(auth, email, pass);
                     toggleOverlay('loginOverlay', false);
                 }
-            } catch (e) { alert("Xato: " + e.message); } finally { btn.disabled = false; }
+            } catch (e) {
+                if(isReg) document.getElementById('regError').style.display = 'block';
+                else document.getElementById('logError').style.display = 'block';
+            }
+            setLoader(false);
         };
-
-        // Servis buyurtmasi
-        window.sendOrder = async function() {
-            const note = document.getElementById('orderNote').value.trim();
-            if(!note) return alert("Xizmat turini yozing");
-            
-            try {
-                const user = auth.currentUser;
-                const snap = await getDoc(doc(db, "users", user.uid));
-                const d = snap.data();
-                
-                await addDoc(collection(db, "orders"), {
-                    uid: user.uid,
-                    note: note,
-                    date: new Date().toLocaleDateString(),
-                    status: "Kutilmoqda"
-                });
-
-                const msg = `🚀 YANGI BUYURTMA!\nMijoz: ${d.name}\nTel: ${d.tel}\nMashina: ${d.brand}\nIzoh: ${note}`;
-                await fetch(`https://api.telegram.org/bot7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM/sendMessage?chat_id=-1003461463026&text=${encodeURIComponent(msg)}`);
-                
-                alert("Zayavka qabul qilindi!");
-                document.getElementById('orderNote').value = "";
-                loadOrders(user.uid);
-            } catch (e) { alert("Xato yuz berdi"); }
-        };
-
-        async function loadOrders(uid) {
-            const q = query(collection(db, "orders"), where("uid", "==", uid));
-            const snap = await getDocs(q);
-            const historyDiv = document.getElementById('orderHistory');
-            historyDiv.innerHTML = "";
-            if(snap.empty) historyDiv.innerHTML = "Buyurtmalar mavjud emas.";
-            snap.forEach(doc => {
-                const o = doc.data();
-                historyDiv.innerHTML += `<div style="padding:10px; border-bottom:0.5px solid #eee;">${o.date} - ${o.note} <b>(${o.status})</b></div>`;
-            });
-        }
 
         window.logout = () => signOut(auth).then(() => location.reload());
 
@@ -402,29 +472,25 @@
                 const snap = await getDoc(doc(db, "users", user.uid));
                 if(snap.exists()) {
                     const d = snap.data();
-                    currentUserData = d;
-                    
-                    // UI almashtirish
                     document.getElementById('authLinks').style.display = 'none';
                     document.getElementById('userLinks').style.display = 'inline';
-                    
-                    // Dashboard ma'lumotlari
                     document.getElementById('welcomeUser').textContent = `Salom, ${d.name}!`;
                     document.getElementById('dashCar').textContent = d.brand;
                     document.getElementById('dashKm').textContent = d.km + " km";
 
-                    // Progress bar (Moy almashtirish: har 10,000 km)
                     const oilLimit = 10000;
                     const currentOilKm = d.km % oilLimit;
                     const percent = (currentOilKm / oilLimit) * 100;
                     document.getElementById('oilProgress').style.width = percent + "%";
-                    document.getElementById('oilStatusText').textContent = `Moy almashtirishga ${oilLimit - currentOilKm} km qoldi`;
+                    document.getElementById('oilStatusText').textContent = `${oilLimit - currentOilKm} km dan keyin moy almashtirish`;
+                    
+                    if(percent > 90) {
+                        document.getElementById('statusBadge').className = "status-badge status-yellow";
+                        document.getElementById('statusBadge').textContent = "Holat: Servis talab etiladi";
+                    }
 
                     loadOrders(user.uid);
                 }
-            } else {
-                document.getElementById('authLinks').style.display = 'inline';
-                document.getElementById('userLinks').style.display = 'none';
             }
         });
     </script>
