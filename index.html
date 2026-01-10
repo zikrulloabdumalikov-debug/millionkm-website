@@ -60,13 +60,11 @@
         .status-green { background: #e3f9e5; color: #34c759; }
         .status-yellow { background: #fff9db; color: #f08c00; }
 
-        .chat-widget { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--apple-blue); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 10px 30px rgba(0,113,227,0.3); cursor: pointer; z-index: 10001; }
-        footer { background: #fff; padding: 60px 20px; text-align: center; border-top: 0.5px solid #d2d2d7; }
-
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(245,245,247,0.9); backdrop-filter: blur(20px); z-index: 20000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .auth-box { background: white; padding: 40px; border-radius: 35px; width: 100%; max-width: 420px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); max-height: 90vh; overflow-y: auto; }
         input, select { width: 100%; padding: 14px; margin-top: 10px; border-radius: 12px; border: 1px solid #d2d2d7; background: #f5f5f7; font-size: 15px; outline: none; }
-        input:focus { border-color: var(--apple-blue); background: #fff; }
+        
+        .chat-widget { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--apple-blue); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 10px 30px rgba(0,113,227,0.3); cursor: pointer; z-index: 10001; }
     </style>
 </head>
 <body>
@@ -74,7 +72,6 @@
     <nav>
         <a onclick="showSection('mainPage')">Million km</a>
         <a href="#brand-section">Modellar</a>
-        <a href="#services-section">Xizmatlar</a>
         <span id="authLinks">
             <a onclick="toggleAuth(true)">Ro‘yxatdan o‘tish</a>
         </span>
@@ -88,39 +85,11 @@
                 <h1 style="font-size: 56px; letter-spacing: -2px;">Million km</h1>
                 <p style="font-size: 22px; color: #86868b;">Premium avtoservis standartlari.</p>
             </header>
-
             <div class="grid" id="brand-section">
                 <div class="apple-card fade-in">
-                    <div>
-                        <h2 class="card-title">Chevrolet</h2>
-                        <p class="card-text">Million km standartlariga mos eng so‘nggi Chevrolet modellari.</p>
-                    </div>
-                    <div>
-                        <button class="btn-ios-secondary btn-ios" onclick="alert('Barcha modellar: Nexia 3, Cobalt, Gentra, Onix, Tracker, Malibu')">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Modelni tanlash</button>
-                    </div>
-                </div>
-
-                <div class="apple-card fade-in">
-                    <div>
-                        <h2 class="card-title">Kia</h2>
-                        <p class="card-text">Premium sifat va Million km kafolati bilan Kia modellari.</p>
-                    </div>
-                    <div>
-                        <button class="btn-ios-secondary btn-ios">Batafsil ma’lumot</button>
-                        <button class="btn-ios" onclick="toggleAuth(true)">Modelni tanlash</button>
-                    </div>
-                </div>
-
-                <div class="apple-card fade-in" id="services-section">
-                    <div>
-                        <h2 class="card-title">Million km express</h2>
-                        <p class="card-text">Manzilga borib xizmat ko’rsatish xizmati.</p>
-                    </div>
-                    <div>
-                        <button class="btn-ios-secondary btn-ios">Batafsil ma’lumot</button>
-                        <button class="btn-ios">Xizmatni tanlash</button>
-                    </div>
+                    <h2 class="card-title">Xizmatlar</h2>
+                    <p class="card-text">Premium sifat va kafolatli servis.</p>
+                    <button class="btn-ios" onclick="toggleAuth(true)">Ro'yxatdan o'tish</button>
                 </div>
             </div>
         </div>
@@ -140,48 +109,40 @@
                         <h3 id="dashKm">--- km</h3>
                     </div>
                 </div>
-                <div id="statusBadge" class="status-badge">Tekshirilmoqda...</div>
-            </div>
-
-            <div class="apple-card fade-in" style="margin-top:25px; text-align: left;">
-                <h3>Servis xizmatini band qilish</h3>
-                <input type="text" id="orderNote" placeholder="Xizmat turini yozing (masalan: Moy almashtirish)">
-                <button class="btn-ios" id="btnOrder" style="margin-top:15px;" onclick="sendOrder()">Zayavka yuborish</button>
+                <div id="statusBadge" class="status-badge">Yuklanmoqda...</div>
             </div>
         </div>
     </div>
 
     <div id="authOverlay" class="overlay">
         <div class="auth-box">
-            <h2 style="text-align:center;">Ro'yxatdan o'tish</h2>
-            <p style="text-align:center; color:#86868b; font-size:13px; margin-bottom:10px;">Barcha maydonlarni to'ldiring</p>
+            <h2 id="authTitle" style="text-align:center;">Ro'yxatdan o'tish</h2>
+            <div id="regFields">
+                <input type="text" id="regName" placeholder="Ism Sharif">
+                <input type="tel" id="regTel" placeholder="Telefon">
+                <select id="regBrand">
+                    <option value="" disabled selected>Modelni tanlang</option>
+                    <option value="Nexia 3">Nexia 3</option>
+                    <option value="Cobalt">Cobalt</option>
+                    <option value="Gentra">Gentra</option>
+                    <option value="Onix">Onix</option>
+                </select>
+                <input type="number" id="regYear" placeholder="Yili">
+                <input type="number" id="regKm" placeholder="Yurgan masofasi">
+            </div>
             
-            <input type="text" id="regName" placeholder="Ism Sharif (Masalan: Ali Valiyev)">
-            <input type="tel" id="regTel" placeholder="Telefon (+998901234567)">
-            <select id="regBrand">
-                <option value="" disabled selected>Mashina modelini tanlang</option>
-                <option value="Nexia 3">Nexia 3</option>
-                <option value="Cobalt">Cobalt</option>
-                <option value="Gentra">Gentra</option>
-                <option value="Onix">Onix</option>
-                <option value="KIA K5">KIA K5</option>
-                <option value="Li Auto L9">Li Auto L9</option>
-            </select>
-            <input type="number" id="regYear" placeholder="Mashina yili (Masalan: 2023)">
-            <input type="number" id="regKm" placeholder="Yurgan masofasi (Km)">
-            <input type="email" id="regEmail" placeholder="Email manzilingiz">
-            <input type="password" id="regPass" placeholder="Parol (kamida 6 ta belgi)">
+            <input type="email" id="regEmail" placeholder="Email">
+            <input type="password" id="regPass" placeholder="Parol">
             
-            <button class="btn-ios" id="btnReg" style="margin-top:20px;" onclick="handleAuth()">Ro'yxatdan o'tish</button>
-            <button class="btn-ios-secondary btn-ios" onclick="toggleAuth(false)">Yopish</button>
+            <button class="btn-ios" id="btnAuth" style="margin-top:20px;" onclick="handleAuth()">Tasdiqlash</button>
+            <p style="text-align:center; font-size:13px; color:#86868b; cursor:pointer;" onclick="switchAuthMode()" id="switchText">Akkountingiz bormi? Kirish</p>
+            <button class="btn-ios-secondary btn-ios" style="margin-top:10px;" onclick="toggleAuth(false)">Yopish</button>
         </div>
     </div>
 
-    <div class="chat-widget" onclick="window.open('https://t.me/Zikrullo_Abdumalikov', '_blank')">💬</div>
-
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
@@ -197,91 +158,54 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        let isLoginMode = false;
+
         window.showSection = (id) => {
             document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
             document.getElementById(id).classList.add('active-section');
-            window.scrollTo(0,0);
         };
 
         window.toggleAuth = (show) => document.getElementById('authOverlay').style.display = show ? 'flex' : 'none';
 
-        window.handleAuth = async function() {
-            const btn = document.getElementById('btnReg');
-            const data = {
-                name: document.getElementById('regName').value.trim(),
-                tel: document.getElementById('regTel').value.trim(),
-                brand: document.getElementById('regBrand').value,
-                year: document.getElementById('regYear').value,
-                km: document.getElementById('regKm').value,
-                email: document.getElementById('regEmail').value.trim(),
-                pass: document.getElementById('regPass').value
-            };
-
-            // Tekshiruv (Validation)
-            if(!data.name || !data.tel || !data.brand || !data.year || !data.km || !data.email || !data.pass) {
-                alert("Iltimos, barcha maydonlarni to'ldiring!");
-                return;
-            }
-            if(data.pass.length < 6) {
-                alert("Parol kamida 6 ta belgidan iborat bo'lishi kerak!");
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = "Yuklanmoqda...";
-
-            try {
-                // 1. Firebase Auth orqali foydalanuvchi yaratish
-                const res = await createUserWithEmailAndPassword(auth, data.email, data.pass);
-                
-                // 2. Firestore-ga qo'shimcha ma'lumotlarni saqlash
-                await setDoc(doc(db, "users", res.user.uid), {
-                    name: data.name,
-                    tel: data.tel,
-                    brand: data.brand,
-                    year: data.year,
-                    km: data.km,
-                    email: data.email,
-                    uid: res.user.uid,
-                    createdAt: new Date().toISOString()
-                });
-
-                alert("Tabriklaymiz! Muvaffaqiyatli ro'yxatdan o'tdingiz.");
-                toggleAuth(false);
-                showSection('dashboard');
-            } catch (e) {
-                console.error(e);
-                if(e.code === 'auth/email-already-in-use') alert("Bu email allaqachon ro'yxatdan o'tgan!");
-                else if(e.code === 'auth/invalid-email') alert("Email formati noto'g'ri!");
-                else alert("Xatolik yuz berdi: " + e.message);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "Ro'yxatdan o'tish";
-            }
+        window.switchAuthMode = () => {
+            isLoginMode = !isLoginMode;
+            document.getElementById('regFields').style.display = isLoginMode ? 'none' : 'block';
+            document.getElementById('authTitle').textContent = isLoginMode ? 'Kirish' : "Ro'yxatdan o'tish";
+            document.getElementById('switchText').textContent = isLoginMode ? "Akkountingiz yo'qmi? Ro'yxatdan o'tish" : "Akkountingiz bormi? Kirish";
         };
 
-        window.sendOrder = async function() {
-            const note = document.getElementById('orderNote').value.trim();
-            if(!note) return alert("Iltimos, nima xizmat kerakligini yozing!");
-            
-            const btn = document.getElementById('btnOrder');
+        window.handleAuth = async function() {
+            const btn = document.getElementById('btnAuth');
+            const email = document.getElementById('regEmail').value.trim();
+            const pass = document.getElementById('regPass').value;
+
+            if(!email || pass.length < 6) return alert("Email va parolni (min 6 belgi) kiriting!");
+
             btn.disabled = true;
+            btn.textContent = "Kutilmoqda...";
 
             try {
-                const user = auth.currentUser;
-                const snap = await getDoc(doc(db, "users", user.uid));
-                const d = snap.data();
-
-                const msg = `🚀 YANGI BUYURTMA!\n👤 Mijoz: ${d.name}\n📞 Tel: ${d.tel}\n🚗 Mashina: ${d.brand} (${d.year})\n📝 Izoh: ${note}`;
-                
-                await fetch(`https://api.telegram.org/bot7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM/sendMessage?chat_id=-1003461463026&text=${encodeURIComponent(msg)}`);
-                
-                alert("Zayavka yuborildi! Tez orada bog'lanamiz.");
-                document.getElementById('orderNote').value = "";
+                if (isLoginMode) {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } else {
+                    const name = document.getElementById('regName').value;
+                    const res = await createUserWithEmailAndPassword(auth, email, pass);
+                    // Ma'lumotlarni Firestorega saqlash
+                    await setDoc(doc(db, "users", res.user.uid), {
+                        name: name,
+                        brand: document.getElementById('regBrand').value,
+                        year: document.getElementById('regYear').value,
+                        km: document.getElementById('regKm').value,
+                        tel: document.getElementById('regTel').value,
+                        email: email
+                    });
+                }
+                toggleAuth(false);
             } catch (e) {
-                alert("Zayavka yuborishda xatolik!");
+                alert("Xato: " + e.message);
             } finally {
                 btn.disabled = false;
+                btn.textContent = "Tasdiqlash";
             }
         };
 
@@ -290,21 +214,15 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const snap = await getDoc(doc(db, "users", user.uid));
-                if(snap.exists()) {
+                if (snap.exists()) {
                     const d = snap.data();
                     document.getElementById('authLinks').style.display = 'none';
                     document.getElementById('dashLink').style.display = 'inline';
                     document.getElementById('logoutBtn').style.display = 'inline';
-                    
                     document.getElementById('welcomeUser').textContent = `Salom, ${d.name}!`;
                     document.getElementById('dashCar').textContent = d.brand;
                     document.getElementById('dashKm').textContent = d.km + " km";
-                    
-                    const age = new Date().getFullYear() - parseInt(d.year);
-                    const isOk = (age <= 5 && parseInt(d.km) <= 100000);
-                    const badge = document.getElementById('statusBadge');
-                    badge.textContent = isOk ? "Million KM Kafolatiga mos" : "Bir martalik xizmatga mos";
-                    badge.className = `status-badge ${isOk ? 'status-green' : 'status-yellow'}`;
+                    showSection('dashboard');
                 }
             }
         });
