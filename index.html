@@ -10,177 +10,133 @@
             --apple-bg: #f5f5f7;
             --apple-blue: #0071e3;
             --radius: 30px;
-            --glass: rgba(255, 255, 255, 0.7);
+            --success: #34c759;
+            --warning: #ffcc00;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { font-family: 'SF Pro Display', sans-serif; background: var(--apple-bg); color: #1d1d1f; line-height: 1.5; }
 
-        /* Silliq animatsiyalar */
         .fade-in { animation: fadeIn 1s ease-out forwards; opacity: 0; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Navigatsiya */
         nav {
             position: fixed; top: 0; width: 100%; height: 50px;
             background: rgba(255,255,255,0.8); backdrop-filter: blur(20px);
             z-index: 1000; display: flex; justify-content: center; align-items: center;
             border-bottom: 0.5px solid rgba(0,0,0,0.1);
         }
-        nav a { color: #1d1d1f; text-decoration: none; margin: 0 15px; font-size: 14px; font-weight: 400; transition: 0.3s; }
+        nav a { color: #1d1d1f; text-decoration: none; margin: 0 15px; font-size: 14px; cursor: pointer; }
 
-        /* Hero */
-        .hero {
-            padding: 120px 20px 60px; text-align: center;
-            background: white; border-radius: 0 0 50px 50px; margin-bottom: 40px;
-        }
+        .hero { padding: 120px 20px 60px; text-align: center; background: white; border-radius: 0 0 50px 50px; margin-bottom: 40px; }
         .hero h1 { font-size: 56px; font-weight: 600; letter-spacing: -2px; }
         .hero p { font-size: 22px; color: #86868b; max-width: 700px; margin: 20px auto; }
 
-        /* Sections & Cards */
         .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .section-title { font-size: 32px; font-weight: 600; margin: 40px 0 20px; text-align: center; }
-
         .apple-card {
             background: white; border-radius: var(--radius); padding: 30px;
-            margin-bottom: 20px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05);
         }
-        .apple-card:hover { transform: scale(1.01); box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        /* Dashboard Styles */
+        #dashboard { display: none; margin-top: 80px; }
+        .status-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-weight: 600; margin-top: 10px; }
+        .status-green { background: #e3f9e5; color: var(--success); }
+        .status-yellow { background: #fff9db; color: #f08c00; }
 
-        .btn-link { color: var(--apple-blue); text-decoration: none; font-weight: 500; font-size: 17px; cursor: pointer; border:none; background:none; display: inline-block; margin-top: 10px; }
-        .btn-link:hover { text-decoration: underline; }
-
-        /* 12 Sabab Ro'yxati */
-        .reason-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; text-align: left; }
-        .reason-item { padding: 15px; background: #fbfbfd; border-radius: 18px; font-size: 15px; }
-
-        /* Auth Overlay */
+        .btn-main { width: 100%; padding: 18px; background: var(--apple-blue); color: white; border: none; border-radius: 15px; margin-top: 20px; font-weight: 600; cursor: pointer; font-size: 17px; }
+        .btn-logout { background: #f5f5f7; color: #ff3b30; margin-top: 10px; }
+        
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(245,245,247,0.95); backdrop-filter: blur(20px);
-            z-index: 2000; display: none; justify-content: center; align-items: center;
-            overflow-y: auto; padding: 20px;
+            z-index: 2000; display: none; justify-content: center; align-items: center; overflow-y: auto; padding: 20px;
         }
         .auth-box { background: white; padding: 40px; border-radius: var(--radius); width: 100%; max-width: 450px; }
-        input, select { width: 100%; padding: 15px; margin-top: 10px; border-radius: 15px; border: 1px solid #d2d2d7; outline: none; font-size: 16px; background: #f5f5f7; }
-        .btn-main { width: 100%; padding: 18px; background: var(--apple-blue); color: white; border: none; border-radius: 15px; margin-top: 20px; font-weight: 600; cursor: pointer; font-size: 17px; }
+        input, select { width: 100%; padding: 15px; margin-top: 10px; border-radius: 15px; border: 1px solid #d2d2d7; outline: none; background: #f5f5f7; }
 
-        /* Footer */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         footer { padding: 60px 20px; text-align: center; border-top: 1px solid #d2d2d7; margin-top: 60px; }
-        .socials a { margin: 0 10px; color: var(--apple-blue); text-decoration: none; }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="#">Million km</a>
-        <a href="#services">Xizmatlar</a>
-        <a href="#about">Nega biz?</a>
-        <a href="#" onclick="toggleAuth(true)">Kabinet</a>
+        <a href="/">Million km</a>
+        <a href="#" onclick="toggleAuth(true)" id="navAuthBtn">Kirish / Ro'yxatdan o'tish</a>
+        <a href="#" onclick="logout()" id="navLogoutBtn" style="display:none;">Chiqish</a>
     </nav>
 
-    <section class="hero fade-in">
-        <h1>Million km</h1>
-        <p>Dvigatel uchun yangi avlod ishonchi. Bu shunchaki servis emas, bu — fikrlash tarzi.</p>
-        <button class="btn-main" style="width:auto; padding: 12px 30px;" onclick="toggleAuth(true)">Tizimga qo'shilish</button>
-    </section>
+    <div id="mainPage">
+        <section class="hero fade-in">
+            <h1>Million km</h1>
+            <p>Dvigatel uchun yangi avlod ishonchi. Bu shunchaki servis emas.</p>
+            <button class="btn-main" style="width:auto; padding: 12px 30px;" onclick="toggleAuth(true)">Hozir qo'shilish</button>
+        </section>
 
-    <div class="container">
-        <div class="grid" id="services">
-            <div class="apple-card fade-in">
-                <h3>Chevrolet</h3>
-                <p>Million km standartlariga mos eng so‘nggi Chevrolet modellari.</p>
-                <button class="btn-link" onclick="alert('Chevrolet modellari: Nexia, Cobalt, Gentra, Onix...')">Batafsil ma’lumot</button>
-                <a href="#" class="btn-link" onclick="toggleAuth(true)">Modelni tanlash ></a>
+        <div class="container">
+            <div class="grid">
+                <div class="apple-card fade-in">
+                    <h3>Chevrolet</h3>
+                    <p>Million km standartlariga mos modellar.</p>
+                    <button class="btn-main" style="padding:10px;" onclick="toggleAuth(true)">Modelni tanlash</button>
+                </div>
+                <div class="apple-card fade-in">
+                    <h3>Kia</h3>
+                    <p>Sizning Kia uchun kafolatli servis.</p>
+                    <button class="btn-main" style="padding:10px;" onclick="toggleAuth(true)">Modelni tanlash</button>
+                </div>
             </div>
+        </div>
+    </div>
 
-            <div class="apple-card fade-in">
-                <h3>Kia</h3>
-                <p>Million km standartlariga mos eng so‘nggi Kia modellari.</p>
-                <button class="btn-link">Batafsil ma’lumot</button>
-                <a href="#" class="btn-link" onclick="toggleAuth(true)">Modelni tanlash ></a>
-            </div>
-
-            <div class="apple-card fade-in">
-                <h3>Million km Express</h3>
-                <p>Manzilga borib xizmat ko’rsatish xizmati.</p>
-                <button class="btn-link">Batafsil ma’lumot</button>
-            </div>
-
-            <div class="apple-card fade-in">
-                <h3>Million km Fuel</h3>
-                <p>Sifatli yoqilg’i yetkazib berish xizmati.</p>
-                <button class="btn-link">Xarid qilish</button>
+    <div id="dashboard" class="container fade-in">
+        <div class="apple-card">
+            <h2 id="dashWelcome">Xush kelibsiz!</h2>
+            <div id="carStatusContainer" style="margin-top: 20px;">
+                <p><strong>Mashina:</strong> <span id="dashCar"></span></p>
+                <p><strong>Yili:</strong> <span id="dashYear"></span> | <strong>Masofa:</strong> <span id="dashKm"></span> km</p>
+                <div id="statusBadge" class="status-badge">Tekshirilmoqda...</div>
             </div>
         </div>
 
-        <h2 class="section-title">Nega aynan Million km?</h2>
-        <div class="apple-card fade-in" id="about">
-            <div class="reason-list">
-                <div class="reason-item"><strong>1. Million km kafolat</strong> — Bozorda yagona texnik kafolat!</div>
-                <div class="reason-item"><strong>2. Bepul avtomoyka</strong> — Har safar moy almashtirishda.</div>
-                <div class="reason-item"><strong>3. Sifatli mahsulot</strong> — Faqat original va sertifikatlangan.</div>
-                <div class="reason-item"><strong>4. Bitta joyda hal</strong> — Diagnostika va ta'mirlash bir markazda.</div>
-                <div class="reason-item"><strong>5. Tezkor servis</strong> — O'zbekiston bo'ylab keng tarmoq.</div>
-                <div class="reason-item"><strong>6. Eng tajribali ustalar</strong> — O'z ishining professionallari.</div>
-                <div class="reason-item"><strong>7. Bepul diagnostika</strong> — Har yili bir marotaba.</div>
-                <div class="reason-item"><strong>8. Express xizmat</strong> — Vaqtingizni qadrlaymiz.</div>
-                <div class="reason-item"><strong>9. Online Monitoring</strong> — Shaxsiy kabinet orqali kuzatish.</div>
-                <div class="reason-item"><strong>10. Masofaviy yordam</strong> — Telefon orqali diagnostika.</div>
-                <div class="reason-item"><strong>11. Sovg'alar</strong> — Har bir yangi mijozga brend futbolka.</div>
-                <div class="reason-item"><strong>12. Bonus tizimi</strong> — Doimiy mijozlarga chegirmalar.</div>
-            </div>
+        <div class="apple-card">
+            <h3>Yangi zayavka</h3>
+            <input type="text" id="orderNote" placeholder="Qanday xizmat kerak? (Moy almashtirish, diagnostika...)">
+            <button class="btn-main" onclick="sendOrder()">Zayavka yuborish</button>
         </div>
-
-        <h2 class="section-title">Filiallarimiz</h2>
-        <div class="apple-card fade-in" style="text-align: center;">
-            <p>Uzbekiston xaritasi rasmi shu yerda bo'ladi</p>
-            <div style="height: 250px; background: #eee; border-radius: 20px; margin: 20px 0; display: flex; align-items: center; justify-content: center; color: #888;">Xarita Illustration</div>
-            <button class="btn-link">Eng yaqin filialni topish</button>
-        </div>
+        
+        <button class="btn-main btn-logout" onclick="logout()">Tizimdan chiqish</button>
     </div>
 
     <div id="authOverlay" class="overlay">
         <div class="auth-box fade-in">
-            <h2 style="text-align: center;">Tizimga qo'shilish</h2>
-            <div id="regInputs">
-                <input type="text" id="regName" placeholder="To'liq ismingiz">
-                <input type="tel" id="regTel" placeholder="Telefon (+998)">
-                <select id="regGender">
-                    <option value="Erkak">Erkak</option>
-                    <option value="Ayol">Ayol</option>
-                </select>
-                <select id="regBrand">
-                    <option value="Chevrolet">Chevrolet</option>
-                    <option value="KIA">KIA</option>
-                    <option value="Li Auto">Li Auto</option>
-                </select>
-                <input type="number" id="regYear" placeholder="Mashina yili (masalan: 2022)">
-                <input type="number" id="regKm" placeholder="Yurgan masofasi (Km)">
-            </div>
+            <h2 style="text-align:center;">Ro'yxatdan o'tish</h2>
+            <input type="text" id="regName" placeholder="Ismingiz">
+            <input type="tel" id="regTel" placeholder="Telefon (+998)">
+            <select id="regBrand">
+                <option value="Nexia 3">Nexia 3</option>
+                <option value="Cobalt">Cobalt</option>
+                <option value="Gentra">Gentra</option>
+                <option value="Onix">Onix</option>
+                <option value="Tracker">Tracker</option>
+                <option value="Malibu">Malibu</option>
+                <option value="KIA K5">KIA K5</option>
+                <option value="KIA Sportage">KIA Sportage</option>
+            </select>
+            <input type="number" id="regYear" placeholder="Mashina yili">
+            <input type="number" id="regKm" placeholder="Yurgan masofasi (Km)">
             <input type="email" id="regEmail" placeholder="Email">
             <input type="password" id="regPass" placeholder="Parol (min. 6 belgi)">
-            <button class="btn-main" onclick="handleAuth()">Ro'yxatdan o'tish</button>
-            <button class="btn-link" style="width:100%;" onclick="toggleAuth(false)">Yopish</button>
+            <button class="btn-main" onclick="handleAuth()">Tasdiqlash</button>
+            <button class="btn-main btn-logout" style="color:gray;" onclick="toggleAuth(false)">Yopish</button>
         </div>
     </div>
 
-    <footer>
-        <div class="socials">
-            <a href="#">Instagram</a> | <a href="#">Telegram</a> | <a href="#">Youtube</a>
-        </div>
-        <div style="margin: 20px 0; font-size: 18px; font-weight: 600;">Call center: +998 (XX) XXX-XX-XX</div>
-        <a href="#" class="btn-link">Yordamchi bilan bog’lanish</a>
-        <p style="margin-top: 30px; font-size: 12px; color: #888;">&copy; 2024 Million KM. Barcha huquqlar himoyalangan.</p>
-    </footer>
-
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
@@ -198,42 +154,75 @@
         const BOT_TOKEN = '7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM';
         const CHAT_ID = '-1003461463026';
 
-        window.toggleAuth = (show) => {
-            document.getElementById('authOverlay').style.display = show ? 'flex' : 'none';
+        window.toggleAuth = (show) => document.getElementById('authOverlay').style.display = show ? 'flex' : 'none';
+
+        // Mashina statusini aniqlash logikasi
+        function checkCarStatus(brand, year, km) {
+            const currentYear = new Date().getFullYear();
+            const age = currentYear - parseInt(year);
+            const distance = parseInt(km);
+
+            // Chevrolet uchun shartlar
+            if (["Nexia 3", "Cobalt", "Gentra", "Malibu"].includes(brand)) {
+                if (age <= 5 && distance <= 100000) return { text: "Million KM Garantiyasiga mos", class: "status-green" };
+            }
+            // Yangi modellar uchun shartlar
+            if (["Onix", "Tracker", "KIA K5", "KIA Sportage"].includes(brand)) {
+                if (age <= 3 && distance <= 50000) return { text: "Million KM Garantiyasiga mos", class: "status-green" };
+            }
+            return { text: "Bir martalik xizmatga mos", class: "status-yellow" };
         }
 
         window.handleAuth = async function() {
-            const data = {
-                name: document.getElementById('regName').value,
-                tel: document.getElementById('regTel').value,
-                gender: document.getElementById('regGender').value,
-                brand: document.getElementById('regBrand').value,
-                year: document.getElementById('regYear').value,
-                km: document.getElementById('regKm').value,
-                email: document.getElementById('regEmail').value,
-                pass: document.getElementById('regPass').value
-            };
-
-            if(!data.email || data.pass.length < 6) { alert("Email va parolni to'g'ri kiriting!"); return; }
+            const fields = ['regName', 'regTel', 'regBrand', 'regYear', 'regKm', 'regEmail', 'regPass'];
+            const d = {}; fields.forEach(f => d[f] = document.getElementById(f).value);
 
             try {
-                const userCred = await createUserWithEmailAndPassword(auth, data.email, data.pass);
-                await updateProfile(userCred.user, { displayName: data.name });
-                
-                // Firestore
+                const userCred = await createUserWithEmailAndPassword(auth, d.regEmail, d.regPass);
                 await setDoc(doc(db, "users", userCred.user.uid), {
-                    name: data.name, tel: data.tel, gender: data.gender,
-                    brand: data.brand, carYear: data.year, km: data.km, email: data.email
+                    name: d.regName, tel: d.regTel, brand: d.regBrand, year: d.regYear, km: d.regKm, email: d.regEmail
                 });
-
-                // Telegram
-                const msg = `🌟 YANGI AZO!\n👤 Ism: ${data.name}\n📞 Tel: ${data.tel}\n🚗 Mashina: ${data.brand} (${data.year})\n🛣 Km: ${data.km}\n🚻 Jinsi: ${data.gender}`;
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}`);
-
-                alert("Tabriklaymiz! Siz Million KM tizimiga qo'shildingiz.");
+                alert("Muvaffaqiyatli ro'yxatdan o'tdingiz!");
                 toggleAuth(false);
             } catch (e) { alert("Xato: " + e.message); }
         };
+
+        window.sendOrder = async function() {
+            const user = auth.currentUser;
+            const note = document.getElementById('orderNote').value;
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            const userData = userDoc.data();
+            const status = checkCarStatus(userData.brand, userData.year, userData.km);
+
+            const msg = `📦 YANGI BUYURTMA!\n👤 Mijoz: ${userData.name}\n📞 Tel: ${userData.tel}\n🚗 Mashina: ${userData.brand} (${userData.year}-yil)\n🛣 Masofa: ${userData.km} km\n🛡 Status: ${status.text}\n📝 Eslatma: ${note}`;
+            
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}`);
+            alert("Zayavka yuborildi!");
+            document.getElementById('orderNote').value = "";
+        };
+
+        window.logout = () => signOut(auth).then(() => location.reload());
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                const d = userDoc.data();
+                document.getElementById('mainPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('navAuthBtn').style.display = 'none';
+                document.getElementById('navLogoutBtn').style.display = 'inline';
+                
+                document.getElementById('dashWelcome').textContent = `Xush kelibsiz, ${d.name}!`;
+                document.getElementById('dashCar').textContent = d.brand;
+                document.getElementById('dashYear').textContent = d.year;
+                document.getElementById('dashKm').textContent = d.km;
+
+                const status = checkCarStatus(d.brand, d.year, d.km);
+                const badge = document.getElementById('statusBadge');
+                badge.textContent = status.text;
+                badge.className = `status-badge ${status.class}`;
+            }
+        });
     </script>
 </body>
 </html>
