@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ro'yxatdan o'tish / Kirish</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #5568d3;
+        }
+        .toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        .toggle a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .dashboard {
+            display: none;
+        }
+        .user-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .user-info p {
+            margin-bottom: 10px;
+        }
+        .logout-btn {
+            background: #dc3545;
+        }
+        .logout-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Kirish/Ro'yxat formasi -->
+    <div class="container" id="authContainer">
+        <div id="message" class="message"></div>
+        
+        <div id="loginForm">
+            <h2>Tizimga kirish</h2>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="email@example.com">
+            </div>
+            <div class="form-group">
+                <label>Parol</label>
+                <input type="password" id="loginPassword" placeholder="Parolingizni kiriting">
+            </div>
+            <button class="btn" onclick="login()">Kirish</button>
+            <div class="toggle">
+                Hali ro'yxatdan o'tmadingizmi? 
+                <a href="#" onclick="toggleForm(); return false;">Ro'yxatdan o'tish</a>
+            </div>
+        </div>
+
+        <div id="registerForm" style="display: none;">
+            <h2>Ro'yxatdan o'tish</h2>
+            <div class="form-group">
+                <label>Ism</label>
+                <input type="text" id="registerName" placeholder="Ismingiz">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="registerEmail" placeholder="email@example.com">
+            </div>
+            <div class="form-group">
+                <label>Parol</label>
+                <input type="password" id="registerPassword" placeholder="Kamida 6 ta belgi">
+            </div>
+            <button class="btn" onclick="register()">Ro'yxatdan o'tish</button>
+            <div class="toggle">
+                Allaqachon hisobingiz bormi? 
+                <a href="#" onclick="toggleForm(); return false;">Kirish</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Foydalanuvchi paneli -->
+    <div class="container dashboard" id="dashboard">
+        <h2>Xush kelibsiz!</h2>
+        <div class="user-info">
+            <p><strong>Ism:</strong> <span id="userName"></span></p>
+            <p><strong>Email:</strong> <span id="userEmail"></span></p>
+            <p><strong>ID:</strong> <span id="userId"></span></p>
+        </div>
+        <button class="btn logout-btn" onclick="logout()">Chiqish</button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+
+        // SIZNING Firebase sozlamalaringiz
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
+            authDomain: "millionkm-a42ee.firebaseapp.com",
+            projectId: "millionkm-a42ee",
+            storageBucket: "millionkm-a42ee.firebasestorage.app",
+            messagingSenderId: "594685468082",
+            appId: "1:594685468082:web:e44c081e0617f0016998ab",
+            measurementId: "G-JQY6RHDHTQ"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const analytics = getAnalytics(app);
+
+        // Global funksiyalar
+        window.register = async function() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (!name || !email || !password) {
+                showMessage('Barcha maydonlarni to\'ldiring!', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('Parol kamida 6 ta belgidan iborat bo\'lishi kerak!', 'error');
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: name });
+                
+                // Firestore'ga ma'lumot saqlash
+                await setDoc(doc(db, "users", userCredential.user.uid), {
+                    name: name,
+                    email: email,
+                    createdAt: new Date().toISOString(),
+                    lastLogin: new Date().toISOString()
+                });
+
+                showMessage('Muvaffaqiyatli ro\'yxatdan o\'tdingiz!', 'success');
+            } catch (error) {
+                console.error('Register error:', error);
+                if (error.code === 'auth/email-already-in-use') {
+                    showMessage('Bu email allaqachon ro\'yxatdan o\'tgan!', 'error');
+                } else if (error.code === 'auth/invalid-email') {
+                    showMessage('Noto\'g\'ri email format!', 'error');
+                } else if (error.code === 'auth/weak-password') {
+                    showMessage('Parol juda oddiy, kuchliroq parol kiriting!', 'error');
+                } else {
+                    showMessage('Xatolik: ' + error.message, 'error');
+                }
+            }
+        };
+
+        window.login = async function() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showMessage('Email va parolni kiriting!', 'error');
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                
+                // Oxirgi kirish vaqtini yangilash
+                await setDoc(doc(db, "users", userCredential.user.uid), {
+                    lastLogin: new Date().toISOString()
+                }, { merge: true });
+
+                showMessage('Muvaffaqiyatli kirdingiz!', 'success');
+            } catch (error) {
+                console.error('Login error:', error);
+                if (error.code === 'auth/user-not-found') {
+                    showMessage('Bunday foydalanuvchi topilmadi!', 'error');
+                } else if (error.code === 'auth/wrong-password') {
+                    showMessage('Xato parol!', 'error');
+                } else if (error.code === 'auth/invalid-credential') {
+                    showMessage('Email yoki parol xato!', 'error');
+                } else {
+                    showMessage('Xatolik: ' + error.message, 'error');
+                }
+            }
+        };
+
+        window.logout = async function() {
+            try {
+                await signOut(auth);
+                showMessage('Tizimdan chiqdingiz!', 'success');
+            } catch (error) {
+                console.error('Logout error:', error);
+                showMessage('Chiqishda xatolik!', 'error');
+            }
+        };
+
+        window.toggleForm = function() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'none';
+            
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+        };
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = 'message ' + type;
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 5000);
+        }
+
+        // Foydalanuvchi holatini tekshirish
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Foydalanuvchi tizimga kirgan
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    const userData = userDoc.data();
+                    
+                    document.getElementById('userName').textContent = userData?.name || user.displayName || 'Foydalanuvchi';
+                    document.getElementById('userEmail').textContent = user.email;
+                    document.getElementById('userId').textContent = user.uid.substring(0, 8) + '...';
+                    
+                    document.getElementById('authContainer').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                } catch (error) {
+                    console.error('Foydalanuvchi ma\'lumotlarini olishda xatolik:', error);
+                    // Agar Firestore ma'lumot olmasa ham, asosiy ma'lumotlarni ko'rsatamiz
+                    document.getElementById('userName').textContent = user.displayName || 'Foydalanuvchi';
+                    document.getElementById('userEmail').textContent = user.email;
+                    document.getElementById('userId').textContent = user.uid.substring(0, 8) + '...';
+                    
+                    document.getElementById('authContainer').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                }
+            } else {
+                // Foydalanuvchi tizimdan chiqgan
+                document.getElementById('authContainer').style.display = 'block';
+                document.getElementById('dashboard').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
