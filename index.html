@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -535,6 +534,72 @@
             box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
         }
        
+        /* Cabinet Section */
+        #cabinet {
+            display: none;
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+       
+        .cabinet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+       
+        .cabinet-card {
+            background: var(--bg);
+            padding: 30px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+       
+        .cabinet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+       
+        .cabinet-card h4 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+       
+        .cabinet-card p {
+            color: var(--gray);
+            font-size: 14px;
+            margin: 5px 0;
+        }
+       
+        /* Add Car Form */
+        .add-car-form {
+            max-width: 500px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+       
+        .add-car-form input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+       
+        .add-car-form input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+       
         /* Footer */
         footer {
             background: white;
@@ -566,7 +631,10 @@
             .brands-grid { grid-template-columns: 1fr; }
             .services-grid { grid-template-columns: 1fr; }
             .benefits-grid { grid-template-columns: 1fr; }
+            .cabinet-grid { grid-template-columns: 1fr; }
         }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -580,6 +648,7 @@
                 <a href="#benefits">Afzalliklar</a>
                 <a href="#filiallar">Filiallar</a>
                 <a href="#" id="authLink" onclick="openAuth()">Kirish</a>
+                <a href="#" id="cabinetLink" class="hidden" onclick="openCabinet()">Kabinet</a>
             </div>
         </div>
     </nav>
@@ -738,13 +807,29 @@
         </p>
         <div class="map-container animate animate-delay-2">
             <iframe
-                src="https://yandex.uz/map-widget/v1/?ll=69.2401,41.2995&z=12"
+                src="https://yandex.uz/map-widget/v1/?ll=70.893061%2C40.546387&z=12"
                 width="100%"
                 height="100%"
                 frameborder="0">
             </iframe>
         </div>
     </div>
+    <!-- Cabinet Section -->
+    <section id="cabinet" class="hidden">
+        <h2 class="section-title animate">Mening Kabinetim</h2>
+        <p class="animate animate-delay-1" id="welcomeText" style="text-align: center; color: var(--gray); margin-bottom: 40px;"></p>
+       
+        <div class="add-car-form animate animate-delay-2">
+            <h3>Mashina qo‘shish</h3>
+            <input id="carModel" placeholder="Mashina modeli">
+            <input id="carYear" type="number" placeholder="Mashina yili">
+            <input id="lastOilKm" type="number" placeholder="Oxirgi moy almashtirilgan probeg">
+            <input id="dailyKm" type="number" placeholder="Kunlik o‘rtacha yurish (km)">
+            <button class="btn" style="width:100%; margin-top:15px;" id="addCarBtn">Mashina qo‘shish</button>
+        </div>
+       
+        <div id="garage" class="cabinet-grid"></div>
+    </section>
     <!-- Footer -->
     <footer class="animate">
         <h3>Million km</h3>
@@ -803,7 +888,24 @@
             </button>
         </div>
     </div>
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+       
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM", // Sample config, replace if needed
+            authDomain: "millionkm-a42ee.firebaseapp.com",
+            projectId: "millionkm-a42ee",
+            storageBucket: "millionkm-a42ee.firebasestorage.app",
+            messagingSenderId: "594685468082",
+            appId: "1:594685468082:web:e44c081e0617f0016998ab"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+       
+        const TG_TOKEN = "7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM";
+        const TG_CHAT_ID = "-1003461463026";
+       
         const carData = {
             chevrolet: {
                 'Nexia 3': { maxAge: 5, maxKm: 100000 },
@@ -827,7 +929,25 @@
                 'Li One': { maxAge: 3, maxKm: 50000 }
             }
         };
-
+       
+        // Telegram message sender
+        async function sendTelegramMessage(message) {
+            const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TG_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (error) {
+                console.error('Telegram xabar yuborishda xato:', error);
+            }
+        }
+       
         // Brand select change event
         document.getElementById('brandSelect').addEventListener('change', function() {
             const brand = this.value;
@@ -843,7 +963,7 @@
                 });
             }
         });
-
+       
         // Check status function
         function checkStatus() {
             const brand = document.getElementById('brandSelect').value;
@@ -889,7 +1009,7 @@
                 `;
             }
         }
-
+       
         // Open brand modal
         function openBrandModal(brand) {
             const modal = document.getElementById('brandModal');
@@ -917,34 +1037,34 @@
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
         }
-
+       
         // Close modal
         function closeModal() {
             const modal = document.getElementById('brandModal');
             modal.classList.remove('show');
             setTimeout(() => modal.style.display = 'none', 300);
         }
-
+       
         // Open auth modal
         function openAuth() {
             if (localStorage.getItem('user')) {
-                alert('Siz allaqachon ro\'yxatdan o\'tgansiz!');
+                openCabinet();
                 return;
             }
             const modal = document.getElementById('authModal');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
         }
-
+       
         // Close auth modal
         function closeAuth() {
             const modal = document.getElementById('authModal');
             modal.classList.remove('show');
             setTimeout(() => modal.style.display = 'none', 300);
         }
-
+       
         // Register function
-        function register() {
+        async function register() {
             const name = document.getElementById('userName').value;
             const email = document.getElementById('userEmail').value;
             const phone = document.getElementById('userPhone').value;
@@ -957,36 +1077,122 @@
            
             const user = { name, email, phone, gender };
             localStorage.setItem('user', JSON.stringify(user));
+           
+            // Save to Firebase
+            await addDoc(collection(db, "users"), user);
+           
+            // Send to Telegram
+            await sendTelegramMessage(`Yangi foydalanuvchi: ${name}\nEmail: ${email}\nTelefon: ${phone}\nJins: ${gender}`);
+           
             closeAuth();
-            alert('Ro\'yxatdan o\'tdingiz! Endi kirishingiz mumkin.');
-            document.getElementById('authLink').textContent = 'Chiqish';
-            document.getElementById('authLink').onclick = logout;
+            alert('Ro\'yxatdan o\'tdingiz! Kabinetga xush kelibsiz.');
+            document.getElementById('authLink').textContent = 'Kabinet';
+            document.getElementById('authLink').onclick = openCabinet;
+            document.getElementById('cabinetLink').classList.remove('hidden');
+            openCabinet();
         }
-
+       
+        // Open cabinet
+        function openCabinet() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                openAuth();
+                return;
+            }
+           
+            document.getElementById('cabinet').style.display = 'block';
+            document.getElementById('welcomeText').textContent = `Xush kelibsiz, ${user.name}! Email: ${user.email}, Telefon: ${user.phone}, Jins: ${user.gender}`;
+            loadGarage(user.phone);
+            scrollToSection('#cabinet');
+        }
+       
         // Logout function
         function logout() {
             localStorage.removeItem('user');
             alert('Chiqdiz!');
             document.getElementById('authLink').textContent = 'Kirish';
             document.getElementById('authLink').onclick = openAuth;
+            document.getElementById('cabinetLink').classList.add('hidden');
+            document.getElementById('cabinet').style.display = 'none';
         }
-
+       
         // Check if logged in on load
         window.onload = function() {
-            if (localStorage.getItem('user')) {
-                document.getElementById('authLink').textContent = 'Chiqish';
-                document.getElementById('authLink').onclick = logout;
+            const user = localStorage.getItem('user');
+            if (user) {
+                document.getElementById('authLink').textContent = 'Kabinet';
+                document.getElementById('authLink').onclick = openCabinet;
+                document.getElementById('cabinetLink').classList.remove('hidden');
             }
         };
-
+       
+        // Add car button
+        document.getElementById('addCarBtn').onclick = async () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const model = document.getElementById('carModel').value;
+            const year = document.getElementById('carYear').value;
+            const lastOil = Number(document.getElementById('lastOilKm').value);
+            const daily = Number(document.getElementById('dailyKm').value);
+           
+            if (model && year && lastOil && daily) {
+                const carData = { userPhone: user.phone, userName: user.name, model, year, lastOil, daily, createdAt: new Date() };
+                await addDoc(collection(db, "cars"), carData);
+               
+                // Send to Telegram
+                await sendTelegramMessage(`Yangi mashina qo'shildi:\nModel: ${model}\nYil: ${year}\nMijoz: ${user.name}\nTelefon: ${user.phone}`);
+               
+                document.getElementById('carModel').value = '';
+                document.getElementById('carYear').value = '';
+                document.getElementById('lastOilKm').value = '';
+                document.getElementById('dailyKm').value = '';
+            } else {
+                alert('Barcha maydonlarni to\'ldiring!');
+            }
+        };
+       
+        // Load garage realtime
+        function loadGarage(phone) {
+            const q = query(collection(db, "cars"), where("userPhone", "==", phone));
+            onSnapshot(q, (snapshot) => {
+                const garage = document.getElementById('garage');
+                garage.innerHTML = '';
+                snapshot.forEach((carDoc) => {
+                    const car = carDoc.data();
+                    const id = carDoc.id;
+                    const daysLeft = Math.floor(7000 / car.daily);
+                    const statusClass = daysLeft < 10 ? 'status-bad' : 'status-good';
+                    const color = daysLeft < 10 ? '#f5576c' : '#34c759';
+                   
+                    garage.innerHTML += `
+                        <div class="cabinet-card">
+                            <button class="btn btn-secondary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 12px;" onclick="deleteCar('${id}')">O'chirish</button>
+                            <h4>${car.model} (${car.year}-yil)</h4>
+                            <p>Oxirgi moy: ${car.lastOil} km</p>
+                            <p>Servis: <b>${car.lastOil + 7000} km</b></p>
+                            <p>Kunlik yurish: ${car.daily} km</p>
+                            <p style="color: ${color};">~ ${daysLeft} kun qoldi</p>
+                        </div>
+                    `;
+                });
+            });
+        }
+       
+        // Delete car
+        window.deleteCar = async (id) => {
+            if (confirm("O'chirmoqchimisiz?")) {
+                await deleteDoc(doc(db, "cars", id));
+                await sendTelegramMessage(`Mashina o'chirildi: ID ${id}`);
+            }
+        };
+       
         // Toggle chat
         function toggleChat() {
             const chatBox = document.getElementById('chatBox');
             chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
         }
-
-        // Send message
-        function sendMessage() {
+       
+        // Send message (simulate bot, but send to Telegram group)
+        async function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
             if (!message) return;
@@ -999,6 +1205,9 @@
             userMsg.style.cssText = 'background: #f5f5f7; padding: 10px; border-radius: 10px; margin: 5px 0; text-align: right;';
             userMsg.textContent = message;
             messages.appendChild(userMsg);
+           
+            // Send to Telegram
+            await sendTelegramMessage(`Foydalanuvchi xabari: ${message}`);
            
             // Simulate bot response
             setTimeout(() => {
@@ -1013,7 +1222,7 @@
             input.value = '';
             messages.scrollTop = messages.scrollHeight;
         }
-
+       
         // Scroll to section
         function scrollToSection(section) {
             document.querySelector(section).scrollIntoView({ behavior: 'smooth' });
@@ -1021,4 +1230,3 @@
     </script>
 </body>
 </html>
-```
