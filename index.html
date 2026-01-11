@@ -157,6 +157,20 @@
         .brand-logo {
             font-size: 48px;
             margin-bottom: 20px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            border-radius: 16px;
+        }
+        
+        .brand-logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
         }
         
         .brand-card h3 {
@@ -236,17 +250,21 @@
         .modal.show {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            padding: 40px 20px;
         }
         
         .modal-content {
             background: white;
-            max-width: 900px;
-            margin: 80px auto;
+            max-width: 1000px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             position: relative;
+            margin-top: 40px;
         }
         
         .close-modal {
@@ -260,7 +278,7 @@
         
         .car-models-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
             margin-top: 30px;
         }
@@ -270,6 +288,11 @@
             border-radius: var(--radius);
             padding: 20px;
             text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .car-model:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
         .car-model ul {
@@ -382,13 +405,29 @@
         .chat-input {
             padding: 15px;
             border-top: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
         }
         
         .chat-input input {
-            width: 100%;
+            flex: 1;
             padding: 10px;
             border: 1px solid rgba(0,0,0,0.1);
             border-radius: 20px;
+        }
+        
+        .chat-send-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
         }
         
         .auth-modal {
@@ -531,7 +570,35 @@
             font-size: 14px;
         }
         
-        .hidden { display: none; }
+        .hidden { display: none !important; }
+        
+        .order-form {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f5f5f7;
+            border-radius: var(--radius);
+        }
+        
+        .order-form h4 {
+            margin-bottom: 20px;
+        }
+        
+        .order-form select,
+        .order-form textarea,
+        .order-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+        
+        .order-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
         
         @media (max-width: 768px) {
             .brands-grid { grid-template-columns: 1fr; }
@@ -539,6 +606,7 @@
             .benefits-grid { grid-template-columns: 1fr; }
             .cabinet-grid { grid-template-columns: 1fr; }
             .admin-grid { grid-template-columns: 1fr; }
+            .car-models-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -560,7 +628,10 @@
 
     <div class="hero">
         <h1 class="animate animate-delay-1">Million kmga xush kelibsiz</h1>
-        <p class="animate animate-delay-2">Bu shunchaki servis emas. Bu — fikrlash tarzi. Ko'pchilik dvigatelni ta'mirlaydi. Biz esa uni saqlab qolamiz</p>
+        <p class="animate animate-delay-2">Bu shunchaki servis emas.</p>
+        <p class="animate animate-delay-2">Bu — fikrlash tarzi.</p>
+        <p class="animate animate-delay-2">Ko'pchilik dvigatelni ta'mirlaydi.</p>
+        <p class="animate animate-delay-2">Biz esa uni saqlab qolamiz.</p>
         <button class="btn animate animate-delay-3" id="startBtn">Hozir boshlash</button>
         <button class="btn btn-secondary animate animate-delay-3" style="margin-left: 10px;" id="statusBtn">Statusni tekshirish</button>
     </div>
@@ -569,21 +640,27 @@
         <h2 class="section-title animate">Qo'llab-quvvatlanadigan brendlar</h2>
         <div class="brands-grid">
             <div class="brand-card animate animate-delay-1" data-brand="chevrolet">
-                <div class="brand-logo">🚗</div>
+                <div class="brand-logo">
+                    <img src="https://www.carlogos.org/car-logos/chevrolet-logo.png" alt="Chevrolet">
+                </div>
                 <h3>Chevrolet</h3>
                 <p>Million km standartlariga mos eng so'nggi Chevrolet modellari</p>
                 <button class="btn">Modellarni tanlash</button>
             </div>
             
             <div class="brand-card animate animate-delay-2" data-brand="kia">
-                <div class="brand-logo">🚙</div>
+                <div class="brand-logo">
+                    <img src="https://www.carlogos.org/car-logos/kia-logo.png" alt="Kia">
+                </div>
                 <h3>Kia</h3>
                 <p>Million km standartlariga mos eng so'nggi Kia modellari</p>
                 <button class="btn">Modellarni tanlash</button>
             </div>
             
             <div class="brand-card animate animate-delay-3" data-brand="liauto">
-                <div class="brand-logo">⚡</div>
+                <div class="brand-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Li_Auto_logo.svg/200px-Li_Auto_logo.svg.png" alt="Li Auto">
+                </div>
                 <h3>Li Auto</h3>
                 <p>Million km standartlariga mos eng so'nggi Li Auto modellari</p>
                 <button class="btn">Modellarni tanlash</button>
@@ -771,6 +848,7 @@
             </div>
             <div class="chat-input">
                 <input type="text" id="chatInput" placeholder="Xabar yozing...">
+                <button class="chat-send-btn" id="sendChatBtn">✈️</button>
             </div>
         </div>
         <div class="chat-button" id="chatButton">
@@ -856,6 +934,7 @@
         };
         
         let isLogin = false;
+        let currentUserChatId = null;
         
         // Toast
         function showToast(message, type = 'success') {
@@ -983,9 +1062,71 @@
                             <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; margin-right: 5px;">1 martalik</span>
                             <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px;">1 yillik</span>
                         </div>
-                        <button class="btn btn-secondary" style="margin-top: 15px; width: 100%; font-size: 13px;">Xarid qilish</button>
+                        <button class="btn btn-secondary order-model-btn" style="margin-top: 15px; width: 100%; font-size: 13px;" data-model="${model}" data-brand="${brand}">Xarid qilish</button>
+                        <div class="order-form hidden" id="order-${brand}-${model}">
+                            <h4>Buyurtma berish</h4>
+                            <select class="service-type">
+                                <option value="">Xizmat turini tanlang</option>
+                                <option value="1year">1 yillik xizmat</option>
+                                <option value="1time">1 martalik xizmat</option>
+                            </select>
+                            <textarea class="problem-desc" placeholder="Mashinangizda qanday muammo bor? (ixtiyoriy)"></textarea>
+                            <input type="tel" class="contact-phone" placeholder="Telefon raqamingiz">
+                            <button class="btn submit-order-btn" style="width: 100%; margin-top: 10px;">Buyurtma berish</button>
+                        </div>
                     `;
                     container.appendChild(card);
+                    
+                    // Order button
+                    const orderBtn = card.querySelector('.order-model-btn');
+                    const orderForm = card.querySelector('.order-form');
+                    const submitBtn = card.querySelector('.submit-order-btn');
+                    
+                    orderBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        orderForm.classList.toggle('hidden');
+                    });
+                    
+                    submitBtn.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        const serviceType = orderForm.querySelector('.service-type').value;
+                        const problemDesc = orderForm.querySelector('.problem-desc').value;
+                        const phone = orderForm.querySelector('.contact-phone').value;
+                        
+                        if (!serviceType || !phone) {
+                            showToast('Xizmat turini va telefon raqamini kiriting!', 'error');
+                            return;
+                        }
+                        
+                        const user = auth.currentUser;
+                        let userName = 'Mehmon';
+                        
+                        if (user) {
+                            const userQuery = query(collection(db, "users"), where("uid", "==", user.uid));
+                            const userSnapshot = await getDocs(userQuery);
+                            if (!userSnapshot.empty) {
+                                userName = userSnapshot.docs[0].data().name;
+                            }
+                        }
+                        
+                        const serviceTypeName = serviceType === '1year' ? '1 yillik xizmat' : '1 martalik xizmat';
+                        
+                        await sendTelegramMessage(
+                            `🚗 *Yangi buyurtma*\n\n` +
+                            `👤 Mijoz: ${userName}\n` +
+                            `🚘 Brend: ${brand.charAt(0).toUpperCase() + brand.slice(1)}\n` +
+                            `📦 Model: ${model}\n` +
+                            `⚙️ Xizmat: ${serviceTypeName}\n` +
+                            `📱 Telefon: ${phone}\n` +
+                            `📝 Muammo: ${problemDesc || 'Ko\'rsatilmagan'}`
+                        );
+                        
+                        showToast('Buyurtma qabul qilindi! Tez orada aloqaga chiqamiz.', 'success');
+                        orderForm.classList.add('hidden');
+                        orderForm.querySelector('.service-type').value = '';
+                        orderForm.querySelector('.problem-desc').value = '';
+                        orderForm.querySelector('.contact-phone').value = '';
+                    });
                 });
             }
             
@@ -1118,6 +1259,8 @@
                 
                 if (!querySnapshot.empty) {
                     const userData = querySnapshot.docs[0].data();
+                    currentUserChatId = user.uid;
+                    
                     if (userData.isAdmin) {
                         adminLink.classList.remove('hidden');
                     }
@@ -1132,6 +1275,7 @@
                 adminLink.classList.add('hidden');
                 document.getElementById('cabinet').classList.add('hidden');
                 document.getElementById('adminPanel').classList.add('hidden');
+                currentUserChatId = null;
             }
         });
         
@@ -1289,31 +1433,61 @@
             document.getElementById('chatBox').classList.remove('show');
         });
         
-        document.getElementById('chatInput').addEventListener('keypress', async (e) => {
-            if (e.key === 'Enter') {
-                const input = e.target;
-                const message = input.value.trim();
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const messagesDiv = document.getElementById('chatMessages');
+                const user = auth.currentUser;
                 
-                if (message) {
-                    const messagesDiv = document.getElementById('chatMessages');
-                    
-                    const userMsg = document.createElement('p');
-                    userMsg.style.cssText = 'background: var(--primary); color: white; padding: 10px; border-radius: 10px; margin: 5px 0; text-align: right;';
-                    userMsg.textContent = message;
-                    messagesDiv.appendChild(userMsg);
-                    
-                    await sendTelegramMessage(`💬 Chat xabar\n${message}`);
-                    
-                    input.value = '';
-                    
-                    setTimeout(() => {
-                        const botMsg = document.createElement('p');
-                        botMsg.style.cssText = 'background: #f5f5f7; padding: 10px; border-radius: 10px; margin: 5px 0;';
-                        botMsg.textContent = 'Xabaringiz qabul qilindi! Tez orada javob beramiz.';
-                        messagesDiv.appendChild(botMsg);
-                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                    }, 1000);
+                let userName = 'Mehmon';
+                let userEmail = '';
+                
+                if (user) {
+                    const userQuery = query(collection(db, "users"), where("uid", "==", user.uid));
+                    const userSnapshot = await getDocs(userQuery);
+                    if (!userSnapshot.empty) {
+                        const userData = userSnapshot.docs[0].data();
+                        userName = userData.name;
+                        userEmail = userData.email;
+                    }
                 }
+                
+                const userMsg = document.createElement('p');
+                userMsg.style.cssText = 'background: var(--primary); color: white; padding: 10px; border-radius: 10px; margin: 5px 0; text-align: right;';
+                userMsg.textContent = message;
+                messagesDiv.appendChild(userMsg);
+                
+                const chatId = currentUserChatId || 'guest_' + Date.now();
+                
+                await sendTelegramMessage(
+                    `💬 *Chat xabar*\n\n` +
+                    `👤 Ism: ${userName}\n` +
+                    `📧 Email: ${userEmail || 'Yo\'q'}\n` +
+                    `🆔 Chat ID: \`${chatId}\`\n\n` +
+                    `💭 Xabar: ${message}\n\n` +
+                    `_Javob berish uchun:_\n` +
+                    `/reply ${chatId} sizning javobingiz`
+                );
+                
+                input.value = '';
+                
+                setTimeout(() => {
+                    const botMsg = document.createElement('p');
+                    botMsg.style.cssText = 'background: #f5f5f7; padding: 10px; border-radius: 10px; margin: 5px 0;';
+                    botMsg.textContent = 'Xabaringiz qabul qilindi! Tez orada javob beramiz.';
+                    messagesDiv.appendChild(botMsg);
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }, 1000);
+            }
+        }
+        
+        document.getElementById('sendChatBtn').addEventListener('click', sendChatMessage);
+        
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendChatMessage();
             }
         });
         
