@@ -114,7 +114,8 @@ nav button:hover {
     transform: translateY(0);
   }
 }
-  /* ====== CHEVROLET SECTION ====== */
+
+/* ====== CHEVROLET SECTION ====== */
 .brand-section {
   padding: 80px 20px;
   text-align: center;
@@ -142,6 +143,7 @@ nav button:hover {
   padding: 30px;
   transition: transform .4s, box-shadow .4s;
   cursor: pointer;
+  position: relative;
 }
 
 .car-card:hover {
@@ -158,6 +160,7 @@ nav button:hover {
   opacity: .6;
   font-size: 14px;
 }
+
 /* ====== MODAL ====== */
 .modal {
   position: fixed;
@@ -219,6 +222,7 @@ nav button:hover {
 .hidden {
   display: none;
 }
+
 input {
   width: 100%;
   padding: 14px;
@@ -237,19 +241,16 @@ input {
   color: #d33;
   font-weight: 600;
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- ====== NAVBAR ====== -->
 <nav class="glass">
   <h1>Million km</h1>
-  <button>Kirish</button>
+  <button id="navLoginBtn">Kirish</button>
 </nav>
 
-<!-- ====== HERO ====== -->
 <section class="hero">
   <div>
     <h2>Bu shunchaki servis emas.</h2>
@@ -258,10 +259,10 @@ input {
       Ko‘pchilik dvigatelni ta’mirlaydi.  
       Biz esa uni saqlab qolamiz.
     </p>
-    <button>Boshlash</button>
+    <button onclick="checkAuth()">Boshlash</button>
   </div>
 </section>
-<!-- ====== CHEVROLET ====== -->
+
 <section class="brand-section">
   <h3>Chevrolet avtomobillari</h3>
   <p>Million km standarti uchun mos modellar</p>
@@ -271,152 +272,197 @@ input {
       <h4>Cobalt</h4>
       <span>1.5 Benzin</span>
     </div>
-
     <div class="car-card glass">
       <h4>Nexia</h4>
       <span>1.5 Benzin</span>
     </div>
-
     <div class="car-card glass">
       <h4>Tracker</h4>
       <span>1.2 Turbo</span>
     </div>
-
     <div class="car-card glass">
       <h4>Malibu</h4>
       <span>2.0 Turbo</span>
     </div>
   </div>
 </section>
-  <!-- ====== KABINET ====== -->
+
 <section id="cabinet" class="brand-section hidden">
   <h3>Mening kabinetim</h3>
-  <p>Avtomobillaringiz holatini nazorat qiling</p>
+  <p id="welcomeText">Xush kelibsiz!</p>
 
   <div class="glass" style="max-width:600px;margin:40px auto;padding:30px">
     <h4>Mashina qo‘shish</h4><br>
-
-    <input id="carModel" placeholder="Mashina modeli">
+    <input id="carModel" placeholder="Mashina modeli (masalan: Cobalt)">
     <input id="carYear" type="number" placeholder="Mashina yili">
     <input id="lastOilKm" type="number" placeholder="Oxirgi moy almashtirilgan probeg">
     <input id="dailyKm" type="number" placeholder="Kunlik o‘rtacha yurish (km)">
-
-    <button onclick="addCar()">Mashina qo‘shish</button>
+    <button id="addCarBtn">Mashina qo‘shish</button>
   </div>
 
   <div id="garage" class="cards"></div>
 </section>
 
-<!-- ====== LOGIN MODAL ====== -->
 <div id="loginModal" class="modal hidden">
   <div class="modal-content glass">
     <h3>Kirish</h3>
     <p>Davom etish uchun ma’lumotlaringizni kiriting</p>
-
     <input type="text" id="userName" placeholder="Ismingiz">
-    <input type="tel" id="userPhone" placeholder="Telefon raqam">
-
-    <button onclick="login()">Kirish</button>
+    <input type="tel" id="userPhone" placeholder="+998901234567">
+    <button id="loginSubmitBtn">Kirish</button>
     <span onclick="closeLogin()">Yopish</span>
   </div>
 </div>
-<script>
-const loginModal = document.getElementById('loginModal');
-const loginBtn = document.querySelector('nav button');
-const cabinet = document.getElementById("cabinet");
-const garage = document.getElementById("garage");
 
-const carModel = document.getElementById("carModel");
-const carYear = document.getElementById("carYear");
-const lastOilKm = document.getElementById("lastOilKm");
-const dailyKm = document.getElementById("dailyKm");
+<script type="module">
+  // Firebase-ni yuklash
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ===== LOGIN / KABINET ===== */
-loginBtn.onclick = () => {
-  const user = localStorage.getItem("user");
-  if (user) {
-    openCabinet();
-  } else {
-    loginModal.classList.remove("hidden");
-  }
-};
-
-function closeLogin() {
-  loginModal.classList.add("hidden");
-}
-
-function login() {
-  const name = document.getElementById('userName').value;
-  const phone = document.getElementById('userPhone').value;
-
-  if (!name || !phone) {
-    alert("Iltimos, barcha maydonlarni to‘ldiring");
-    return;
-  }
-
-  localStorage.setItem("user", JSON.stringify({name, phone}));
-  loginBtn.textContent = "Kabinet";
-  closeLogin();
-  openCabinet();
-}
-
-/* ===== KABINET ===== */
-function openCabinet() {
-  cabinet.classList.remove("hidden");
-  cabinet.scrollIntoView({behavior:"smooth"});
-  loadGarage();
-}
-
-/* ===== MASHINA QO‘SHISH ===== */
-function addCar() {
-  if (!carModel.value || !carYear.value || !lastOilKm.value || !dailyKm.value) {
-    alert("Barcha maydonlarni to‘ldiring");
-    return;
-  }
-
-  const lastOil = Number(lastOilKm.value);
-  const daily = Number(dailyKm.value);
-  const maxKm = lastOil + 7000;
-  const currentKm = lastOil + daily * 30;
-
-  const daysLeft = Math.floor((maxKm - currentKm) / daily);
-
-  const car = {
-    model: carModel.value,
-    year: carYear.value,
-    status: daysLeft >= 0 
-      ? `${daysLeft} kun qoldi` 
-      : `${Math.abs(daysLeft)} kun kechikdi`,
-    className: daysLeft >= 0 ? "status-good" : "status-bad"
+  // Sizning Firebase konfiguratsiyangiz
+  const firebaseConfig = {
+    apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
+    authDomain: "millionkm-a42ee.firebaseapp.com",
+    projectId: "millionkm-a42ee",
+    storageBucket: "millionkm-a42ee.firebasestorage.app",
+    messagingSenderId: "594685468082",
+    appId: "1:594685468082:web:e44c081e0617f0016998ab",
+    measurementId: "G-JQY6RHDHTQ"
   };
 
-  const cars = JSON.parse(localStorage.getItem("cars") || "[]");
-  cars.push(car);
-  localStorage.setItem("cars", JSON.stringify(cars));
+  // Firebase-ni ishga tushirish
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-  loadGarage();
-}
+  // Elementlarni tanlab olish
+  const loginModal = document.getElementById('loginModal');
+  const navLoginBtn = document.getElementById('navLoginBtn');
+  const cabinet = document.getElementById("cabinet");
+  const garage = document.getElementById("garage");
+  const loginSubmitBtn = document.getElementById("loginSubmitBtn");
+  const addCarBtn = document.getElementById("addCarBtn");
 
-/* ===== GARAJ ===== */
-function loadGarage() {
-  garage.innerHTML = "";
-  const cars = JSON.parse(localStorage.getItem("cars") || "[]");
+  // Sahifa yuklanganda foydalanuvchini tekshirish
+  window.onload = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      navLoginBtn.textContent = "Kabinet";
+      document.getElementById("welcomeText").textContent = `Xush kelibsiz, ${user.name}!`;
+    }
+  };
 
-  cars.forEach(car => {
-    garage.innerHTML += `
-      <div class="car-card glass">
-        <h4>${car.model}</h4>
-        <span>${car.year}-yil</span><br><br>
-        <span class="${car.className}">${car.status}</span>
-      </div>
-    `;
-  });
-}
+  // Kirish tugmasi bosilganda
+  navLoginBtn.onclick = () => {
+    if (localStorage.getItem("user")) {
+      openCabinet();
+    } else {
+      loginModal.classList.remove("hidden");
+    }
+  };
 
-/* ===== SAHIFA OCHILGANDA ===== */
-if (localStorage.getItem("user")) {
-  loginBtn.textContent = "Kabinet";
-}
+  window.checkAuth = () => {
+    if (localStorage.getItem("user")) {
+      openCabinet();
+    } else {
+      loginModal.classList.remove("hidden");
+    }
+  };
+
+  window.closeLogin = () => {
+    loginModal.classList.add("hidden");
+  };
+
+  // Login qilish funksiyasi
+  loginSubmitBtn.onclick = async () => {
+    const name = document.getElementById('userName').value;
+    const phone = document.getElementById('userPhone').value;
+
+    if (!name || !phone) {
+      alert("Iltimos, ism va telefonni kiriting");
+      return;
+    }
+
+    const userData = { name, phone };
+    localStorage.setItem("user", JSON.stringify(userData));
+    
+    navLoginBtn.textContent = "Kabinet";
+    document.getElementById("welcomeText").textContent = `Xush kelibsiz, ${name}!`;
+    closeLogin();
+    openCabinet();
+  };
+
+  async function openCabinet() {
+    cabinet.classList.remove("hidden");
+    cabinet.scrollIntoView({ behavior: "smooth" });
+    loadGarage();
+  }
+
+  // Firebase-ga mashina qo'shish
+  addCarBtn.onclick = async () => {
+    const model = document.getElementById("carModel").value;
+    const year = document.getElementById("carYear").value;
+    const lastOil = document.getElementById("lastOilKm").value;
+    const daily = document.getElementById("dailyKm").value;
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!model || !year || !lastOil || !daily) {
+      alert("Hamma ma'lumotlarni to'ldiring");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "cars"), {
+        userPhone: user.phone,
+        model: model,
+        year: year,
+        lastOil: Number(lastOil),
+        daily: Number(daily),
+        date: new Date()
+      });
+      
+      // Formani tozalash
+      document.getElementById("carModel").value = "";
+      document.getElementById("carYear").value = "";
+      document.getElementById("lastOilKm").value = "";
+      document.getElementById("dailyKm").value = "";
+
+      loadGarage();
+    } catch (e) {
+      console.error("Xato: ", e);
+    }
+  };
+
+  // Firebase-dan ma'lumotlarni o'qish
+  async function loadGarage() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) return;
+
+    garage.innerHTML = "<p>Yuklanmoqda...</p>";
+
+    const q = query(collection(db, "cars"), where("userPhone", "==", user.phone));
+    const querySnapshot = await getDocs(q);
+    
+    garage.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      const car = doc.data();
+      
+      // Moy almashtirish hisobi
+      const maxKm = car.lastOil + 7000;
+      const currentEstimateKm = car.lastOil + (car.daily * 30); // Taxminiy 1 oylik yurish
+      const daysLeft = Math.floor((maxKm - car.lastOil) / car.daily);
+
+      const statusClass = daysLeft > 10 ? "status-good" : "status-bad";
+      const statusText = daysLeft > 0 ? `${daysLeft} kundan keyin almashtiring` : "Moyni almashtirish vaqti o'tdi!";
+
+      garage.innerHTML += `
+        <div class="car-card glass">
+          <h4>${car.model}</h4>
+          <span>${car.year}-yil</span><br><br>
+          <span class="${statusClass}">${statusText}</span>
+        </div>
+      `;
+    });
+  }
 </script>
 
 </body>
