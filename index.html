@@ -219,6 +219,24 @@ nav button:hover {
 .hidden {
   display: none;
 }
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+
+.status-good {
+  color: #0a8;
+  font-weight: 600;
+}
+
+.status-bad {
+  color: #d33;
+  font-weight: 600;
+}
 
 </style>
 </head>
@@ -270,6 +288,25 @@ nav button:hover {
     </div>
   </div>
 </section>
+  <!-- ====== KABINET ====== -->
+<section id="cabinet" class="brand-section hidden">
+  <h3>Mening kabinetim</h3>
+  <p>Avtomobillaringiz holatini nazorat qiling</p>
+
+  <div class="glass" style="max-width:600px;margin:40px auto;padding:30px">
+    <h4>Mashina qo‘shish</h4><br>
+
+    <input id="carModel" placeholder="Mashina modeli">
+    <input id="carYear" type="number" placeholder="Mashina yili">
+    <input id="lastOilKm" type="number" placeholder="Oxirgi moy almashtirilgan probeg">
+    <input id="dailyKm" type="number" placeholder="Kunlik o‘rtacha yurish (km)">
+
+    <button onclick="addCar()">Mashina qo‘shish</button>
+  </div>
+
+  <div id="garage" class="cards"></div>
+</section>
+
 <!-- ====== LOGIN MODAL ====== -->
 <div id="loginModal" class="modal hidden">
   <div class="modal-content glass">
@@ -309,6 +346,77 @@ function login() {
   loginBtn.textContent = "Kabinet";
   closeLogin();
 }
+  <script>
+const cabinet = document.getElementById("cabinet");
+const garage = document.getElementById("garage");
+
+function openCabinet() {
+  cabinet.classList.remove("hidden");
+  cabinet.scrollIntoView({behavior:"smooth"});
+  loadGarage();
+}
+
+loginBtn.onclick = () => {
+  const user = localStorage.getItem("user");
+  if (user) {
+    openCabinet();
+  } else {
+    loginModal.classList.remove("hidden");
+  }
+};
+
+function addCar() {
+  const model = carModel.value;
+  const year = carYear.value;
+  const lastOil = lastOilKm.value;
+  const daily = dailyKm.value;
+
+  if (!model || !year || !lastOil || !daily) {
+    alert("Barcha maydonlarni to‘ldiring");
+    return;
+  }
+
+  const todayKm = Number(lastOil) + Number(daily) * 30;
+  const maxKm = Number(lastOil) + 7000;
+
+  const daysLeft = Math.floor((maxKm - todayKm) / daily);
+
+  let status = "";
+  let className = "";
+
+  if (daysLeft >= 0) {
+    status = `${daysLeft} kun qoldi`;
+    className = "status-good";
+  } else {
+    status = `${Math.abs(daysLeft)} kun kechikdi`;
+    className = "status-bad";
+  }
+
+  const car = {model, year, status, className};
+
+  let cars = JSON.parse(localStorage.getItem("cars") || "[]");
+  cars.push(car);
+  localStorage.setItem("cars", JSON.stringify(cars));
+
+  loadGarage();
+}
+
+function loadGarage() {
+  garage.innerHTML = "";
+  const cars = JSON.parse(localStorage.getItem("cars") || "[]");
+
+  cars.forEach(car => {
+    garage.innerHTML += `
+      <div class="car-card glass">
+        <h4>${car.model}</h4>
+        <span>${car.year}-yil</span><br><br>
+        <span class="${car.className}">${car.status}</span>
+      </div>
+    `;
+  });
+}
+</script>
+
 </script>
 
 </body>
