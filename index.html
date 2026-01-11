@@ -1,803 +1,142 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Million KM | Premium Avto Servis</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --primary: #0071e3;
-            --bg: #fbfbfd;
-            --card: #ffffff;
-            --text: #1d1d1f;
-            --gray: #86868b;
-            --green: #34c759;
-            --red: #ff3b30;
-            --yellow: #ffcc00;
-            --radius: 18px;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(251, 251, 253, 0.8);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            border-bottom: 1px solid #e5e5e7;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .logo {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text);
-            cursor: pointer;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-        
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-        
-        .nav-links a:hover { color: var(--primary); }
-        
-        .nav-user {
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 140px 20px 80px;
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
-            animation: fadeIn 0.8s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .hero h1 {
-            font-size: clamp(36px, 8vw, 56px);
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 30px;
-        }
-        
-        .hero-subtitle {
-            font-size: clamp(20px, 4vw, 28px);
-            color: var(--text);
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-        
-        .hero-description {
-            font-size: clamp(16px, 3vw, 20px);
-            color: var(--gray);
-            margin-bottom: 10px;
-            line-height: 1.8;
-        }
-        
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 14px 35px;
-            background: var(--primary);
-            color: white;
-            border-radius: 980px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        .btn:hover {
-            background: #0077ed;
-            transform: scale(1.02);
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-        
-        .btn-small {
-            padding: 10px 20px;
-            font-size: 14px;
-        }
-        
-        /* Sections */
-        .section {
-            padding: 80px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .section-title {
-            font-size: clamp(32px, 6vw, 48px);
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        
-        .card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 50px 35px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-        
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-        }
-        
-        .card img {
-            width: 120px;
-            height: 80px;
-            object-fit: contain;
-            margin-bottom: 25px;
-        }
-        
-        .card h3 {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-        
-        .card p {
-            color: var(--gray);
-            margin-bottom: 30px;
-            font-size: 16px;
-        }
-        
-        /* Services */
-        .service-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 45px 30px;
-            border-radius: var(--radius);
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-        
-        .service-card:nth-child(2) {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-        
-        .service-card:hover {
-            transform: scale(1.03);
-        }
-        
-        .service-card h3 {
-            font-size: 26px;
-            margin-bottom: 12px;
-        }
-        
-        /* Benefits */
-        .benefits {
-            background: white;
-            padding: 100px 20px;
-            margin: 80px 0;
-        }
-        
-        .benefits-intro {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 50px;
-            color: var(--gray);
-            font-size: 18px;
-            line-height: 1.8;
-        }
-        
-        .benefit-item {
-            padding: 30px;
-            border-left: 4px solid var(--primary);
-            transition: all 0.3s;
-        }
-        
-        .benefit-item:hover {
-            background: #f9f9fb;
-            transform: translateX(5px);
-        }
-        
-        .benefit-item h4 {
-            font-size: 18px;
-            margin-bottom: 12px;
-        }
-        
-        .benefit-item p {
-            color: var(--gray);
-            font-size: 15px;
-            line-height: 1.7;
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.75);
-            z-index: 2000;
-            overflow-y: auto;
-            animation: fadeIn 0.3s;
-            padding: 20px;
-        }
-        
-        .modal.active {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background: white;
-            max-width: 1000px;
-            width: 100%;
-            border-radius: 24px;
-            padding: 50px;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .close-modal {
-            position: absolute;
-            right: 25px;
-            top: 25px;
-            font-size: 32px;
-            cursor: pointer;
-            color: var(--gray);
-            transition: color 0.3s;
-        }
-        
-        .close-modal:hover {
-            color: var(--text);
-        }
-        
-        /* Forms */
-        input, select, textarea {
-            width: 100%;
-            padding: 14px;
-            margin: 12px 0;
-            border: 2px solid #e5e5e7;
-            border-radius: 12px;
-            font-size: 16px;
-            font-family: inherit;
-            transition: border 0.3s;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-        
-        /* Dashboard */
-        .dashboard {
-            padding: 100px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .garage-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
-        .car-item {
-            background: white;
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-        }
-        
-        .car-item h3 {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .oil-status {
-            margin-top: 20px;
-            padding: 20px;
-            background: #f9f9fb;
-            border-radius: 12px;
-        }
-        
-        .progress-bar-container {
-            background: #e0e0e0;
-            height: 12px;
-            border-radius: 6px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: var(--green);
-            transition: width 0.5s, background 0.3s;
-        }
-        
-        .progress-bar.warning { background: var(--yellow); }
-        .progress-bar.danger { background: var(--red); }
-        
-        /* Chat */
-        .chat-widget {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 1500;
-        }
-        
-        .chat-button {
-            width: 65px;
-            height: 65px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 6px 25px rgba(0,113,227,0.4);
-            transition: transform 0.3s;
-            font-size: 28px;
-            color: white;
-        }
-        
-        .chat-button:hover {
-            transform: scale(1.1);
-        }
-        
-        .chat-box {
-            display: none;
-            position: absolute;
-            bottom: 85px;
-            right: 0;
-            width: 380px;
-            height: 520px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.25);
-            flex-direction: column;
-        }
-        
-        .chat-box.active {
-            display: flex;
-        }
-        
-        .chat-header {
-            background: var(--primary);
-            color: white;
-            padding: 22px;
-            border-radius: 20px 20px 0 0;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background: #f9f9fb;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .chat-message {
-            padding: 12px 16px;
-            border-radius: 12px;
-            max-width: 80%;
-            word-wrap: break-word;
-        }
-        
-        .chat-message.bot {
-            background: #e9e9eb;
-            align-self: flex-start;
-        }
-        
-        .chat-message.user {
-            background: var(--primary);
-            color: white;
-            align-self: flex-end;
-        }
-        
-        .chat-input-area {
-            padding: 15px;
-            border-top: 1px solid #e5e5e7;
-            display: flex;
-            gap: 10px;
-        }
-        
-        .chat-input-area input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #e5e5e7;
-            border-radius: 20px;
-            outline: none;
-            margin: 0;
-        }
-        
-        /* Admin Panel */
-        .admin-panel {
-            padding: 100px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .admin-card {
-            background: white;
-            padding: 30px;
-            border-radius: var(--radius);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            margin-bottom: 25px;
-        }
-        
-        .admin-card h3 {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        
-        /* Map */
-        .map-container {
-            width: 100%;
-            height: 550px;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.1);
-        }
-        
-        /* Footer */
-        footer {
-            background: white;
-            padding: 80px 20px;
-            text-align: center;
-            border-top: 1px solid #e5e5e7;
-        }
-        
-        .social-links {
-            margin: 25px 0;
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .social-links a {
-            color: var(--gray);
-            text-decoration: none;
-            font-size: 15px;
-            transition: color 0.3s;
-        }
-        
-        .social-links a:hover {
-            color: var(--primary);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                padding-top: 15px;
-            }
-            
-            .nav-links.mobile-active {
-                display: flex;
-            }
-            
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal-content {
-                padding: 30px 20px;
-            }
-            
-            .chat-box {
-                width: 320px;
-                height: 480px;
-            }
-            
-            .garage-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-        
-        .hidden { display: none !important; }
-    </style>
+<meta charset="UTF-8">
+<title>Million km — Chevrolet uchun premium servis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ====== ASOSIY SOZLAMALAR ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(180deg, #f9f9fb, #ffffff);
+  color: #111;
+  overflow-x: hidden;
+}
+
+/* ====== IOS-STYLE FON ====== */
+.glass {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+}
+
+/* ====== NAVBAR ====== */
+nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+nav h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+nav button {
+  padding: 10px 18px;
+  border-radius: 14px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  transition: transform .3s;
+}
+
+nav button:hover {
+  transform: scale(1.05);
+}
+
+/* ====== HERO ====== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 20px;
+}
+
+.hero h2 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  animation: fadeUp 1s ease;
+}
+
+.hero p {
+  font-size: 18px;
+  opacity: .7;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  animation: fadeUp 1.4s ease;
+}
+
+.hero button {
+  padding: 16px 34px;
+  font-size: 16px;
+  border-radius: 20px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  animation: fadeUp 1.8s ease;
+  transition: transform .3s;
+}
+
+.hero button:hover {
+  transform: scale(1.07);
+}
+
+/* ====== ANIMATSIYA ====== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
 </head>
+
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo" onclick="showPage('home')">Million km</div>
-            <div class="nav-links" id="navLinks">
-                <a onclick="scrollToId('brands')">Brendlar</a>
-                <a onclick="scrollToId('services')">Xizmatlar</a>
-                <a onclick="scrollToId('benefits')">Afzalliklar</a>
-                <a onclick="scrollToId('map')">Filiallar</a>
-                <span id="navAuth">
-                    <a onclick="openModal('auth')">Kirish</a>
-                </span>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Main Content Container -->
-    <div id="mainContent">
-        <!-- Hero -->
-        <div class="hero">
-            <h1>Million kmga xush kelibsiz</h1>
-            <p class="hero-subtitle">Bu shunchaki servis emas.</p>
-            <p class="hero-subtitle">Bu — fikrlash tarzi.</p>
-            <p class="hero-description">Ko'pchilik dvigatelni ta'mirlaydi.</p>
-            <p class="hero-description">Biz esa uni saqlab qolamiz.</p>
-            <button class="btn" onclick="openModal('auth')">Hozir boshlash</button>
-            <button class="btn btn-secondary" style="margin-left: 15px;" onclick="scrollToId('status')">Statusni tekshirish</button>
-        </div>
+<!-- ====== NAVBAR ====== -->
+<nav class="glass">
+  <h1>Million km</h1>
+  <button>Kirish</button>
+</nav>
 
-        <!-- Brands -->
-        <div id="brands" class="section">
-            <h2 class="section-title">Qo'llab-quvvatlanadigan brendlar</h2>
-            <div class="grid">
-                <div class="card" onclick="openBrandModal('chevrolet')">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Chevrolet_logo.svg/320px-Chevrolet_logo.svg.png" alt="Chevrolet">
-                    <h3>Chevrolet</h3>
-                    <p>Million km standartlariga mos eng so'nggi Chevrolet modellari</p>
-                    <button class="btn">Modellarni tanlash</button>
-                </div>
-                
-                <div class="card" onclick="openBrandModal('kia')">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Kia_logo.svg/320px-Kia_logo.svg.png" alt="Kia">
-                    <h3>Kia</h3>
-                    <p>Million km standartlariga mos eng so'nggi Kia modellari</p>
-                    <button class="btn">Modellarni tanlash</button>
-                </div>
-                
-                <div class="card" onclick="openBrandModal('liauto')">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Li_Auto_logo.svg/320px-Li_Auto_logo.svg.png" alt="Li Auto">
-                    <h3>Li Auto</h3>
-                    <p>Million km standartlariga mos eng so'nggi Li Auto modellari</p>
-                    <button class="btn">Modellarni tanlash</button>
-                </div>
-            </div>
-        </div>
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div>
+    <h2>Bu shunchaki servis emas.</h2>
+    <p>
+      Bu — fikrlash tarzi.  
+      Ko‘pchilik dvigatelni ta’mirlaydi.  
+      Biz esa uni saqlab qolamiz.
+    </p>
+    <button>Boshlash</button>
+  </div>
+</section>
 
-        <!-- Services -->
-        <div id="services" class="section">
-            <h2 class="section-title">Maxsus xizmatlar</h2>
-            <div class="grid">
-                <div class="service-card" onclick="openOrderModal('express')">
-                    <h3>Million km Express</h3>
-                    <p>Million km standardi asosida, manzilga borib xizmat ko'rsatish xizmati</p>
-                    <button class="btn" style="background: white; color: #667eea; margin-top: 20px;">Xizmatni tanlash</button>
-                </div>
-                
-                <div class="service-card" onclick="openOrderModal('fuel')">
-                    <h3>Million km Fuel</h3>
-                    <p>Million km talablariga mos, sifatli yoqilg'i yetkazib berish xizmati</p>
-                    <button class="btn" style="background: white; color: #f5576c; margin-top: 20px;">Xarid qilish</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Benefits -->
-        <div id="benefits" class="benefits">
-            <div class="section">
-                <h2 class="section-title">Nega aynan Million km xizmatini tanlashingiz kerak?</h2>
-                <p class="benefits-intro">
-                    Chunki biz shunchaki avtomobilga xizmat ko'rsatmaymiz — sizga ishonch, kafolat va qulaylik hadya qilamiz. Quyidagi 12 sababi esa buni isbotlaydi:
-                </p>
-                
-                <div class="grid">
-                    <div class="benefit-item">
-                        <h4>Million kilometrgacha kafolat — bozorda yagona!</h4>
-                        <p>Avtomobilingizga million kmgacha texnik kafolat beramiz. Bu — sifatimizga va jamoamizga bo'lgan to'liq ishonchimiz natijasi.</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Har safar moy almashtirishda — bepul avtomoyka</h4>
-                        <p>Mashinangiz nafaqat texnik jihatdan, balki tashqi ko'rinishda ham doim silliq va toza bo'ladi.</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Faqat eng yuqori sifatdagi mahsulotlar</h4>
-                        <p>Bizda faqat isbotlangan, sertifikatlangan va original mahsulotlar ishlatiladi. Sifat — muqaddas!</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Har qanday muammo — bitta joyda hal</h4>
-                        <p>Endi turli joylarga yugurish shart emas. Diagnostika, ta'mirlash, xizmat — hammasi bizda.</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>O'zbekiston bo'ylab eng tezkor va sifatli servis tarmog'i</h4>
-                        <p>Qayerda bo'lishingizdan qat'i nazar, xizmatimiz sizga yaqin.</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Eng tajribali ustalar — faqat Million km jamoasida</h4>
-                        <p>Avtomobilingizni oddiy qo'lga emas, o'z ishining ustasiga topshiring.</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Har yili — bepul to'liq diagnostika</h4>
-                        <p>Yilga bir marta avtomobilingiz sog'ligini to'liq tekshirtiring. Oldini olish — muhimroq!</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Express xizmatlar — vaqt sizniki!</h4>
-                        <p>Tez, aniq, professional. Kutish — o'tmishda qoldi.</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Avtomobil holatini kuzatish — shaxsiy tizim orqali</h4>
-                        <p>Online monitoring orqali mashinangizni masofadan nazorat qiling.</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Masofaviy diagnostika</h4>
-                        <p>Qanday muammo bo'lishidan qat'i nazar, sizga telefon orqali ham yordam beramiz.</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Har yangi mijozga — original Million km futbolkasi sovg'a</h4>
-                        <p>Siz faqat xizmat emas, jamiyatning bir qismiga aylanasiz.</p>
-                    </div>
-                    
-                    <div class="benefit-item">
-                        <h4>Doimiy mijozlarga — bonuslar va chegirmalar</h4>
-                        <p>Aqlli xizmat, doimiy sadoqat tizimi bilan birga.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Status Checker -->
-        <div id="status" class="section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 20px; margin: 0;">
-            <h2 style="font-size: clamp(32px, 6vw, 48px); font-weight: 600; text-align: center; marginBottom: 20px;">
-                Mashinangiz statusini tekshiring
-            </h2>
-            <p style="text-align: center; font-size: 18px; marginBottom: 40px; opacity: 0.9;">
-                Million km xizmatiga mos ekanligini aniqlang
-            </p>
-            
-            <div style="max-width: 550px; margin: 0 auto; background: rgba(255,255,255,0.15); padding: 40px; borderRadius: 20px; backdropFilter: blur(15px);">
-                <select id="statusBrand" style="background: white; color: var(--text);">
-                    <option value="">Brend tanlang</option>
-                    <option value="chevrolet">Chevrolet</option>
-                    <option value="kia">Kia</option>
-                    <option value="liauto">Li Auto</option>
-                </select>
-                
-                <select id="statusModel" style="background: white; color: var(--text);">
-                    <option value="">Avval brend tanlang</option>
-                </select>
-                
-                <input type="number" id="statusYear" placeholder="Mashina yili (masalan: 2022)" style="background: white;">
-                <input type="number" id="statusKm" placeholder="Yurgan masofa (km)" style="background: white;">
-                
-                <button class="btn" onclick="checkCarStatus()" style="width: 100%; margin-top: 10px; background: white; color: #667eea;">
-                    Tekshirish
-                </button>
-                
-                <div id="statusResult" style="display: none; marginTop: 25px; padding: 25px; background: rgba(255,255,255,0.25); borderRadius: 15px;"></div>
-            </div>
-        </div>
-
-        <!-- Map -->
-        <div id="map" class="section">
-            <h2 class="section-title">Million km filiallari</h2>
-            <p style="text-align: center; color: var(--gray); marginBottom: 30px;">
-                O'zbekiston bo'ylab eng yaqin filialni toping
-            </p>
-            <div class="map-container">
-                <iframe
-                    src="https://yandex.uz/map-widget/v1/?ll=70.893061,40.546387&z=15&l=map&pt=70.893061,40.546387,pm2rdm"
-                    width="100%"
-                    height="100%"
-                    frameborder="0"
-                ></iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dashboard Page -->
-    <div id="dashboardPage" class="dashboard hidden">
-        <div class="garage-header">
-            <h1 style="fontSize: 42px;">Mening Garajim</h1>
-            <button class="btn" onclick="openModal('addCar')">+ Mashina qo'shish</button>
-        </div>
-        
-        <div id="carsList" class="grid"></div>
-    </div>
-
-    <!-- Admin Page -->
-    <div id="adminPage" class="admin-panel hidden">
-        <h1 style="fontSize: 42px; marginBottom: 40px;">Admin Panel</h1>
-        
-        <div class="admin-card">
-            <h3>Bosh sahifa matni</h3>
-            <textarea id="adminHeroText" rows="5"></textarea>
-            <button class="btn btn-small" onclick="saveAdminSettings()">Saqlash</button>
-        </div>
-        
-        <div class="admin-card">
-            <h3>Barcha buyurtmalar</h3>
-            <div id="adminOrders"></div>
-        </div>
-        
-        <button class="btn btn-secondary" onclick="showPage('home')">Orqaga</button>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <h3>Million km</h3>
-        <p style="color: var(--gray); margin: 10px 0;">Dvigatel uchun yangi avlod ishonchi</p>
-        
-        <div class="social-links">
-            <a href="https://instagram.com" target="_blank">Instagram</a>
-            <a href="https://t.me" target="_blank">Telegram</a>
-            <a href="https://youtube.com" target="_blank">
+</body>
+</html>
