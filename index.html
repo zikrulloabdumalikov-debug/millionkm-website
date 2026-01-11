@@ -9,13 +9,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
        
         :root {
-            --primary: #0071e3;
-            --bg: #fbfbfd;
+            --primary: #007aff; /* Apple blue */
+            --bg: #f5f5f7; /* Light gray background */
             --card: #ffffff;
-            --text: #1d1d1f;
-            --gray: #86868b;
+            --text: #1d1d1f; /* Dark text */
+            --gray: #6e6e73; /* Lighter gray */
             --green: #34c759;
             --radius: 18px;
+            --transition: all 0.3s ease;
         }
        
         body {
@@ -26,21 +27,41 @@
             -webkit-font-smoothing: antialiased;
         }
        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+       
+        .animate {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+       
+        .animate-delay-1 { animation-delay: 0.2s; }
+        .animate-delay-2 { animation-delay: 0.4s; }
+        .animate-delay-3 { animation-delay: 0.6s; }
+       
         /* Navigation */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(251, 251, 253, 0.8);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
             z-index: 1000;
-            border-bottom: 1px solid #e5e5e7;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+       
+        nav:hover {
+            background: rgba(255, 255, 255, 0.9);
         }
        
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 15px 20px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -50,21 +71,29 @@
             font-size: 20px;
             font-weight: 600;
             color: var(--text);
+            transition: var(--transition);
+        }
+       
+        .logo:hover {
+            color: var(--primary);
         }
        
         .nav-links a {
             margin-left: 30px;
-            color: var(--text);
+            color: var(--gray);
             text-decoration: none;
             font-size: 14px;
-            transition: color 0.3s;
+            transition: var(--transition);
         }
        
-        .nav-links a:hover { color: var(--primary); }
+        .nav-links a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
        
         /* Hero Section */
         .hero {
-            padding: 120px 20px 80px;
+            padding: 140px 20px 100px;
             text-align: center;
             max-width: 900px;
             margin: 0 auto;
@@ -72,8 +101,8 @@
        
         .hero h1 {
             font-size: 56px;
-            font-weight: 700;
-            letter-spacing: -1px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
             margin-bottom: 20px;
         }
        
@@ -92,15 +121,16 @@
             border-radius: 980px;
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: var(--transition);
             border: none;
             cursor: pointer;
             font-size: 15px;
         }
        
         .btn:hover {
-            background: #0077ed;
-            transform: scale(1.02);
+            background: #0071e3;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
        
         .btn-secondary {
@@ -109,24 +139,31 @@
             border: 1px solid var(--primary);
         }
        
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+       
         /* Brand Cards */
         .brands-section {
-            padding: 60px 20px;
+            padding: 80px 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
        
         .section-title {
-            font-size: 40px;
+            font-size: 44px;
             font-weight: 600;
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
+            color: var(--text);
         }
        
         .brands-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 30px;
         }
        
         .brand-card {
@@ -134,19 +171,24 @@
             border-radius: var(--radius);
             padding: 40px 30px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            transition: var(--transition);
             cursor: pointer;
         }
        
         .brand-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
        
         .brand-logo {
             font-size: 48px;
             margin-bottom: 20px;
+            transition: var(--transition);
+        }
+       
+        .brand-card:hover .brand-logo {
+            transform: scale(1.1);
         }
        
         .brand-card h3 {
@@ -163,24 +205,22 @@
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            gap: 30px;
+            margin-top: 40px;
         }
        
         .service-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: white;
+            color: var(--text);
             padding: 35px 25px;
             border-radius: var(--radius);
-            transition: transform 0.3s;
-        }
-       
-        .service-card:nth-child(2) {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            transition: var(--transition);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
        
         .service-card:hover {
             transform: scale(1.03);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
        
         .service-card h3 {
@@ -191,8 +231,8 @@
         /* Benefits Section */
         .benefits {
             background: white;
-            padding: 80px 20px;
-            margin: 60px 0;
+            padding: 100px 20px;
+            margin: 80px 0;
         }
        
         .benefits-container {
@@ -203,13 +243,18 @@
         .benefits-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            gap: 40px;
+            margin-top: 50px;
         }
        
         .benefit-item {
             padding: 25px;
             border-left: 3px solid var(--primary);
+            transition: var(--transition);
+        }
+       
+        .benefit-item:hover {
+            transform: translateX(5px);
         }
        
         .benefit-item h4 {
@@ -230,17 +275,25 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.5);
             z-index: 2000;
             overflow-y: auto;
+            transition: opacity 0.3s ease;
         }
        
         .modal-content {
             background: white;
             max-width: 900px;
-            margin: 50px auto;
+            margin: 80px auto;
             border-radius: 20px;
             padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+       
+        .modal.show .modal-content {
+            transform: scale(1);
         }
        
         .close-modal {
@@ -248,20 +301,31 @@
             font-size: 30px;
             cursor: pointer;
             color: var(--gray);
+            transition: var(--transition);
+        }
+       
+        .close-modal:hover {
+            color: var(--text);
+            transform: rotate(90deg);
         }
        
         .car-models-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            gap: 30px;
             margin-top: 30px;
         }
        
         .car-model {
-            border: 1px solid #e5e5e7;
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: var(--radius);
             padding: 20px;
             text-align: center;
+            transition: var(--transition);
+        }
+       
+        .car-model:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
        
         .car-model h4 {
@@ -277,23 +341,28 @@
        
         .car-model ul li {
             margin: 5px 0;
+            transition: var(--transition);
+        }
+       
+        .car-model ul li:hover {
+            color: var(--text);
         }
        
         /* Status Checker */
         .status-checker {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 60px 20px;
-            color: white;
+            background: #f5f5f7;
+            padding: 80px 20px;
+            color: var(--text);
             text-align: center;
         }
        
         .checker-form {
             max-width: 500px;
             margin: 30px auto;
-            background: rgba(255,255,255,0.1);
+            background: white;
             padding: 30px;
             border-radius: var(--radius);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
        
         .checker-form select,
@@ -301,22 +370,30 @@
             width: 100%;
             padding: 15px;
             margin: 10px 0;
-            border: none;
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 10px;
             font-size: 15px;
+            transition: var(--transition);
+        }
+       
+        .checker-form select:focus,
+        .checker-form input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
         }
        
         .status-result {
             margin-top: 20px;
             padding: 20px;
-            background: rgba(255,255,255,0.2);
+            background: #f5f5f7;
             border-radius: 10px;
             display: none;
+            transition: var(--transition);
         }
        
         /* Map Section */
         .map-section {
-            padding: 80px 20px;
+            padding: 100px 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -326,7 +403,12 @@
             height: 500px;
             border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+       
+        .map-container:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
        
         /* Chat Widget */
@@ -346,12 +428,13 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,113,227,0.4);
-            transition: transform 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
+            transition: var(--transition);
         }
        
         .chat-button:hover {
             transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.3);
         }
        
         .chat-box {
@@ -363,8 +446,10 @@
             height: 500px;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
             flex-direction: column;
+            overflow: hidden;
+            transition: var(--transition);
         }
        
         .chat-header {
@@ -383,15 +468,20 @@
        
         .chat-input {
             padding: 15px;
-            border-top: 1px solid #e5e5e7;
+            border-top: 1px solid rgba(0,0,0,0.1);
         }
        
         .chat-input input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #e5e5e7;
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 20px;
             outline: none;
+            transition: var(--transition);
+        }
+       
+        .chat-input input:focus {
+            border-color: var(--primary);
         }
        
         /* Auth Modal */
@@ -402,10 +492,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.5);
             z-index: 3000;
             align-items: center;
             justify-content: center;
+            transition: opacity 0.3s ease;
         }
        
         .auth-box {
@@ -414,6 +505,13 @@
             border-radius: 20px;
             width: 90%;
             max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+       
+        .auth-modal.show .auth-box {
+            transform: scale(1);
         }
        
         .auth-box h2 {
@@ -425,17 +523,24 @@
             width: 100%;
             padding: 12px;
             margin: 10px 0;
-            border: 1px solid #e5e5e7;
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 10px;
             font-size: 15px;
+            transition: var(--transition);
+        }
+       
+        .auth-box input:focus,
+        .auth-box select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
         }
        
         /* Footer */
         footer {
             background: white;
-            padding: 60px 20px;
+            padding: 80px 20px;
             text-align: center;
-            border-top: 1px solid #e5e5e7;
+            border-top: 1px solid rgba(0,0,0,0.1);
         }
        
         .social-links {
@@ -447,18 +552,26 @@
             color: var(--gray);
             text-decoration: none;
             font-size: 14px;
+            transition: var(--transition);
+        }
+       
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
         }
        
         @media (max-width: 768px) {
             .hero h1 { font-size: 40px; }
             .nav-links { display: none; }
             .brands-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .benefits-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
+    <nav class="animate">
         <div class="nav-container">
             <div class="logo">Million km</div>
             <div class="nav-links">
@@ -472,30 +585,30 @@
     </nav>
     <!-- Hero Section -->
     <div class="hero">
-        <h1>Million km standartiga xush kelibsiz</h1>
-        <p>Dvigatel yog' yeyish muammosiga xayr ayting. Uzoq xizmat muddati. Aniq nazorat.</p>
-        <button class="btn" onclick="openAuth()">Hozir boshlash</button>
-        <button class="btn btn-secondary" style="margin-left: 10px;" onclick="scrollTo('#status')">Statusni tekshirish</button>
+        <h1 class="animate animate-delay-1">Million km standartiga xush kelibsiz</h1>
+        <p class="animate animate-delay-2">Dvigatel yog' yeyish muammosiga xayr ayting. Uzoq xizmat muddati. Aniq nazorat.</p>
+        <button class="btn animate animate-delay-3" onclick="openAuth()">Hozir boshlash</button>
+        <button class="btn btn-secondary animate animate-delay-3" style="margin-left: 10px;" onclick="scrollToSection('#status')">Statusni tekshirish</button>
     </div>
     <!-- Brands Section -->
     <div id="brands" class="brands-section">
-        <h2 class="section-title">Qo'llab-quvvatlanadigan brendlar</h2>
+        <h2 class="section-title animate">Qo'llab-quvvatlanadigan brendlar</h2>
         <div class="brands-grid">
-            <div class="brand-card" onclick="openBrandModal('chevrolet')">
+            <div class="brand-card animate animate-delay-1" onclick="openBrandModal('chevrolet')">
                 <div class="brand-logo">🚗</div>
                 <h3>Chevrolet</h3>
                 <p>Million km standartlariga mos eng so'nggi Chevrolet modellari</p>
                 <button class="btn">Modellarni tanlash</button>
             </div>
            
-            <div class="brand-card" onclick="openBrandModal('kia')">
+            <div class="brand-card animate animate-delay-2" onclick="openBrandModal('kia')">
                 <div class="brand-logo">🚙</div>
                 <h3>Kia</h3>
                 <p>Million km standartlariga mos eng so'nggi Kia modellari</p>
                 <button class="btn">Modellarni tanlash</button>
             </div>
            
-            <div class="brand-card" onclick="openBrandModal('liauto')">
+            <div class="brand-card animate animate-delay-3" onclick="openBrandModal('liauto')">
                 <div class="brand-logo">⚡</div>
                 <h3>Li Auto</h3>
                 <p>Million km standartlariga mos eng so'nggi Li Auto modellari</p>
@@ -505,86 +618,86 @@
     </div>
     <!-- Services Section -->
     <div id="services" class="brands-section">
-        <h2 class="section-title">Maxsus xizmatlar</h2>
+        <h2 class="section-title animate">Maxsus xizmatlar</h2>
         <div class="services-grid">
-            <div class="service-card">
+            <div class="service-card animate animate-delay-1">
                 <h3>🚀 Million km Express</h3>
                 <p>Million km standardi asosida, manzilga borib xizmat ko'rsatish</p>
-                <button class="btn" style="background: white; color: #667eea; margin-top: 15px;">Xizmatni tanlash</button>
+                <button class="btn" style="background: var(--primary); color: white; margin-top: 15px;">Xizmatni tanlash</button>
             </div>
            
-            <div class="service-card">
+            <div class="service-card animate animate-delay-2">
                 <h3>⛽ Million km Fuel</h3>
                 <p>Million km talablariga mos, sifatli yoqilg'i yetkazib berish</p>
-                <button class="btn" style="background: white; color: #f5576c; margin-top: 15px;">Xarid qilish</button>
+                <button class="btn" style="background: var(--primary); color: white; margin-top: 15px;">Xarid qilish</button>
             </div>
         </div>
     </div>
     <!-- Benefits Section -->
     <div id="benefits" class="benefits">
         <div class="benefits-container">
-            <h2 class="section-title">Nega Million km?</h2>
-            <p style="text-align: center; color: var(--gray); max-width: 700px; margin: 0 auto;">
+            <h2 class="section-title animate">Nega Million km?</h2>
+            <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); max-width: 700px; margin: 0 auto;">
                 Biz shunchaki avtomobilga xizmat ko'rsatmaymiz — sizga ishonch, kafolat va qulaylik hadya qilamiz
             </p>
            
             <div class="benefits-grid">
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-1">
                     <h4>1️⃣ Million km gacha kafolat</h4>
                     <p>Avtomobilingizga million kmgacha texnik kafolat beramiz</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-2">
                     <h4>2️⃣ Bepul avtomoyka</h4>
                     <p>Har safar moy almashtirishda bepul avtomoyka xizmati</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-3">
                     <h4>3️⃣ Original mahsulotlar</h4>
                     <p>Faqat sertifikatlangan va original mahsulotlar</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-1">
                     <h4>4️⃣ Bitta joyda barcha xizmat</h4>
                     <p>Diagnostika, ta'mirlash, xizmat — hammasi bizda</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-2">
                     <h4>5️⃣ Tezkor servis tarmog'i</h4>
                     <p>O'zbekiston bo'ylab eng tez va sifatli xizmat</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-3">
                     <h4>6️⃣ Tajribali ustalar</h4>
                     <p>O'z ishining professionallariga ishoning</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-1">
                     <h4>7️⃣ Yillik diagnostika</h4>
                     <p>Har yili bepul to'liq diagnostika xizmati</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-2">
                     <h4>8️⃣ Express xizmatlar</h4>
                     <p>Vaqtingizni tejang - tez va professional</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-3">
                     <h4>9️⃣ Online monitoring</h4>
                     <p>Avtomobil holatini shaxsiy tizim orqali kuzating</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-1">
                     <h4>🔟 Masofaviy diagnostika</h4>
                     <p>Telefon orqali ham yordam beramiz</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-2">
                     <h4>1️⃣1️⃣ Sovg'a futbolka</h4>
                     <p>Har yangi mijozga original Million km futbolkasi</p>
                 </div>
                
-                <div class="benefit-item">
+                <div class="benefit-item animate animate-delay-3">
                     <h4>1️⃣2️⃣ Bonuslar tizimi</h4>
                     <p>Doimiy mijozlarga chegirmalar va bonuslar</p>
                 </div>
@@ -593,10 +706,10 @@
     </div>
     <!-- Status Checker -->
     <div id="status" class="status-checker">
-        <h2 style="font-size: 40px; margin-bottom: 10px;">Mashinangiz statusini tekshiring</h2>
-        <p style="font-size: 18px; opacity: 0.9;">Million km xizmatiga mos ekanligini aniqlang</p>
+        <h2 class="animate" style="font-size: 40px; margin-bottom: 10px;">Mashinangiz statusini tekshiring</h2>
+        <p class="animate animate-delay-1" style="font-size: 18px; opacity: 0.9;">Million km xizmatiga mos ekanligini aniqlang</p>
        
-        <div class="checker-form">
+        <div class="checker-form animate animate-delay-2">
             <select id="brandSelect">
                 <option value="">Brend tanlang</option>
                 <option value="chevrolet">Chevrolet</option>
@@ -610,7 +723,7 @@
             <input type="number" id="carYear" placeholder="Mashina yili (masalan: 2022)">
             <input type="number" id="carKm" placeholder="Yurgan masofa (km)">
            
-            <button class="btn" onclick="checkStatus()" style="width: 100%; margin-top: 10px; background: white; color: #667eea;">
+            <button class="btn" onclick="checkStatus()" style="width: 100%; margin-top: 10px; background: var(--primary); color: white;">
                 Tekshirish
             </button>
            
@@ -619,11 +732,11 @@
     </div>
     <!-- Map Section -->
     <div id="filiallar" class="map-section">
-        <h2 class="section-title">Million km filiallari</h2>
-        <p style="text-align: center; color: var(--gray); margin-bottom: 30px;">
+        <h2 class="section-title animate">Million km filiallari</h2>
+        <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); margin-bottom: 30px;">
             O'zbekiston bo'ylab eng yaqin filialni toping
         </p>
-        <div class="map-container">
+        <div class="map-container animate animate-delay-2">
             <iframe
                 src="https://yandex.uz/map-widget/v1/?ll=69.2401,41.2995&z=12"
                 width="100%"
@@ -633,7 +746,7 @@
         </div>
     </div>
     <!-- Footer -->
-    <footer>
+    <footer class="animate">
         <h3>Million km</h3>
         <p style="color: var(--gray); margin: 10px 0;">Dvigatel uchun yangi avlod ishonchi</p>
        
@@ -802,11 +915,14 @@
             }
            
             modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
         }
 
         // Close modal
         function closeModal() {
-            document.getElementById('brandModal').style.display = 'none';
+            const modal = document.getElementById('brandModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
         }
 
         // Open auth modal
@@ -815,12 +931,16 @@
                 alert('Siz allaqachon ro\'yxatdan o\'tgansiz!');
                 return;
             }
-            document.getElementById('authModal').style.display = 'flex';
+            const modal = document.getElementById('authModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
         }
 
         // Close auth modal
         function closeAuth() {
-            document.getElementById('authModal').style.display = 'none';
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
         }
 
         // Register function
@@ -876,7 +996,7 @@
             // User message
             const userMsg = document.createElement('p');
             userMsg.className = 'user-message';
-            userMsg.style.cssText = 'background: #f0f0f0; padding: 10px; border-radius: 10px; margin: 5px 0; text-align: right;';
+            userMsg.style.cssText = 'background: #f5f5f7; padding: 10px; border-radius: 10px; margin: 5px 0; text-align: right;';
             userMsg.textContent = message;
             messages.appendChild(userMsg);
            
@@ -895,7 +1015,7 @@
         }
 
         // Scroll to section
-        function scrollTo(section) {
+        function scrollToSection(section) {
             document.querySelector(section).scrollIntoView({ behavior: 'smooth' });
         }
     </script>
