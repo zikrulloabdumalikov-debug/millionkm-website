@@ -114,6 +114,51 @@ nav button:hover {
     transform: translateY(0);
   }
 }
+  /* ====== CHEVROLET SECTION ====== */
+.brand-section {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.brand-section h3 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.brand-section p {
+  opacity: .6;
+  margin-bottom: 40px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.car-card {
+  padding: 30px;
+  transition: transform .4s, box-shadow .4s;
+  cursor: pointer;
+}
+
+.car-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+}
+
+.car-card h4 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.car-card span {
+  opacity: .6;
+  font-size: 14px;
+}
+
 </style>
 </head>
 
@@ -135,6 +180,33 @@ nav button:hover {
       Biz esa uni saqlab qolamiz.
     </p>
     <button>Boshlash</button>
+  </div>
+</section>
+<!-- ====== CHEVROLET ====== -->
+<section class="brand-section">
+  <h3>Chevrolet avtomobillari</h3>
+  <p>Million km standarti uchun mos modellar</p>
+
+  <div class="cards">
+    <div class="car-card glass">
+      <h4>Cobalt</h4>
+      <span>1.5 Benzin</span>
+    </div>
+
+    <div class="car-card glass">
+      <h4>Nexia</h4>
+      <span>1.5 Benzin</span>
+    </div>
+
+    <div class="car-card glass">
+      <h4>Tracker</h4>
+      <span>1.2 Turbo</span>
+    </div>
+
+    <div class="car-card glass">
+      <h4>Malibu</h4>
+      <span>2.0 Turbo</span>
+    </div>
   </div>
 </section>
 
