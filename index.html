@@ -135,7 +135,10 @@ input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; bo
 
 <nav class="glass">
   <h1>Million km</h1>
-  <button id="navLoginBtn">Kirish</button>
+  <div style="display: flex; align-items: center;">
+    <button id="adminBtn" class="hidden" style="background: #555; margin-right: 10px;" onclick="showAdminPanel()">Admin</button>
+    <button id="navLoginBtn">Kirish</button>
+  </div>
 </nav>
 
 <section class="hero">
@@ -169,6 +172,12 @@ input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; bo
   <div id="garage" class="cards"></div>
 </section>
 
+<section id="adminPage" class="brand-section hidden">
+  <h3>Admin Boshqaruv</h3>
+  <p>Tizimdagi barcha mijozlar</p>
+  <div id="allCarsList" class="cards" style="margin-top: 30px;"></div>
+</section>
+
 <div id="loginModal" class="modal hidden">
   <div class="modal-content glass">
     <h3>Kirish</h3>
@@ -182,7 +191,7 @@ input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; bo
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, query, where, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
@@ -196,12 +205,20 @@ input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; bo
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  // Telegram sozlamalari (Sizga xabar borishi uchun)
+  const TG_TOKEN = "7724108873:AAGkS-K-H-O899mS8m8j9j-k-k-k"; // Bu yerga bot tokeningizni qo'ying
+  const TG_CHAT_ID = "123456789"; // Bu yerga o'z chat ID ingizni qo'ying
+
   const navLoginBtn = document.getElementById('navLoginBtn');
+  const adminBtn = document.getElementById('adminBtn');
   const cabinet = document.getElementById("cabinet");
+  const adminPage = document.getElementById("adminPage");
   const garage = document.getElementById("garage");
   const loginModal = document.getElementById("loginModal");
 
-  // Auth tekshiruvi
+  // Admin telefon raqamini bu yerda belgilang
+  const ADMIN_PHONE = "+998901234567"; 
+
   window.checkAuth = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) { openCabinet(); } else { loginModal.classList.remove("hidden"); }
@@ -209,7 +226,6 @@ input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; bo
 
   window.closeLogin = () => loginModal.classList.add("hidden");
 
-  // Kirish funksiyasi
   document.getElementById("loginSubmitBtn").onclick = () => {
     const name = document.getElementById("userName").value;
     const phone = document.getElementById("userPhone").value;
@@ -220,14 +236,19 @@ input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; bo
     } else { alert("Iltimos to'ldiring!"); }
   };
 
-  // Kabinetni ochish
   function openCabinet() {
     const user = JSON.parse(localStorage.getItem("user"));
     document.getElementById("welcomeText").textContent = `Xush kelibsiz, ${user.name}!`;
     cabinet.classList.remove("hidden");
+    
+    // Admin tugmasini ko'rsatish
+    if (user.phone === ADMIN_PHONE) {
+      adminBtn.classList.remove("hidden");
+    }
+
     navLoginBtn.textContent = "Chiqish";
     navLoginBtn.onclick = logout;
-    loadGarageRealtime(user.phone); // Ma'lumotlarni yuklash
+    loadGarageRealtime(user.phone);
     cabinet.scrollIntoView({behavior: "smooth"});
   }
 
@@ -236,7 +257,7 @@ input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; bo
     location.reload();
   }
 
-  // Mashina qo'shish
+  // Mashina qo'shish va Telegramga yuborish
   document.getElementById("addCarBtn").onclick = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const model = document.getElementById("carModel").value;
@@ -247,10 +268,14 @@ input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; bo
     if(model && year && lastOil && daily) {
       await addDoc(collection(db, "cars"), {
         userPhone: user.phone,
+        userName: user.name,
         model, year, lastOil, daily,
         createdAt: new Date()
       });
-      // Formalarni tozalash
+
+      // Telegramga xabar yuborish (ixtiyoriy bosqich)
+      // sendTelegramMessage(`Yangi mashina: ${model}\nMijoz: ${user.name}\nTel: ${user.phone}`);
+
       document.getElementById("carModel").value = "";
       document.getElementById("carYear").value = "";
       document.getElementById("lastOilKm").value = "";
@@ -258,39 +283,51 @@ input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; bo
     } else { alert("Barcha maydonlarni to'ldiring!"); }
   };
 
-  // REAL-TIME: Bazadan o'qish va Snapshot orqali darrov ko'rsatish
   function loadGarageRealtime(phone) {
     const q = query(collection(db, "cars"), where("userPhone", "==", phone));
-    
     onSnapshot(q, (snapshot) => {
       garage.innerHTML = "";
       snapshot.forEach((carDoc) => {
         const car = carDoc.data();
         const id = carDoc.id;
-
-        const nextService = car.lastOil + 7000;
         const daysLeft = Math.floor(7000 / car.daily);
-
         garage.innerHTML += `
           <div class="car-card glass">
             <button class="delete-btn" onclick="deleteCar('${id}')">O'chirish</button>
             <h4>${car.model}</h4>
             <span>${car.year}-yil</span><br><br>
-            <p>Servis: <b>${nextService} km</b></p>
-            <span class="${daysLeft < 10 ? 'status-bad' : 'status-good'}">
-              ~ ${daysLeft} kun qoldi
-            </span>
+            <p>Servis: <b>${car.lastOil + 7000} km</b></p>
+            <span class="${daysLeft < 10 ? 'status-bad' : 'status-good'}">~ ${daysLeft} kun qoldi</span>
           </div>
         `;
       });
     });
   }
 
-  // Mashinani o'chirish
+  // Admin Panel funksiyasi
+  window.showAdminPanel = async () => {
+    adminPage.classList.remove("hidden");
+    const allCarsList = document.getElementById("allCarsList");
+    allCarsList.innerHTML = "Yuklanmoqda...";
+
+    const querySnapshot = await getDocs(collection(db, "cars"));
+    allCarsList.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      const car = doc.data();
+      allCarsList.innerHTML += `
+        <div class="car-card glass" style="border: 1px solid #eee">
+          <p style="font-size:12px; color:blue;">${car.userName || 'Mijoz'}</p>
+          <p><b>Tel:</b> ${car.userPhone}</p>
+          <h4>${car.model}</h4>
+          <span>${car.year}-yil | ${car.daily} km/kun</span>
+        </div>
+      `;
+    });
+    adminPage.scrollIntoView({behavior: "smooth"});
+  };
+
   window.deleteCar = async (id) => {
-    if(confirm("Ushbu mashinani o'chirmoqchimisiz?")) {
-      await deleteDoc(doc(db, "cars", id));
-    }
+    if(confirm("O'chirmoqchimisiz?")) { await deleteDoc(doc(db, "cars", id)); }
   };
 
   navLoginBtn.onclick = checkAuth;
