@@ -1,8 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Million km - Chevrolet, Kia va Li Auto uchun premium avto servis. Dvigatelni million km gacha saqlang.">
+    <meta name="keywords" content="avto servis, Chevrolet, Kia, Li Auto, moy almashtirish, kafolat">
     <title>Million KM | Premium Avto Servis</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,6 +17,7 @@
             --text: #1d1d1f; /* Dark text */
             --gray: #6e6e73; /* Lighter gray */
             --green: #34c759;
+            --red: #ff3b30;
             --radius: 18px;
             --transition: all 0.3s ease;
         }
@@ -142,6 +146,15 @@
             background: var(--primary);
             color: white;
             transform: scale(1.05);
+        }
+       
+        .btn-danger {
+            background: var(--red);
+            color: white;
+        }
+       
+        .btn-danger:hover {
+            background: #ff2d20;
         }
        
         /* Brand Cards */
@@ -557,6 +570,7 @@
             padding: 30px;
             border-radius: var(--radius);
             transition: var(--transition);
+            position: relative;
         }
        
         .cabinet-card:hover {
@@ -600,6 +614,86 @@
             box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
         }
        
+        /* Service Modal */
+        #serviceModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+       
+        .service-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+       
+        .service-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+       
+        /* Admin Panel */
+        #adminPanel {
+            display: none;
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+       
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+       
+        .admin-card {
+            background: var(--bg);
+            padding: 30px;
+            border-radius: var(--radius);
+        }
+       
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            border-radius: 10px;
+            color: white;
+            z-index: 4000;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+       
+        .toast.show {
+            opacity: 1;
+        }
+       
+        .toast.success {
+            background: var(--green);
+        }
+       
+        .toast.error {
+            background: var(--red);
+        }
+       
         /* Footer */
         footer {
             background: white;
@@ -632,6 +726,7 @@
             .services-grid { grid-template-columns: 1fr; }
             .benefits-grid { grid-template-columns: 1fr; }
             .cabinet-grid { grid-template-columns: 1fr; }
+            .admin-grid { grid-template-columns: 1fr; }
         }
 
         .hidden { display: none; }
@@ -649,6 +744,7 @@
                 <a href="#filiallar">Filiallar</a>
                 <a href="#" id="authLink" onclick="openAuth()">Kirish</a>
                 <a href="#" id="cabinetLink" class="hidden" onclick="openCabinet()">Kabinet</a>
+                <a href="#" id="adminLink" class="hidden" onclick="openAdminPanel()">Admin</a>
             </div>
         </div>
     </nav>
@@ -692,13 +788,13 @@
             <div class="service-card animate animate-delay-1">
                 <h3>🚀 Million km Express</h3>
                 <p>Million km standardi asosida, manzilga borib xizmat ko'rsatish</p>
-                <button class="btn" style="background: var(--primary); color: white; margin-top: 15px;">Xizmatni tanlash</button>
+                <button class="btn" onclick="openServiceModal('express')" style="margin-top: 15px;">Xizmatni tanlash</button>
             </div>
            
             <div class="service-card animate animate-delay-2">
                 <h3>⛽ Million km Fuel</h3>
                 <p>Million km talablariga mos, sifatli yoqilg'i yetkazib berish</p>
-                <button class="btn" style="background: var(--primary); color: white; margin-top: 15px;">Xarid qilish</button>
+                <button class="btn" onclick="openServiceModal('fuel')" style="margin-top: 15px;">Xarid qilish</button>
             </div>
         </div>
     </div>
@@ -783,14 +879,15 @@
                 <option value="">Brend tanlang</option>
                 <option value="chevrolet">Chevrolet</option>
                 <option value="kia">Kia</option>
+                <option value="liauto">Li Auto</option>
             </select>
            
             <select id="modelSelect">
                 <option value="">Avval brend tanlang</option>
             </select>
            
-            <input type="number" id="carYear" placeholder="Mashina yili (masalan: 2022)">
-            <input type="number" id="carKm" placeholder="Yurgan masofa (km)">
+            <input type="number" id="carYear" min="1900" max="2026" placeholder="Mashina yili (masalan: 2022)">
+            <input type="number" id="carKm" min="0" placeholder="Yurgan masofa (km)">
            
             <button class="btn" onclick="checkStatus()" style="width: 100%; margin-top: 10px; background: var(--primary); color: white;">
                 Tekshirish
@@ -822,13 +919,19 @@
         <div class="add-car-form animate animate-delay-2">
             <h3>Mashina qo‘shish</h3>
             <input id="carModel" placeholder="Mashina modeli">
-            <input id="carYear" type="number" placeholder="Mashina yili">
-            <input id="lastOilKm" type="number" placeholder="Oxirgi moy almashtirilgan probeg">
-            <input id="dailyKm" type="number" placeholder="Kunlik o‘rtacha yurish (km)">
+            <input id="carYear" type="number" min="1900" max="2026" placeholder="Mashina yili">
+            <input id="lastOilKm" type="number" min="0" placeholder="Oxirgi moy almashtirilgan probeg">
+            <input id="dailyKm" type="number" min="1" placeholder="Kunlik o‘rtacha yurish (km)">
             <button class="btn" style="width:100%; margin-top:15px;" id="addCarBtn">Mashina qo‘shish</button>
         </div>
        
         <div id="garage" class="cabinet-grid"></div>
+    </section>
+    <!-- Admin Panel -->
+    <section id="adminPanel" class="hidden">
+        <h2 class="section-title animate">Admin Panel</h2>
+        <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); margin-bottom: 40px;">Barcha mijozlar va mashinalar</p>
+        <div id="allUsersList" class="admin-grid"></div>
     </section>
     <!-- Footer -->
     <footer class="animate">
@@ -874,26 +977,41 @@
     <div id="authModal" class="auth-modal">
         <div class="auth-box">
             <span class="close-modal" onclick="closeAuth()">&times;</span>
-            <h2>Ro'yxatdan o'tish</h2>
-            <input type="text" placeholder="Ismingiz" id="userName">
-            <input type="email" placeholder="Email" id="userEmail">
-            <input type="tel" placeholder="Telefon raqami" id="userPhone">
+            <h2 id="authTitle">Ro'yxatdan o'tish</h2>
+            <input type="text" id="userName" placeholder="Ismingiz">
+            <input type="email" id="userEmail" placeholder="Email">
+            <input type="password" id="userPassword" placeholder="Parol">
+            <input type="tel" id="userPhone" placeholder="Telefon raqami">
             <select id="userGender">
                 <option value="">Jinsni tanlang</option>
                 <option value="male">Erkak</option>
                 <option value="female">Ayol</option>
             </select>
-            <button class="btn" onclick="register()" style="width: 100%; margin-top: 15px;">
+            <button class="btn" id="authSubmitBtn" style="width: 100%; margin-top: 15px;">
                 Ro'yxatdan o'tish
             </button>
+            <p style="text-align: center; margin-top: 10px;">Allaqachon ro'yxatdan o'tganmisiz? <a href="#" onclick="switchToLogin()">Kirish</a></p>
         </div>
     </div>
+    <div id="serviceModal" class="modal">
+        <div class="service-box">
+            <span class="close-modal" onclick="closeServiceModal()">&times;</span>
+            <h2 id="serviceTitle">Xizmatni buyurtma qilish</h2>
+            <input type="text" id="serviceName" placeholder="Ismingiz">
+            <input type="tel" id="servicePhone" placeholder="Telefon raqamingiz">
+            <input type="text" id="serviceAddress" placeholder="Manzilingiz (express uchun)">
+            <button class="btn" onclick="submitService()" style="width: 100%; margin-top: 15px;">Buyurtma berish</button>
+        </div>
+    </div>
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
        
         const firebaseConfig = {
-            apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM", // Sample config, replace if needed
+            apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
             authDomain: "millionkm-a42ee.firebaseapp.com",
             projectId: "millionkm-a42ee",
             storageBucket: "millionkm-a42ee.firebasestorage.app",
@@ -901,6 +1019,7 @@
             appId: "1:594685468082:web:e44c081e0617f0016998ab"
         };
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
        
         const TG_TOKEN = "7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM";
@@ -934,7 +1053,7 @@
         async function sendTelegramMessage(message) {
             const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
             try {
-                await fetch(url, {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -943,9 +1062,18 @@
                         parse_mode: 'Markdown'
                     })
                 });
+                if (!response.ok) throw new Error('Telegram xato');
             } catch (error) {
-                console.error('Telegram xabar yuborishda xato:', error);
+                showToast('Telegram xabari yuborilmadi', 'error');
             }
+        }
+       
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show', type);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
        
         // Brand select change event
@@ -972,9 +1100,9 @@
             const km = parseInt(document.getElementById('carKm').value);
             const result = document.getElementById('statusResult');
            
-            if (!brand || !model || !year || !km) {
+            if (!brand || !model || isNaN(year) || isNaN(km) || year < 1900 || year > 2026 || km < 0) {
                 result.style.display = 'block';
-                result.innerHTML = '❌ Iltimos, barcha maydonlarni to\'ldiring';
+                result.innerHTML = '❌ Iltimos, barcha maydonlarni to\'g\'ri to\'ldiring';
                 return;
             }
            
@@ -1029,6 +1157,7 @@
                             <li>Maksimal yosh: ${data.maxAge} yil</li>
                             <li>Maksimal km: ${data.maxKm} km</li>
                         </ul>
+                        <button class="btn btn-secondary" style="margin-top: 10px;" onclick="selectModel('${brand}', '${model}')">Xizmatga o'tish</button>
                     `;
                     container.appendChild(card);
                 });
@@ -1036,6 +1165,13 @@
            
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
+        }
+       
+        // Select model action
+        function selectModel(brand, model) {
+            showToast(`Tanlangan: ${brand} - ${model}. Xizmat buyurtma qilish uchun kabinetga o'ting.`, 'success');
+            closeModal();
+            openCabinet();
         }
        
         // Close modal
@@ -1046,12 +1182,32 @@
         }
        
         // Open auth modal
-        function openAuth() {
-            if (localStorage.getItem('user')) {
-                openCabinet();
-                return;
-            }
+        function openAuth(isLogin = false) {
             const modal = document.getElementById('authModal');
+            const title = document.getElementById('authTitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const passwordInput = document.getElementById('userPassword');
+            const genderSelect = document.getElementById('userGender');
+            const link = modal.querySelector('p a');
+           
+            if (isLogin) {
+                title.textContent = 'Kirish';
+                submitBtn.textContent = 'Kirish';
+                submitBtn.onclick = loginUser;
+                passwordInput.style.display = 'block';
+                genderSelect.style.display = 'none';
+                link.textContent = 'Ro\'yxatdan o\'tish';
+                link.onclick = () => openAuth(false);
+            } else {
+                title.textContent = 'Ro\'yxatdan o\'tish';
+                submitBtn.textContent = 'Ro\'yxatdan o\'tish';
+                submitBtn.onclick = registerUser;
+                passwordInput.style.display = 'block';
+                genderSelect.style.display = 'block';
+                link.textContent = 'Kirish';
+                link.onclick = () => openAuth(true);
+            }
+           
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
         }
@@ -1063,96 +1219,163 @@
             setTimeout(() => modal.style.display = 'none', 300);
         }
        
-        // Register function
-        async function register() {
-            const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const phone = document.getElementById('userPhone').value;
+        // Register user
+        async function registerUser() {
+            const name = document.getElementById('userName').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value.trim();
+            const phone = document.getElementById('userPhone').value.trim();
             const gender = document.getElementById('userGender').value;
            
-            if (!name || !email || !phone || !gender) {
-                alert('Barcha maydonlarni to\'ldiring!');
+            if (!name || !email || !password || !phone || !gender || password.length < 6) {
+                showToast('Barcha maydonlarni to\'g\'ri to\'ldiring! Parol kamida 6 belgidan iborat bo\'lsin.', 'error');
                 return;
             }
            
-            const user = { name, email, phone, gender };
-            localStorage.setItem('user', JSON.stringify(user));
-           
-            // Save to Firebase
-            await addDoc(collection(db, "users"), user);
-           
-            // Send to Telegram
-            await sendTelegramMessage(`Yangi foydalanuvchi: ${name}\nEmail: ${email}\nTelefon: ${phone}\nJins: ${gender}`);
-           
-            closeAuth();
-            alert('Ro\'yxatdan o\'tdingiz! Kabinetga xush kelibsiz.');
-            document.getElementById('authLink').textContent = 'Kabinet';
-            document.getElementById('authLink').onclick = openCabinet;
-            document.getElementById('cabinetLink').classList.remove('hidden');
-            openCabinet();
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                const userData = { uid: user.uid, name, email, phone, gender, isAdmin: false, createdAt: new Date() };
+                await addDoc(collection(db, "users"), userData);
+                await sendTelegramMessage(`Yangi foydalanuvchi: ${name}\nEmail: ${email}\nTelefon: ${phone}\nJins: ${gender}`);
+                showToast('Ro\'yxatdan o\'tdingiz!', 'success');
+                closeAuth();
+                updateAuthUI(user);
+            } catch (error) {
+                showToast(`Xato: ${error.message}`, 'error');
+            }
         }
+       
+        // Login user
+        async function loginUser() {
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value.trim();
+           
+            if (!email || !password) {
+                showToast('Email va parolni kiriting!', 'error');
+                return;
+            }
+           
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                showToast('Muvaffaqiyatli kirdingiz!', 'success');
+                closeAuth();
+                updateAuthUI(userCredential.user);
+            } catch (error) {
+                showToast(`Xato: ${error.message}`, 'error');
+            }
+        }
+       
+        // Logout
+        async function logoutUser() {
+            try {
+                await signOut(auth);
+                showToast('Chiqdiz!', 'success');
+                updateAuthUI(null);
+                document.getElementById('cabinet').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'none';
+            } catch (error) {
+                showToast(`Xato: ${error.message}`, 'error');
+            }
+        }
+       
+        // Update UI based on auth state
+        function updateAuthUI(user) {
+            const authLink = document.getElementById('authLink');
+            const cabinetLink = document.getElementById('cabinetLink');
+            const adminLink = document.getElementById('adminLink');
+           
+            if (user) {
+                authLink.textContent = 'Chiqish';
+                authLink.onclick = logoutUser;
+                cabinetLink.classList.remove('hidden');
+                checkIfAdmin(user.uid);
+            } else {
+                authLink.textContent = 'Kirish';
+                authLink.onclick = () => openAuth(true);
+                cabinetLink.classList.add('hidden');
+                adminLink.classList.add('hidden');
+            }
+        }
+       
+        // Check if admin
+        async function checkIfAdmin(uid) {
+            const q = query(collection(db, "users"), where("uid", "==", uid));
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+                const userData = querySnapshot.docs[0].data();
+                if (userData.isAdmin) {
+                    document.getElementById('adminLink').classList.remove('hidden');
+                }
+            }
+        }
+       
+        // Auth state listener
+        onAuthStateChanged(auth, (user) => {
+            updateAuthUI(user);
+            if (user) {
+                openCabinet();
+            }
+        });
        
         // Open cabinet
         function openCabinet() {
-            const user = JSON.parse(localStorage.getItem('user'));
+            const user = auth.currentUser;
             if (!user) {
-                openAuth();
+                openAuth(true);
                 return;
             }
            
             document.getElementById('cabinet').style.display = 'block';
-            document.getElementById('welcomeText').textContent = `Xush kelibsiz, ${user.name}! Email: ${user.email}, Telefon: ${user.phone}, Jins: ${user.gender}`;
-            loadGarage(user.phone);
+            loadUserInfo(user.uid);
+            loadGarage(user.uid);
             scrollToSection('#cabinet');
         }
        
-        // Logout function
-        function logout() {
-            localStorage.removeItem('user');
-            alert('Chiqdiz!');
-            document.getElementById('authLink').textContent = 'Kirish';
-            document.getElementById('authLink').onclick = openAuth;
-            document.getElementById('cabinetLink').classList.add('hidden');
-            document.getElementById('cabinet').style.display = 'none';
-        }
-       
-        // Check if logged in on load
-        window.onload = function() {
-            const user = localStorage.getItem('user');
-            if (user) {
-                document.getElementById('authLink').textContent = 'Kabinet';
-                document.getElementById('authLink').onclick = openCabinet;
-                document.getElementById('cabinetLink').classList.remove('hidden');
+        // Load user info
+        async function loadUserInfo(uid) {
+            try {
+                const q = query(collection(db, "users"), where("uid", "==", uid));
+                const querySnapshot = await getDocs(q);
+                if (!querySnapshot.empty) {
+                    const userData = querySnapshot.docs[0].data();
+                    document.getElementById('welcomeText').innerHTML = `Xush kelibsiz, ${userData.name}!<br>Email: ${userData.email}, Telefon: ${userData.phone}, Jins: ${userData.gender}`;
+                }
+            } catch (error) {
+                showToast(`Ma'lumot yuklanmadi: ${error.message}`, 'error');
             }
-        };
+        }
        
         // Add car button
         document.getElementById('addCarBtn').onclick = async () => {
-            const user = JSON.parse(localStorage.getItem('user'));
-            const model = document.getElementById('carModel').value;
-            const year = document.getElementById('carYear').value;
+            const user = auth.currentUser;
+            const model = document.getElementById('carModel').value.trim();
+            const year = parseInt(document.getElementById('carYear').value);
             const lastOil = Number(document.getElementById('lastOilKm').value);
             const daily = Number(document.getElementById('dailyKm').value);
            
-            if (model && year && lastOil && daily) {
-                const carData = { userPhone: user.phone, userName: user.name, model, year, lastOil, daily, createdAt: new Date() };
+            if (!model || isNaN(year) || isNaN(lastOil) || isNaN(daily) || year < 1900 || year > 2026 || lastOil < 0 || daily < 1) {
+                showToast('Barcha maydonlarni to\'g\'ri to\'ldiring!', 'error');
+                return;
+            }
+           
+            try {
+                const carData = { userUid: user.uid, model, year, lastOil, daily, createdAt: new Date() };
                 await addDoc(collection(db, "cars"), carData);
-               
-                // Send to Telegram
-                await sendTelegramMessage(`Yangi mashina qo'shildi:\nModel: ${model}\nYil: ${year}\nMijoz: ${user.name}\nTelefon: ${user.phone}`);
-               
+                await sendTelegramMessage(`Yangi mashina qo'shildi:\nModel: ${model}\nYil: ${year}\nMijoz UID: ${user.uid}`);
+                showToast('Mashina qo\'shildi!', 'success');
                 document.getElementById('carModel').value = '';
                 document.getElementById('carYear').value = '';
                 document.getElementById('lastOilKm').value = '';
                 document.getElementById('dailyKm').value = '';
-            } else {
-                alert('Barcha maydonlarni to\'ldiring!');
+            } catch (error) {
+                showToast(`Xato: ${error.message}`, 'error');
             }
         };
        
         // Load garage realtime
-        function loadGarage(phone) {
-            const q = query(collection(db, "cars"), where("userPhone", "==", phone));
+        function loadGarage(uid) {
+            const q = query(collection(db, "cars"), where("userUid", "==", uid));
             onSnapshot(q, (snapshot) => {
                 const garage = document.getElementById('garage');
                 garage.innerHTML = '';
@@ -1160,30 +1383,114 @@
                     const car = carDoc.data();
                     const id = carDoc.id;
                     const daysLeft = Math.floor(7000 / car.daily);
-                    const statusClass = daysLeft < 10 ? 'status-bad' : 'status-good';
-                    const color = daysLeft < 10 ? '#f5576c' : '#34c759';
+                    const statusColor = daysLeft < 10 ? var(--red) : var(--green);
                    
                     garage.innerHTML += `
                         <div class="cabinet-card">
-                            <button class="btn btn-secondary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 12px;" onclick="deleteCar('${id}')">O'chirish</button>
+                            <button class="btn btn-danger" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 12px;" onclick="deleteCar('${id}')">O'chirish</button>
                             <h4>${car.model} (${car.year}-yil)</h4>
                             <p>Oxirgi moy: ${car.lastOil} km</p>
                             <p>Servis: <b>${car.lastOil + 7000} km</b></p>
                             <p>Kunlik yurish: ${car.daily} km</p>
-                            <p style="color: ${color};">~ ${daysLeft} kun qoldi</p>
+                            <p style="color: ${statusColor};">~ ${daysLeft} kun qoldi</p>
                         </div>
                     `;
                 });
+            }, (error) => {
+                showToast(`Garaj yuklanmadi: ${error.message}`, 'error');
             });
         }
        
         // Delete car
         window.deleteCar = async (id) => {
             if (confirm("O'chirmoqchimisiz?")) {
-                await deleteDoc(doc(db, "cars", id));
-                await sendTelegramMessage(`Mashina o'chirildi: ID ${id}`);
+                try {
+                    await deleteDoc(doc(db, "cars", id));
+                    await sendTelegramMessage(`Mashina o'chirildi: ID ${id}`);
+                    showToast('Mashina o\'chirildi!', 'success');
+                } catch (error) {
+                    showToast(`Xato: ${error.message}`, 'error');
+                }
             }
         };
+       
+        // Open service modal
+        let currentService = '';
+        function openServiceModal(service) {
+            currentService = service;
+            const modal = document.getElementById('serviceModal');
+            const title = document.getElementById('serviceTitle');
+            title.textContent = service === 'express' ? 'Express Xizmat Buyurtma' : 'Fuel Xarid Qilish';
+            document.getElementById('serviceAddress').style.display = service === 'express' ? 'block' : 'none';
+            modal.style.display = 'flex';
+        }
+       
+        // Close service modal
+        function closeServiceModal() {
+            const modal = document.getElementById('serviceModal');
+            modal.style.display = 'none';
+        }
+       
+        // Submit service
+        async function submitService() {
+            const user = auth.currentUser;
+            if (!user) {
+                showToast('Avval kirish qiling!', 'error');
+                return;
+            }
+           
+            const name = document.getElementById('serviceName').value.trim();
+            const phone = document.getElementById('servicePhone').value.trim();
+            const address = document.getElementById('serviceAddress').value.trim();
+           
+            if (!name || !phone || (currentService === 'express' && !address)) {
+                showToast('Barcha maydonlarni to\'ldiring!', 'error');
+                return;
+            }
+           
+            try {
+                const serviceData = { userUid: user.uid, service: currentService, name, phone, address: currentService === 'express' ? address : '', createdAt: new Date() };
+                await addDoc(collection(db, "services"), serviceData);
+                await sendTelegramMessage(`Yangi xizmat buyurtma: ${currentService}\nIsm: ${name}\nTelefon: ${phone}\nManzil: ${address || 'Yo\'q'}`);
+                showToast('Buyurtma qabul qilindi!', 'success');
+                closeServiceModal();
+            } catch (error) {
+                showToast(`Xato: ${error.message}`, 'error');
+            }
+        }
+       
+        // Open admin panel
+        function openAdminPanel() {
+            const user = auth.currentUser;
+            if (!user) return;
+           
+            document.getElementById('adminPanel').style.display = 'block';
+            loadAllUsers();
+            scrollToSection('#adminPanel');
+        }
+       
+        // Load all users for admin
+        async function loadAllUsers() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "users"));
+                const list = document.getElementById('allUsersList');
+                list.innerHTML = '';
+                querySnapshot.forEach((docSnap) => {
+                    const userData = docSnap.data();
+                    list.innerHTML += `
+                        <div class="admin-card">
+                            <h4>${userData.name}</h4>
+                            <p>Email: ${userData.email}</p>
+                            <p>Telefon: ${userData.phone}</p>
+                            <p>Jins: ${userData.gender}</p>
+                            <p>Admin: ${userData.isAdmin ? 'Ha' : 'Yo\'q'}</p>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                showToast(`Admin ma'lumot yuklanmadi: ${error.message}`, 'error');
+            }
+        }
        
         // Toggle chat
         function toggleChat() {
@@ -1191,7 +1498,7 @@
             chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
         }
        
-        // Send message (simulate bot, but send to Telegram group)
+        // Send message
         async function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
@@ -1230,3 +1537,4 @@
     </script>
 </body>
 </html>
+```
