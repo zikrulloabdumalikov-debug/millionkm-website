@@ -944,23 +944,35 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
         
-        // Telegram
-        async function sendTelegramMessage(message) {
-            try {
-                await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: TG_CHAT_ID,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
-            } catch (error) {
-                console.error('Telegram error:', error);
-            }
+        // Telegram (TO‘G‘RILANGAN)
+async function sendTelegramMessage(message) {
+    const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                chat_id: TG_CHAT_ID,
+                text: message,
+                disable_web_page_preview: true
+            })
+        });
+
+        const result = await response.json();
+
+        if (!result.ok) {
+            console.error("Telegram API xato:", result);
+            showToast("Telegramga yuborilmadi", "error");
         }
-        
+    } catch (err) {
+        console.error("Ulanish xato:", err);
+        showToast("Telegram bilan aloqa yo‘q", "error");
+    }
+}
+     
         // Brand select
         document.getElementById('brandSelect').addEventListener('change', function() {
             const brand = this.value;
