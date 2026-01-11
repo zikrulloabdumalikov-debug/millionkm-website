@@ -158,6 +158,67 @@ nav button:hover {
   opacity: .6;
   font-size: 14px;
 }
+/* ====== MODAL ====== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 360px;
+  padding: 30px;
+  text-align: center;
+  animation: fadeUp .4s ease;
+}
+
+.modal-content h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  font-size: 14px;
+  opacity: .6;
+  margin-bottom: 20px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modal-content span {
+  display: block;
+  margin-top: 14px;
+  font-size: 14px;
+  opacity: .6;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
 
 </style>
 </head>
@@ -209,6 +270,46 @@ nav button:hover {
     </div>
   </div>
 </section>
+<!-- ====== LOGIN MODAL ====== -->
+<div id="loginModal" class="modal hidden">
+  <div class="modal-content glass">
+    <h3>Kirish</h3>
+    <p>Davom etish uchun ma’lumotlaringizni kiriting</p>
+
+    <input type="text" id="userName" placeholder="Ismingiz">
+    <input type="tel" id="userPhone" placeholder="Telefon raqam">
+
+    <button onclick="login()">Kirish</button>
+    <span onclick="closeLogin()">Yopish</span>
+  </div>
+</div>
+<script>
+const loginModal = document.getElementById('loginModal');
+const loginBtn = document.querySelector('nav button');
+
+loginBtn.onclick = () => {
+  loginModal.classList.remove('hidden');
+};
+
+function closeLogin() {
+  loginModal.classList.add('hidden');
+}
+
+function login() {
+  const name = document.getElementById('userName').value;
+  const phone = document.getElementById('userPhone').value;
+
+  if (!name || !phone) {
+    alert("Iltimos, barcha maydonlarni to‘ldiring");
+    return;
+  }
+
+  localStorage.setItem("user", JSON.stringify({name, phone}));
+
+  loginBtn.textContent = "Kabinet";
+  closeLogin();
+}
+</script>
 
 </body>
 </html>
