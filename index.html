@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Million km - Chevrolet, Kia va Li Auto uchun premium avto servis. Dvigatelni million km gacha saqlang.">
-    <meta name="keywords" content="avto servis, Chevrolet, Kia, Li Auto, moy almashtirish, kafolat">
     <title>Million KM | Premium Avto Servis</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-       
+        
         :root {
             --primary: #007aff;
             --bg: #f5f5f7;
@@ -18,9 +16,8 @@
             --green: #34c759;
             --red: #ff3b30;
             --radius: 18px;
-            --transition: all 0.3s ease;
         }
-       
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
             background: var(--bg);
@@ -28,17 +25,21 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
-       
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-       
-        .animate { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
+        
+        .animate {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
         .animate-delay-1 { animation-delay: 0.2s; }
         .animate-delay-2 { animation-delay: 0.4s; }
         .animate-delay-3 { animation-delay: 0.6s; }
-       
+        
         nav {
             position: fixed;
             top: 0;
@@ -47,9 +48,8 @@
             backdrop-filter: blur(20px);
             z-index: 1000;
             border-bottom: 1px solid rgba(0,0,0,0.1);
-            transition: var(--transition);
         }
-       
+        
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -58,101 +58,282 @@
             justify-content: space-between;
             align-items: center;
         }
-       
+        
         .logo {
             font-size: 20px;
             font-weight: 600;
             color: var(--text);
+            cursor: pointer;
         }
-       
+        
         .nav-links a {
             margin-left: 30px;
             color: var(--gray);
             text-decoration: none;
             font-size: 14px;
-            transition: var(--transition);
+            cursor: pointer;
         }
-       
-        .nav-links a:hover { color: var(--primary); transform: translateY(-2px); }
-       
-        .hero { padding: 140px 20px 100px; text-align: center; max-width: 900px; margin: 0 auto; }
-        .hero h1 { font-size: 56px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 20px; }
-        .hero p { font-size: 24px; color: var(--gray); margin-bottom: 40px; }
-       
+        
+        .hero {
+            padding: 140px 20px 100px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: clamp(36px, 8vw, 56px);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: clamp(18px, 4vw, 24px);
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
         .btn {
+            display: inline-block;
             padding: 12px 30px;
             background: var(--primary);
             color: white;
             border-radius: 980px;
-            font-weight: 500;
+            text-decoration: none;
             border: none;
             cursor: pointer;
-            transition: var(--transition);
+            font-size: 15px;
+            transition: all 0.3s;
         }
-       
+        
         .btn:hover {
-            background: #0071e3;
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
-       
-        .btn-secondary { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
-        .btn-secondary:hover { background: var(--primary); color: white; transform: scale(1.05); }
-        .btn-danger { background: var(--red); color: white; }
-        .btn-danger:hover { background: #ff2d20; }
-       
-        .brands-section, .benefits, .map-section, #cabinet, #adminPanel { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
-        .section-title { font-size: 44px; font-weight: 600; text-align: center; margin-bottom: 60px; }
-       
-        .brands-grid, .cabinet-grid, .admin-grid {
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-danger {
+            background: var(--red);
+        }
+        
+        .brands-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: clamp(32px, 6vw, 44px);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .brands-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
-       
-        .brand-card, .cabinet-card, .admin-card {
+        
+        .brand-card {
             background: var(--card);
             border-radius: var(--radius);
-            padding: 30px;
+            padding: 40px 30px;
             text-align: center;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-            transition: var(--transition);
+            cursor: pointer;
+            transition: all 0.3s;
         }
-       
-        .brand-card:hover, .cabinet-card:hover, .admin-card:hover {
+        
+        .brand-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
-       
-        .modal, #serviceModal, #editCarModal {
+        
+        .brand-logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .brand-card h3 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .brand-card p {
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: var(--radius);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        .benefits {
+            background: white;
+            padding: 100px 20px;
+            margin: 80px 0;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .benefit-item {
+            padding: 25px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .benefit-item h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .benefit-item p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .modal {
             display: none;
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0,0,0,0.5);
             z-index: 2000;
-            align-items: center;
-            justify-content: center;
+            overflow-y: auto;
         }
-       
-        .modal-content, .service-box, .edit-car-box {
+        
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
             background: white;
             max-width: 900px;
-            width: 90%;
+            margin: 80px auto;
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            position: relative;
         }
-       
+        
         .close-modal {
-            float: right;
+            position: absolute;
+            right: 20px;
+            top: 20px;
             font-size: 30px;
             cursor: pointer;
             color: var(--gray);
         }
-       
-        .close-modal:hover { color: var(--text); transform: rotate(90deg); }
-       
-        .chat-widget { position: fixed; bottom: 20px; right: 20px; z-index: 1500; }
+        
+        .car-models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .car-model {
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .car-model ul {
+            list-style: none;
+            color: var(--gray);
+            font-size: 13px;
+            text-align: left;
+            margin: 10px 0;
+        }
+        
+        .status-checker {
+            background: #f5f5f7;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .checker-form {
+            max-width: 500px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        
+        .checker-form select,
+        .checker-form input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            font-size: 15px;
+        }
+        
+        .status-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f5f5f7;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .map-section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 500px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1500;
+        }
+        
         .chat-button {
             width: 60px;
             height: 60px;
@@ -163,8 +344,10 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
+            color: white;
+            font-size: 24px;
         }
-       
+        
         .chat-box {
             display: none;
             position: absolute;
@@ -177,11 +360,135 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.1);
             flex-direction: column;
         }
-       
-        .chat-header { background: var(--primary); color: white; padding: 20px; border-radius: 20px 20px 0 0; }
-        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; }
-        .chat-input { padding: 15px; border-top: 1px solid rgba(0,0,0,0.1); }
-       
+        
+        .chat-box.show {
+            display: flex;
+        }
+        
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            font-weight: 600;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .chat-input input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 20px;
+        }
+        
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auth-modal.show {
+            display: flex;
+        }
+        
+        .auth-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .auth-box input,
+        .auth-box select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            font-size: 15px;
+        }
+        
+        #cabinet {
+            display: none;
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .cabinet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .cabinet-card {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .add-car-form {
+            max-width: 500px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        
+        .add-car-form input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            font-size: 15px;
+        }
+        
+        #adminPanel {
+            display: none;
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .admin-card {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        
         .toast {
             position: fixed;
             top: 20px;
@@ -191,234 +498,860 @@
             color: white;
             z-index: 4000;
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.3s;
         }
-       
-        .toast.show { opacity: 1; }
-        .toast.success { background: var(--green); }
-        .toast.error { background: var(--red); }
-       
-        footer { background: white; padding: 80px 20px; text-align: center; border-top: 1px solid rgba(0,0,0,0.1); }
-       
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        .toast.success {
+            background: var(--green);
+        }
+        
+        .toast.error {
+            background: var(--red);
+        }
+        
+        footer {
+            background: white;
+            padding: 80px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            margin: 0 15px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .hidden { display: none; }
+        
         @media (max-width: 768px) {
-            .hero h1 { font-size: 40px; }
-            .nav-links { display: none; }
-            .brands-grid, .cabinet-grid, .admin-grid { grid-template-columns: 1fr; }
-            .chat-box { width: 100%; right: 0; bottom: 0; height: 100vh; border-radius: 0; }
+            .brands-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .cabinet-grid { grid-template-columns: 1fr; }
+            .admin-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+    <nav class="animate">
+        <div class="nav-container">
+            <div class="logo">Million km</div>
+            <div class="nav-links">
+                <a href="#brands">Brendlar</a>
+                <a href="#services">Xizmatlar</a>
+                <a href="#benefits">Afzalliklar</a>
+                <a href="#filiallar">Filiallar</a>
+                <a href="#" id="authLink">Kirish</a>
+                <a href="#" id="cabinetLink" class="hidden">Kabinet</a>
+                <a href="#" id="adminLink" class="hidden">Admin</a>
+            </div>
+        </div>
+    </nav>
 
-<nav class="animate">
-    <div class="nav-container">
-        <div class="logo">Million km</div>
-        <div class="nav-links">
-            <a href="#brands">Brendlar</a>
-            <a href="#services">Xizmatlar</a>
-            <a href="#benefits">Afzalliklar</a>
-            <a href="#filiallar">Filiallar</a>
-            <a href="#" id="authLink">Kirish</a>
-            <a href="#" id="cabinetLink" class="hidden">Kabinet</a>
-            <a href="#" id="adminLink" class="hidden">Admin</a>
+    <div class="hero">
+        <h1 class="animate animate-delay-1">Million kmga xush kelibsiz</h1>
+        <p class="animate animate-delay-2">Bu shunchaki servis emas.</p>
+        <p class="animate animate-delay-2">Bu — fikrlash tarzi.</p>
+        <p class="animate animate-delay-2">Ko'pchilik dvigatelni ta'mirlaydi.</p>
+        <p class="animate animate-delay-2">Biz esa uni saqlab qolamiz.</p>
+        <button class="btn animate animate-delay-3" id="startBtn">Hozir boshlash</button>
+        <button class="btn btn-secondary animate animate-delay-3" style="margin-left: 10px;" id="statusBtn">Statusni tekshirish</button>
+    </div>
+
+    <div id="brands" class="brands-section">
+        <h2 class="section-title animate">Qo'llab-quvvatlanadigan brendlar</h2>
+        <div class="brands-grid">
+            <div class="brand-card animate animate-delay-1" data-brand="chevrolet">
+                <div class="brand-logo">🚗</div>
+                <h3>Chevrolet</h3>
+                <p>Million km standartlariga mos eng so'nggi Chevrolet modellari</p>
+                <button class="btn">Modellarni tanlash</button>
+            </div>
+            
+            <div class="brand-card animate animate-delay-2" data-brand="kia">
+                <div class="brand-logo">🚙</div>
+                <h3>Kia</h3>
+                <p>Million km standartlariga mos eng so'nggi Kia modellari</p>
+                <button class="btn">Modellarni tanlash</button>
+            </div>
+            
+            <div class="brand-card animate animate-delay-3" data-brand="liauto">
+                <div class="brand-logo">⚡</div>
+                <h3>Li Auto</h3>
+                <p>Million km standartlariga mos eng so'nggi Li Auto modellari</p>
+                <button class="btn">Modellarni tanlash</button>
+            </div>
         </div>
     </div>
-</nav>
 
-<!-- Hero, Brands, Services, Benefits, Status Checker, Map bo'limlari o'zgarmagan holda qoldirildi -->
-
-<!-- Cabinet Section -->
-<section id="cabinet" class="hidden">
-    <h2 class="section-title animate">Mening Kabinetim</h2>
-    <p id="welcomeText" class="animate animate-delay-1" style="text-align:center; color:var(--gray); margin-bottom:40px;"></p>
-    
-    <div class="add-car-form animate animate-delay-2">
-        <h3>Mashina qo‘shish</h3>
-        <input id="addCarModel" placeholder="Mashina modeli">
-        <input id="addCarYear" type="number" min="1900" placeholder="Yili">
-        <input id="addLastOilKm" type="number" min="0" placeholder="Oxirgi moy (km)">
-        <input id="addDailyKm" type="number" min="1" placeholder="Kunlik yurish (km)">
-        <button class="btn" id="addCarSubmit" style="width:100%;margin-top:15px;">Qo‘shish</button>
+    <div id="services" class="brands-section">
+        <h2 class="section-title animate">Maxsus xizmatlar</h2>
+        <div class="services-grid">
+            <div class="service-card animate animate-delay-1">
+                <h3>🚀 Million km Express</h3>
+                <p>Million km standardi asosida, manzilga borib xizmat ko'rsatish</p>
+                <button class="btn" style="margin-top: 15px;" data-service="express">Xizmatni tanlash</button>
+            </div>
+            
+            <div class="service-card animate animate-delay-2">
+                <h3>⛽ Million km Fuel</h3>
+                <p>Million km talablariga mos, sifatli yoqilg'i yetkazib berish</p>
+                <button class="btn" style="margin-top: 15px;" data-service="fuel">Xarid qilish</button>
+            </div>
+        </div>
     </div>
-    
-    <div id="garage" class="cabinet-grid"></div>
-</section>
 
-<!-- Admin Panel -->
-<section id="adminPanel" class="hidden">
-    <h2 class="section-title animate">Admin Panel</h2>
-    <div id="allUsers"></div>
-    <div id="allCars"></div>
-    <div id="allServices"></div>
-</section>
+    <div id="benefits" class="benefits">
+        <div class="brands-section">
+            <h2 class="section-title animate">Nega aynan Million km xizmatini tanlashingiz kerak?</h2>
+            <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); max-width: 700px; margin: 0 auto 40px;">
+                Chunki biz shunchaki avtomobilga xizmat ko'rsatmaymiz — sizga ishonch, kafolat va qulaylik hadya qilamiz. Quyidagi 12 sababi esa buni isbotlaydi:
+            </p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-item animate animate-delay-1">
+                    <h4>Million kilometrgacha kafolat — bozorda yagona!</h4>
+                    <p>Avtomobilingizga million kmgacha texnik kafolat beramiz. Bu — sifatimizga va jamoamizga bo'lgan to'liq ishonchimiz natijasi.</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-2">
+                    <h4>Har safar moy almashtirishda — bepul avtomoyka</h4>
+                    <p>Mashinangiz nafaqat texnik jihatdan, balki tashqi ko'rinishda ham doim silliq va toza bo'ladi.</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-3">
+                    <h4>Faqat eng yuqori sifatdagi mahsulotlar</h4>
+                    <p>Bizda faqat isbotlangan, sertifikatlangan va original mahsulotlar ishlatiladi. Sifat — muqaddas!</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-1">
+                    <h4>Har qanday muammo — bitta joyda hal</h4>
+                    <p>Endi turli joylarga yugurish shart emas. Diagnostika, ta'mirlash, xizmat — hammasi bizda.</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-2">
+                    <h4>O'zbekiston bo'ylab eng tezkor va sifatli servis tarmog'i</h4>
+                    <p>Qayerda bo'lishingizdan qat'i nazar, xizmatimiz sizga yaqin.</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-3">
+                    <h4>Eng tajribali ustalar — faqat Million km jamoasida</h4>
+                    <p>Avtomobilingizni oddiy qo'lga emas, o'z ishining ustasiga topshiring.</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-1">
+                    <h4>Har yili — bepul to'liq diagnostika</h4>
+                    <p>Yilga bir marta avtomobilingiz sog'ligini to'liq tekshirtiring. Oldini olish — muhimroq!</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-2">
+                    <h4>Express xizmatlar — vaqt sizniki!</h4>
+                    <p>Tez, aniq, professional. Kutish — o'tmishda qoldi.</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-3">
+                    <h4>Avtomobil holatini kuzatish — shaxsiy tizim orqali</h4>
+                    <p>Online monitoring orqali mashinangizni masofadan nazorat qiling.</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-1">
+                    <h4>Masofaviy diagnostika</h4>
+                    <p>Qanday muammo bo'lishidan qat'i nazar, sizga telefon orqali ham yordam beramiz.</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-2">
+                    <h4>Har yangi mijozga — original Million km futbolkasi sovg'a</h4>
+                    <p>Siz faqat xizmat emas, jamiyatning bir qismiga aylanasiz.</p>
+                </div>
+                
+                <div class="benefit-item animate animate-delay-3">
+                    <h4>Doimiy mijozlarga — bonuslar va chegirmalar</h4>
+                    <p>Aqlli xizmat, doimiy sadoqat tizimi bilan birga.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!-- Modals (auth, service, editCar) o'zgarmagan -->
+    <div id="status" class="status-checker">
+        <h2 class="animate" style="font-size: clamp(28px, 6vw, 40px); margin-bottom: 10px;">Mashinangiz statusini tekshiring</h2>
+        <p class="animate animate-delay-1" style="font-size: 18px;">Million km xizmatiga mos ekanligini aniqlang</p>
+        
+        <div class="checker-form animate animate-delay-2">
+            <select id="brandSelect">
+                <option value="">Brend tanlang</option>
+                <option value="chevrolet">Chevrolet</option>
+                <option value="kia">Kia</option>
+                <option value="liauto">Li Auto</option>
+            </select>
+            
+            <select id="modelSelect">
+                <option value="">Avval brend tanlang</option>
+            </select>
+            
+            <input type="number" id="carYear" placeholder="Mashina yili (masalan: 2022)">
+            <input type="number" id="carKm" placeholder="Yurgan masofa (km)">
+            
+            <button class="btn" id="checkStatusBtn" style="width: 100%; margin-top: 10px;">
+                Tekshirish
+            </button>
+            
+            <div id="statusResult" class="status-result"></div>
+        </div>
+    </div>
 
-<script>
-// Global funksiyalarni window ga bog'laymiz
-window.openAuth = openAuth;
-window.checkStatus = checkStatus;
-window.openCabinet = openCabinet;
-window.openAdminPanel = openAdminPanel;
-window.openServiceModal = openServiceModal;
-window.closeModal = closeModal;
-window.closeAuth = closeAuth;
-window.closeServiceModal = closeServiceModal;
-window.deleteCar = deleteCar;
-window.toggleChat = toggleChat;
-window.sendMessage = sendMessage;
-window.scrollToSection = scrollToSection;
+    <div id="filiallar" class="map-section">
+        <h2 class="section-title animate">Million km filiallari</h2>
+        <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); margin-bottom: 30px;">
+            O'zbekiston bo'ylab eng yaqin filialni toping
+        </p>
+        <div class="map-container animate animate-delay-2">
+            <iframe
+                src="https://yandex.uz/map-widget/v1/?ll=70.893061,40.546387&z=15&l=map&pt=70.893061,40.546387,pm2rdm"
+                width="100%"
+                height="100%"
+                frameborder="0">
+            </iframe>
+        </div>
+    </div>
 
-// Firebase imports
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, getDocs, updateDoc, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <section id="cabinet" class="hidden">
+        <h2 class="section-title">Mening Kabinetim</h2>
+        <p id="welcomeText" style="text-align: center; color: var(--gray); margin-bottom: 40px;"></p>
+        
+        <div class="add-car-form">
+            <h3>Mashina qo'shish</h3>
+            <input id="carModel" placeholder="Mashina modeli">
+            <input id="carYearInput" type="number" placeholder="Mashina yili">
+            <input id="lastOilKm" type="number" placeholder="Oxirgi moy almashtirilgan probeg">
+            <input id="dailyKm" type="number" placeholder="Kunlik o'rtacha yurish (km)">
+            <button class="btn" style="width:100%; margin-top:15px;" id="addCarBtn">Mashina qo'shish</button>
+        </div>
+        
+        <div id="garage" class="cabinet-grid"></div>
+    </section>
 
-const firebaseConfig = {
-    apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
-    authDomain: "millionkm-a42ee.firebaseapp.com",
-    projectId: "millionkm-a42ee",
-    storageBucket: "millionkm-a42ee.firebasestorage.app",
-    messagingSenderId: "594685468082",
-    appId: "1:594685468082:web:e44c081e0617f0016998ab"
-};
+    <section id="adminPanel" class="hidden">
+        <h2 class="section-title">Admin Panel</h2>
+        <h3>Foydalanuvchilar</h3>
+        <div id="allUsersList" class="admin-grid"></div>
+        <h3>Mashinalar</h3>
+        <div id="allCarsList" class="admin-grid"></div>
+    </section>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    <footer class="animate">
+        <h3>Million km</h3>
+        <p style="color: var(--gray); margin: 10px 0;">Dvigatel uchun yangi avlod ishonchi</p>
+        
+        <div class="social-links">
+            <a href="#">Instagram</a>
+            <a href="#">Telegram</a>
+            <a href="#">YouTube</a>
+        </div>
+        
+        <p style="color: var(--gray); font-size: 14px; margin-top: 20px;">
+            📞 Call centr: +998 71 123 45 67
+        </p>
+    </footer>
 
-const TG_TOKEN = "7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM";
-const TG_CHAT_ID = "-1003461463026";
+    <div class="chat-widget">
+        <div class="chat-box" id="chatBox">
+            <div class="chat-header">
+                Million km Support
+                <span style="float: right; cursor: pointer;" id="closeChat">✕</span>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <p style="background: #f5f5f7; padding: 10px; border-radius: 10px;">Salom! Sizga qanday yordam bera olaman?</p>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Xabar yozing...">
+            </div>
+        </div>
+        <div class="chat-button" id="chatButton">
+            💬
+        </div>
+    </div>
 
-// Telegram xabar yuborish
-async function sendTelegramMessage(text) {
-    try {
-        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                chat_id: TG_CHAT_ID,
-                text,
-                parse_mode: "Markdown"
-            })
+    <div id="brandModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeBrandModal">&times;</span>
+            <h2 id="modalTitle">Modellar</h2>
+            <div id="carModelsContainer" class="car-models-grid"></div>
+        </div>
+    </div>
+
+    <div id="authModal" class="auth-modal">
+        <div class="auth-box">
+            <span class="close-modal" id="closeAuthModal">&times;</span>
+            <h2 id="authTitle">Ro'yxatdan o'tish</h2>
+            <input type="text" id="userName" placeholder="Ismingiz">
+            <input type="email" id="userEmail" placeholder="Email">
+            <input type="password" id="userPassword" placeholder="Parol">
+            <input type="tel" id="userPhone" placeholder="Telefon raqami">
+            <select id="userGender">
+                <option value="">Jinsni tanlang</option>
+                <option value="male">Erkak</option>
+                <option value="female">Ayol</option>
+            </select>
+            <button class="btn" id="authSubmitBtn" style="width: 100%; margin-top: 15px;">
+                Ro'yxatdan o'tish
+            </button>
+            <p style="text-align: center; margin-top: 10px;">
+                <a href="#" id="switchAuthLink" style="color: var(--primary);">Kirish</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, getDocs, updateDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0zyqs1BrDKKS7kkq3nqmJSj_VpM6CVcM",
+            authDomain: "millionkm-a42ee.firebaseapp.com",
+            projectId: "millionkm-a42ee",
+            storageBucket: "millionkm-a42ee.firebasestorage.app",
+            messagingSenderId: "594685468082",
+            appId: "1:594685468082:web:e44c081e0617f0016998ab"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        const TG_TOKEN = "7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM";
+        const TG_CHAT_ID = "-1003461463026";
+        
+        const carData = {
+            chevrolet: {
+                'Nexia 3': { maxAge: 5, maxKm: 100000, desc: 'Oddiy, ishonchli va shahar hayoti uchun mo\'ljallangan avtomobil.' },
+                'Cobalt': { maxAge: 5, maxKm: 100000, desc: 'Keng salon, yumshoq yurish va doimiy qulaylik bilan har kuni yangi maromda.' },
+                'Gentra': { maxAge: 5, maxKm: 100000, desc: 'Har yo\'l sharoitida siz bilan bo\'lishga mos, barqaror va oddiy haydovchilik tajribasi.' },
+                'Onix': { maxAge: 3, maxKm: 50000, desc: 'Zamonaviy interyer va yorqin dizaynga ega, hayotingizni qulaylashtiruvchi o\'rtacha klass avtomobil.' },
+                'Tracker': { maxAge: 3, maxKm: 50000, desc: 'Sport uslubida, shahar burchaklari va kundalik yo\'llarni ochib beruvchi ixcham SUV.' },
+                'Malibu': { maxAge: 5, maxKm: 50000, desc: 'Barqaror va tekis yurish, keng salon va ishonchli texnologiyalar bilan oila va ish uchun ideal.' },
+                'Equinox': { maxAge: 3, maxKm: 50000, desc: 'Yuqori texnologiya, zamonaviy dizayn va haydash zavqini birlashtirgan SUV.' },
+                'Traverse': { maxAge: 3, maxKm: 50000, desc: 'Katta yurishlar va oilaviy sayohatlar uchun keng SUV, har safar yangi ufqlarni kashf eting.' },
+                'Tahoe': { maxAge: 3, maxKm: 50000, desc: 'Premium klass SUV, kuch va qulaylikni bir avtomobilda his eting.' }
+            },
+            kia: {
+                'Sonet': { maxAge: 3, maxKm: 50000, desc: 'Shahar uchun yaratilgan ixcham SUV. Zamonaviy, qulay va energiya tejovchi.' },
+                'K5': { maxAge: 3, maxKm: 50000, desc: 'Uslub va kuch birlashgan biznes sedan. Barqaror yurish, keng salon va ilg\'or texnologiyalar.' },
+                'Sportage': { maxAge: 3, maxKm: 50000, desc: 'Ishonchli va keng SUV. Oila uchun ideal, xavfsiz va zamonaviy.' }
+            },
+            liauto: {
+                'L9': { maxAge: 3, maxKm: 50000, desc: 'Premium elektr SUV. Zamonaviy texnologiya va qulaylikning uyg\'unligi.' },
+                'L7': { maxAge: 3, maxKm: 50000, desc: 'Oilaviy elektr avtomobil. Keng salon va yuqori xavfsizlik.' },
+                'L6': { maxAge: 3, maxKm: 50000, desc: 'Ixcham elektr SUV. Shahar va uzoq sayohatlar uchun ideal.' }
+            }
+        };
+        
+        let isLogin = false;
+        
+        // Toast
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        
+        // Telegram
+        async function sendTelegramMessage(message) {
+            try {
+                await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TG_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (error) {
+                console.error('Telegram error:', error);
+            }
+        }
+        
+        // Brand select
+        document.getElementById('brandSelect').addEventListener('change', function() {
+            const brand = this.value;
+            const modelSelect = document.getElementById('modelSelect');
+            modelSelect.innerHTML = '<option value="">Model tanlang</option>';
+            
+            if (brand && carData[brand]) {
+                Object.keys(carData[brand]).forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+            }
         });
-    } catch (e) {
-        console.error("Telegram xato:", e);
-    }
-}
-
-// Toast
-function showToast(msg, type = 'success') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = `toast show ${type}`;
-    setTimeout(() => t.className = 'toast', 4000);
-}
-
-// Validatsiya yordamchilari
-function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-function isValidPhone(phone) { return /^\+?\d{9,13}$/.test(phone.replace(/\s/g,'')); }
-
-// Auth modal ochish
-function openAuth(isLogin = false) {
-    const m = document.getElementById('authModal');
-    document.getElementById('authTitle').textContent = isLogin ? 'Kirish' : 'Ro\'yxatdan o\'tish';
-    document.getElementById('authSubmitBtn').textContent = isLogin ? 'Kirish' : 'Ro\'yxatdan o\'tish';
-    document.getElementById('userPassword').required = true;
-    document.getElementById('userGender').style.display = isLogin ? 'none' : 'block';
-    document.getElementById('authSubmitBtn').onclick = isLogin ? loginUser : registerUser;
-    m.style.display = 'flex';
-    setTimeout(() => m.classList.add('show'), 10);
-}
-
-// Barcha onclick funksiyalari window orqali global qilinadi
-window.openAuth = openAuth;
-window.closeAuth = function() {
-    const m = document.getElementById('authModal');
-    m.classList.remove('show');
-    setTimeout(() => m.style.display = 'none', 300);
-};
-
-// Register
-async function registerUser() {
-    const name = document.getElementById('userName').value.trim();
-    const email = document.getElementById('userEmail').value.trim();
-    const pass = document.getElementById('userPassword').value;
-    const phone = document.getElementById('userPhone').value.trim();
-    const gender = document.getElementById('userGender').value;
-
-    if (!name || !isValidEmail(email) || pass.length < 6 || !isValidPhone(phone) || !gender) {
-        showToast("Ma'lumotlar noto'g'ri yoki to'liq emas!", 'error');
-        return;
-    }
-
-    try {
-        const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        await addDoc(collection(db, "users"), {
-            uid: cred.user.uid,
-            name, email, phone, gender,
-            createdAt: new Date()
+        
+        // Check status
+        document.getElementById('checkStatusBtn').addEventListener('click', function() {
+            const brand = document.getElementById('brandSelect').value;
+            const model = document.getElementById('modelSelect').value;
+            const year = parseInt(document.getElementById('carYear').value);
+            const km = parseInt(document.getElementById('carKm').value);
+            const result = document.getElementById('statusResult');
+            
+            if (!brand || !model || !year || !km) {
+                result.style.display = 'block';
+                result.innerHTML = '❌ Iltimos, barcha maydonlarni to\'ldiring';
+                return;
+            }
+            
+            const currentYear = 2026;
+            const carAge = currentYear - year;
+            const limits = carData[brand][model];
+            
+            result.style.display = 'block';
+            
+            if (carAge <= limits.maxAge && km <= limits.maxKm) {
+                result.innerHTML = `
+                    <h3 style="color: #34c759; margin-bottom: 10px;">✅ Tabriklaymiz!</h3>
+                    <p>Mashinangiz Million km garantiyali xizmatga mos keladi!</p>
+                    <p style="margin-top: 10px; font-size: 14px;">
+                        Yosh: ${carAge} yil (Max: ${limits.maxAge} yil)<br>
+                        Probeg: ${km.toLocaleString()} km (Max: ${limits.maxKm.toLocaleString()} km)
+                    </p>
+                    <button class="btn" id="registerFromStatus" style="margin-top: 15px; background: var(--green); color: white; width: 100%;">
+                        Ro'yxatdan o'tish
+                    </button>
+                `;
+                document.getElementById('registerFromStatus').addEventListener('click', () => {
+                    result.style.display = 'none';
+                    openAuthModal(false);
+                });
+            } else {
+                result.innerHTML = `
+                    <h3 style="color: #ff3b30;">⚠️ Afsuski</h3>
+                    <p>Mashinangiz garantiyali dasturga mos kelmaydi</p>
+                    <p style="margin-top: 10px; font-size: 14px;">
+                        Lekin bir martalik xizmatdan foydalanishingiz mumkin!
+                    </p>
+                    <button class="btn" id="oneTimeService" style="margin-top: 15px; background: var(--red); color: white; width: 100%;">
+                        Bir martalik xizmat
+                    </button>
+                `;
+                document.getElementById('oneTimeService').addEventListener('click', () => {
+                    result.style.display = 'none';
+                    openAuthModal(false);
+                });
+            }
         });
-        showToast("Ro'yxatdan o'tdingiz!", 'success');
-        closeAuth();
-    } catch (e) {
-        showToast(e.message.includes('email-already-in-use') ? "Bu email allaqachon ro'yxatdan o'tgan" : e.message, 'error');
-    }
-}
-
-// Login
-async function loginUser() {
-    const email = document.getElementById('userEmail').value.trim();
-    const pass = document.getElementById('userPassword').value;
-
-    if (!isValidEmail(email) || !pass) {
-        showToast("Email yoki parol noto'g'ri!", 'error');
-        return;
-    }
-
-    try {
-        await signInWithEmailAndPassword(auth, email, pass);
-        showToast("Kirish muvaffaqiyatli!", 'success');
-        closeAuth();
-    } catch (e) {
-        showToast("Email yoki parol xato!", 'error');
-    }
-}
-
-// Auth holatini kuzatish
-onAuthStateChanged(auth, user => {
-    if (user) {
-        document.getElementById('authLink').textContent = 'Chiqish';
-        document.getElementById('authLink').onclick = () => signOut(auth).then(() => location.reload());
-        document.getElementById('cabinetLink').classList.remove('hidden');
-        document.getElementById('adminLink').classList.toggle('hidden', user.email !== 'admin@example.com'); // misol admin email
-        loadUserData(user.uid);
-    } else {
-        document.getElementById('authLink').textContent = 'Kirish';
-        document.getElementById('authLink').onclick = () => openAuth(true);
-        document.getElementById('cabinetLink').classList.add('hidden');
-        document.getElementById('adminLink').classList.add('hidden');
-    }
-});
-
-// Foydalanuvchi ma'lumotlarini yuklash
-async function loadUserData(uid) {
-    const q = query(collection(db, "users"), where("uid", "==", uid));
-    const snap = await getDocs(q);
-    if (!snap.empty) {
-        const data = snap.docs[0].data();
-        document.getElementById('welcomeText').textContent = `Xush kelibsiz, ${data.name}!`;
-    }
-}
-
-// Qolgan funksiyalar (checkStatus, openCabinet, addCar, etc.) ham window. bilan bog'lanadi
-
-// Misol uchun add car tugmasi
-document.getElementById('addCarSubmit').onclick = async function() {
-    // ... oldingi logika
-    showToast("Mashina qo'shildi!", 'success');
-};
-
+        
+        // Open brand modal
+        document.querySelectorAll('.brand-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const brand = this.getAttribute('data-brand');
+                openBrandModal(brand);
+            });
+        });
+        
+        function openBrandModal(brand) {
+            const modal = document.getElementById('brandModal');
+            const title = document.getElementById('modalTitle');
+            const container = document.getElementById('carModelsContainer');
+            
+            title.textContent = brand.charAt(0).toUpperCase() + brand.slice(1) + ' modellari';
+            container.innerHTML = '';
+            
+            if (carData[brand]) {
+                Object.entries(carData[brand]).forEach(([model, data]) => {
+                    const card = document.createElement('div');
+                    card.className = 'car-model';
+                    card.innerHTML = `
+                        <h4>${model}</h4>
+                        <p style="color: var(--gray); font-size: 14px; margin: 10px 0;">${data.desc}</p>
+                        <ul>
+                            <li>• Maksimal yosh: ${data.maxAge} yil</li>
+                            <li>• Maksimal km: ${data.maxKm.toLocaleString()} km</li>
+                        </ul>
+                        <div style="margin-top: 10px; font-size: 12px;">
+                            <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; margin-right: 5px;">1 martalik</span>
+                            <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px;">1 yillik</span>
+                        </div>
+                        <button class="btn btn-secondary" style="margin-top: 15px; width: 100%; font-size: 13px;">Xarid qilish</button>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        document.getElementById('closeBrandModal').addEventListener('click', () => {
+            document.getElementById('brandModal').classList.remove('show');
+        });
+        
+        // Auth modal
+        function openAuthModal(login) {
+            isLogin = login;
+            const modal = document.getElementById('authModal');
+            const title = document.getElementById('authTitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const genderSelect = document.getElementById('userGender');
+            const switchLink = document.getElementById('switchAuthLink');
+            
+            if (login) {
+                title.textContent = 'Kirish';
+                submitBtn.textContent = 'Kirish';
+                genderSelect.style.display = 'none';
+                switchLink.textContent = 'Ro\'yxatdan o\'tish';
+            } else {
+                title.textContent = 'Ro\'yxatdan o\'tish';
+                submitBtn.textContent = 'Ro\'yxatdan o\'tish';
+                genderSelect.style.display = 'block';
+                switchLink.textContent = 'Kirish';
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        document.getElementById('authLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (user) {
+                signOut(auth);
+            } else {
+                openAuthModal(true);
+            }
+        });
+        
+        document.getElementById('startBtn').addEventListener('click', () => openAuthModal(false));
+        document.getElementById('statusBtn').addEventListener('click', () => {
+            document.getElementById('status').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        document.getElementById('switchAuthLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            openAuthModal(!isLogin);
+        });
+        
+        document.getElementById('closeAuthModal').addEventListener('click', () => {
+            document.getElementById('authModal').classList.remove('show');
+        });
+        
+        document.getElementById('authSubmitBtn').addEventListener('click', async () => {
+            const name = document.getElementById('userName').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value.trim();
+            const phone = document.getElementById('userPhone').value.trim();
+            const gender = document.getElementById('userGender').value;
+            
+            if (isLogin) {
+                if (!email || !password) {
+                    showToast('Email va parolni kiriting!', 'error');
+                    return;
+                }
+                
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showToast('Muvaffaqiyatli kirdingiz!', 'success');
+                    document.getElementById('authModal').classList.remove('show');
+                } catch (error) {
+                    showToast('Email yoki parol noto\'g\'ri!', 'error');
+                }
+            } else {
+                if (!name || !email || !password || !phone || !gender) {
+                    showToast('Barcha maydonlarni to\'ldiring!', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showToast('Parol kamida 6 ta belgidan iborat bo\'lishi kerak!', 'error');
+                    return;
+                }
+                
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    
+                    await addDoc(collection(db, "users"), {
+                        uid: user.uid,
+                        name,
+                        email,
+                        phone,
+                        gender,
+                        isAdmin: false,
+                        createdAt: new Date()
+                    });
+                    
+                    await sendTelegramMessage(`🆕 Yangi foydalanuvchi\n👤 Ism: ${name}\n📧 Email: ${email}\n📱 Telefon: ${phone}\n👥 Jins: ${gender}`);
+                    
+                    showToast('Ro\'yxatdan muvaffaqiyatli o\'tdingiz!', 'success');
+                    document.getElementById('authModal').classList.remove('show');
+                } catch (error) {
+                    if (error.code === 'auth/email-already-in-use') {
+                        showToast('Bu email allaqachon ro\'yxatdan o\'tgan!', 'error');
+                    } else {
+                        showToast('Xatolik yuz berdi!', 'error');
+                    }
+                }
+            }
+        });
+        
+        // Auth state
+        onAuthStateChanged(auth, async (user) => {
+            const authLink = document.getElementById('authLink');
+            const cabinetLink = document.getElementById('cabinetLink');
+            const adminLink = document.getElementById('adminLink');
+            
+            if (user) {
+                authLink.textContent = 'Chiqish';
+                cabinetLink.classList.remove('hidden');
+                
+                const q = query(collection(db, "users"), where("uid", "==", user.uid));
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                    const userData = querySnapshot.docs[0].data();
+                    if (userData.isAdmin) {
+                        adminLink.classList.remove('hidden');
+                    }
+                    
+                    document.getElementById('welcomeText').textContent = `Xush kelibsiz, ${userData.name}! Email: ${userData.email}`;
+                }
+                
+                loadGarage(user.uid);
+            } else {
+                authLink.textContent = 'Kirish';
+                cabinetLink.classList.add('hidden');
+                adminLink.classList.add('hidden');
+                document.getElementById('cabinet').classList.add('hidden');
+                document.getElementById('adminPanel').classList.add('hidden');
+            }
+        });
+        
+        // Cabinet
+        document.getElementById('cabinetLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (user) {
+                document.getElementById('cabinet').classList.remove('hidden');
+                document.getElementById('cabinet').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+        
+        // Add car
+        document.getElementById('addCarBtn').addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user) {
+                showToast('Avval kirish qiling!', 'error');
+                return;
+            }
+            
+            const model = document.getElementById('carModel').value.trim();
+            const year = parseInt(document.getElementById('carYearInput').value);
+            const lastOil = parseInt(document.getElementById('lastOilKm').value);
+            const daily = parseInt(document.getElementById('dailyKm').value);
+            
+            if (!model || !year || !lastOil || !daily) {
+                showToast('Barcha maydonlarni to\'ldiring!', 'error');
+                return;
+            }
+            
+            if (year < 1900 || year > 2026 || lastOil < 0 || daily < 1) {
+                showToast('Noto\'g\'ri qiymatlar!', 'error');
+                return;
+            }
+            
+            try {
+                await addDoc(collection(db, "cars"), {
+                    userUid: user.uid,
+                    model,
+                    year,
+                    lastOil,
+                    daily,
+                    createdAt: new Date()
+                });
+                
+                await sendTelegramMessage(`🚗 Yangi mashina qo\'shildi\n🏷 Model: ${model}\n📅 Yil: ${year}\n🛢 Oxirgi moy: ${lastOil} km\n📊 Kunlik: ${daily} km`);
+                
+                showToast('Mashina qo\'shildi!', 'success');
+                
+                document.getElementById('carModel').value = '';
+                document.getElementById('carYearInput').value = '';
+                document.getElementById('lastOilKm').value = '';
+                document.getElementById('dailyKm').value = '';
+            } catch (error) {
+                showToast('Xatolik yuz berdi!', 'error');
+            }
+        });
+        
+        // Load garage
+        function loadGarage(uid) {
+            const q = query(collection(db, "cars"), where("userUid", "==", uid), orderBy("createdAt", "desc"));
+            
+            onSnapshot(q, (snapshot) => {
+                const garage = document.getElementById('garage');
+                garage.innerHTML = '';
+                
+                snapshot.forEach((carDoc) => {
+                    const car = carDoc.data();
+                    const id = carDoc.id;
+                    const nextService = car.lastOil + 8000;
+                    const daysLeft = Math.ceil((nextService - car.lastOil) / car.daily);
+                    const statusColor = daysLeft < 10 ? 'var(--red)' : 'var(--green)';
+                    
+                    const card = document.createElement('div');
+                    card.className = 'cabinet-card';
+                    card.innerHTML = `
+                        <h4>${car.model} (${car.year})</h4>
+                        <p style="margin: 5px 0;">Oxirgi moy: ${car.lastOil.toLocaleString()} km</p>
+                        <p style="margin: 5px 0;">Keyingi servis: ${nextService.toLocaleString()} km</p>
+                        <p style="margin: 5px 0;">Kunlik: ${car.daily} km</p>
+                        <p style="margin: 10px 0; color: ${statusColor}; font-weight: 600;">
+                            ${daysLeft > 0 ? `⏱ ~${daysLeft} kun qoldi` : '⚠️ Servis vaqti keldi!'}
+                        </p>
+                        <button class="btn btn-danger btn-small" data-id="${id}" style="margin-top: 10px;">O'chirish</button>
+                    `;
+                    
+                    garage.appendChild(card);
+                    
+                    card.querySelector('.btn-danger').addEventListener('click', async function() {
+                        if (confirm('Mashinani o\'chirmoqchimisiz?')) {
+                            try {
+                                await deleteDoc(doc(db, "cars", this.getAttribute('data-id')));
+                                showToast('Mashina o\'chirildi!', 'success');
+                            } catch (error) {
+                                showToast('Xatolik!', 'error');
+                            }
+                        }
+                    });
+                });
+                
+                if (snapshot.empty) {
+                    garage.innerHTML = '<p style="text-align: center; padding: 40px; color: var(--gray);">Hali mashinalar yo\'q</p>';
+                }
+            });
+        }
+        
+        // Admin
+        document.getElementById('adminLink').addEventListener('click', async (e) => {
+            e.preventDefault();
+            document.getElementById('adminPanel').classList.remove('hidden');
+            document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth' });
+            
+            const usersSnapshot = await getDocs(collection(db, "users"));
+            const usersList = document.getElementById('allUsersList');
+            usersList.innerHTML = '';
+            
+            usersSnapshot.forEach(docSnap => {
+                const userData = docSnap.data();
+                const card = document.createElement('div');
+                card.className = 'admin-card';
+                card.innerHTML = `
+                    <h4>${userData.name}</h4>
+                    <p>Email: ${userData.email}</p>
+                    <p>Telefon: ${userData.phone}</p>
+                    <p>Jins: ${userData.gender}</p>
+                    <p>Admin: ${userData.isAdmin ? 'Ha' : 'Yo\'q'}</p>
+                `;
+                usersList.appendChild(card);
+            });
+            
+            const carsSnapshot = await getDocs(collection(db, "cars"));
+            const carsList = document.getElementById('allCarsList');
+            carsList.innerHTML = '';
+            
+            carsSnapshot.forEach(docSnap => {
+                const car = docSnap.data();
+                const card = document.createElement('div');
+                card.className = 'admin-card';
+                card.innerHTML = `
+                    <h4>${car.model} (${car.year})</h4>
+                    <p>Oxirgi moy: ${car.lastOil} km</p>
+                    <p>Kunlik: ${car.daily} km</p>
+                `;
+                carsList.appendChild(card);
+            });
+        });
+        
+        // Chat
+        document.getElementById('chatButton').addEventListener('click', () => {
+            document.getElementById('chatBox').classList.toggle('show');
+        });
+        
+        document.getElementById('closeChat').addEventListener('click', () => {
+            document.getElementById('chatBox').classList.remove('show');
+        });
+        
+        document.getElementById('chatInput').addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                const input = e.target;
+                const message = input.value.trim();
+                
+                if (message) {
+                    const messagesDiv = document.getElementById('chatMessages');
+                    
+                    const userMsg = document.createElement('p');
+                    userMsg.style.cssText = 'background: var(--primary); color: white; padding: 10px; border-radius: 10px; margin: 5px 0; text-align: right;';
+                    userMsg.textContent = message;
+                    messagesDiv.appendChild(userMsg);
+                    
+                    await sendTelegramMessage(`💬 Chat xabar\n${message}`);
+                    
+                    input.value = '';
+                    
+                    setTimeout(() => {
+                        const botMsg = document.createElement('p');
+                        botMsg.style.cssText = 'background: #f5f5f7; padding: 10px; border-radius: 10px; margin: 5px 0;';
+                        botMsg.textContent = 'Xabaringiz qabul qilindi! Tez orada javob beramiz.';
+                        messagesDiv.appendChild(botMsg);
+                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                    }, 1000);
+                }
+            }
+        });
+        
+        // Services
+        document.querySelectorAll('[data-service]').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const service = this.getAttribute('data-service');
+                const user = auth.currentUser;
+                
+                if (!user) {
+                    showToast('Avval kirish qiling!', 'error');
+                    openAuthModal(true);
+                    return;
+                }
+                
+                const name = prompt('Ismingiz:');
+                const phone = prompt('Telefon raqamingiz:');
+                
+                if (name && phone) {
+                    await sendTelegramMessage(`📦 Xizmat buyurtmasi\n🔧 Tur: ${service === 'express' ? 'Express' : 'Fuel'}\n👤 Ism: ${name}\n📱 Telefon: ${phone}`);
+                    showToast('Buyurtma qabul qilindi! Tez orada aloqaga chiqamiz.', 'success');
+                }
+            });
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
     </script>
 </body>
 </html>
