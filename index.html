@@ -323,13 +323,26 @@ input {
 <script>
 const loginModal = document.getElementById('loginModal');
 const loginBtn = document.querySelector('nav button');
+const cabinet = document.getElementById("cabinet");
+const garage = document.getElementById("garage");
 
+const carModel = document.getElementById("carModel");
+const carYear = document.getElementById("carYear");
+const lastOilKm = document.getElementById("lastOilKm");
+const dailyKm = document.getElementById("dailyKm");
+
+/* ===== LOGIN / KABINET ===== */
 loginBtn.onclick = () => {
-  loginModal.classList.remove('hidden');
+  const user = localStorage.getItem("user");
+  if (user) {
+    openCabinet();
+  } else {
+    loginModal.classList.remove("hidden");
+  }
 };
 
 function closeLogin() {
-  loginModal.classList.add('hidden');
+  loginModal.classList.add("hidden");
 }
 
 function login() {
@@ -342,65 +355,49 @@ function login() {
   }
 
   localStorage.setItem("user", JSON.stringify({name, phone}));
-
   loginBtn.textContent = "Kabinet";
   closeLogin();
+  openCabinet();
 }
-  <script>
-const cabinet = document.getElementById("cabinet");
-const garage = document.getElementById("garage");
 
+/* ===== KABINET ===== */
 function openCabinet() {
   cabinet.classList.remove("hidden");
   cabinet.scrollIntoView({behavior:"smooth"});
   loadGarage();
 }
 
-loginBtn.onclick = () => {
-  const user = localStorage.getItem("user");
-  if (user) {
-    openCabinet();
-  } else {
-    loginModal.classList.remove("hidden");
-  }
-};
-
+/* ===== MASHINA QO‘SHISH ===== */
 function addCar() {
-  const model = carModel.value;
-  const year = carYear.value;
-  const lastOil = lastOilKm.value;
-  const daily = dailyKm.value;
-
-  if (!model || !year || !lastOil || !daily) {
+  if (!carModel.value || !carYear.value || !lastOilKm.value || !dailyKm.value) {
     alert("Barcha maydonlarni to‘ldiring");
     return;
   }
 
-  const todayKm = Number(lastOil) + Number(daily) * 30;
-  const maxKm = Number(lastOil) + 7000;
+  const lastOil = Number(lastOilKm.value);
+  const daily = Number(dailyKm.value);
+  const maxKm = lastOil + 7000;
+  const currentKm = lastOil + daily * 30;
 
-  const daysLeft = Math.floor((maxKm - todayKm) / daily);
+  const daysLeft = Math.floor((maxKm - currentKm) / daily);
 
-  let status = "";
-  let className = "";
+  const car = {
+    model: carModel.value,
+    year: carYear.value,
+    status: daysLeft >= 0 
+      ? `${daysLeft} kun qoldi` 
+      : `${Math.abs(daysLeft)} kun kechikdi`,
+    className: daysLeft >= 0 ? "status-good" : "status-bad"
+  };
 
-  if (daysLeft >= 0) {
-    status = `${daysLeft} kun qoldi`;
-    className = "status-good";
-  } else {
-    status = `${Math.abs(daysLeft)} kun kechikdi`;
-    className = "status-bad";
-  }
-
-  const car = {model, year, status, className};
-
-  let cars = JSON.parse(localStorage.getItem("cars") || "[]");
+  const cars = JSON.parse(localStorage.getItem("cars") || "[]");
   cars.push(car);
   localStorage.setItem("cars", JSON.stringify(cars));
 
   loadGarage();
 }
 
+/* ===== GARAJ ===== */
 function loadGarage() {
   garage.innerHTML = "";
   const cars = JSON.parse(localStorage.getItem("cars") || "[]");
@@ -415,8 +412,11 @@ function loadGarage() {
     `;
   });
 }
-</script>
 
+/* ===== SAHIFA OCHILGANDA ===== */
+if (localStorage.getItem("user")) {
+  loginBtn.textContent = "Kabinet";
+}
 </script>
 
 </body>
