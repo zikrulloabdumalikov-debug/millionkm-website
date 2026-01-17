@@ -18,8 +18,7 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
-  getDocs,
-  orderBy
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // =====================
@@ -34,7 +33,6 @@ const firebaseConfig = {
   appId: "1:594685468082:web:e44c081e0617f0016998ab"
 };
 
-// Telegram (token/chat_id ni o'zingiz qo'ying)
 const TG_TOKEN = "7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM";
 const TG_CHAT_ID = "-1003461463026";
 
@@ -65,21 +63,22 @@ function showToast(message, type = "success") {
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
+function safeText(v) {
+  return String(v ?? "");
+}
+
+function brandTitle(brandKey) {
+  return brandKey ? brandKey.charAt(0).toUpperCase() + brandKey.slice(1) : "";
+}
+
 async function loadCarData() {
+  // faqat index.html'da kerak bo'lishi mumkin, lekin yuklab qo'yamiz
   const res = await fetch("./carData.json", { cache: "no-store" });
   if (!res.ok) throw new Error("carData.json yuklanmadi");
   carData = await res.json();
 }
 
-function brandTitle(brandKey) {
-  return brandKey.charAt(0).toUpperCase() + brandKey.slice(1);
-}
-
-function safeText(v) {
-  return String(v ?? "");
-}
-
-// Telegram: minimal, parse_mode yo‘q (xato kam bo‘ladi)
+// Telegram: minimal, parse_mode yo‘q
 async function sendTelegramMessage(message) {
   if (!TG_TOKEN || TG_TOKEN.includes("PASTE_") || !TG_CHAT_ID || TG_CHAT_ID.includes("PASTE_")) {
     console.warn("Telegram token/chat_id qo‘yilmagan.");
@@ -103,8 +102,7 @@ async function sendTelegramMessage(message) {
     const data = await r.json().catch(() => ({}));
 
     if (!r.ok || !data.ok) {
-      const details = `HTTP:${r.status} | ${data?.description || "Unknown"} | code:${data?.error_code || "?"}`;
-      console.error("Telegram API xato:", details, data);
+      console.error("Telegram API xato:", { status: r.status, data });
       showToast(`Telegram xato: ${data?.description || "Unknown"}`, "error");
       return false;
     }
@@ -117,19 +115,19 @@ async function sendTelegramMessage(message) {
   }
 }
 
-
 // =====================
-// 5) UI: AUTH MODAL
+// 5) AUTH MODAL
 // =====================
 function openAuthModal(login) {
-  isLogin = login;
   const modal = $("authModal");
   const title = $("authTitle");
   const submitBtn = $("authSubmitBtn");
   const genderSelect = $("userGender");
   const switchLink = $("switchAuthLink");
 
-  if (!modal) return;
+  if (!modal || !title || !submitBtn || !genderSelect || !switchLink) return;
+
+  isLogin = login;
 
   if (login) {
     title.textContent = "Kirish";
@@ -151,7 +149,7 @@ function closeAuthModal() {
 }
 
 // =====================
-// 6) UI: BRAND MODAL
+// 6) BRAND MODAL (faqat index.html)
 // =====================
 function openBrandModal(brand) {
   const modal = $("brandModal");
@@ -172,7 +170,6 @@ function openBrandModal(brand) {
   Object.entries(models).forEach(([model, data]) => {
     const card = document.createElement("div");
     card.className = "car-model";
-
     card.innerHTML = `
       <h4>${safeText(model)}</h4>
       <p style="color: var(--gray); font-size: 14px; margin: 10px 0;">${safeText(data.desc)}</p>
@@ -205,11 +202,9 @@ function openBrandModal(brand) {
 
     container.appendChild(card);
 
-    // stopPropagation: modal clicklar aralashmasin
     card.querySelector(".order-model-btn")?.addEventListener("click", (e) => {
       e.stopPropagation();
-      const form = card.querySelector(".order-form");
-      form?.classList.toggle("hidden");
+      card.querySelector(".order-form")?.classList.toggle("hidden");
     });
 
     card.querySelector(".submit-order-btn")?.addEventListener("click", async (e) => {
@@ -246,7 +241,6 @@ function openBrandModal(brand) {
       );
 
       showToast("Buyurtma qabul qilindi! Tez orada aloqaga chiqamiz.", "success");
-
       card.querySelector(".order-form")?.classList.add("hidden");
       if (card.querySelector(".service-type")) card.querySelector(".service-type").value = "";
       if (card.querySelector(".problem-desc")) card.querySelector(".problem-desc").value = "";
@@ -262,16 +256,17 @@ function closeBrandModal() {
 }
 
 // =====================
-// 7) STATUS CHECKER
+// 7) STATUS CHECKER (faqat index.html)
 // =====================
 function bindStatusChecker() {
+  if (!$("brandSelect") || !$("modelSelect") || !$("checkStatusBtn")) return;
+
   $("brandSelect")?.addEventListener("change", function () {
     const brand = this.value;
     const modelSelect = $("modelSelect");
     if (!modelSelect) return;
 
     modelSelect.innerHTML = `<option value="">Model tanlang</option>`;
-
     const models = carData?.[brand];
     if (!models) return;
 
@@ -289,7 +284,6 @@ function bindStatusChecker() {
     const year = Number.parseInt($("carYear")?.value || "", 10);
     const km = Number.parseInt($("carKm")?.value || "", 10);
     const result = $("statusResult");
-
     if (!result) return;
 
     if (!brand || !model || Number.isNaN(year) || Number.isNaN(km)) {
@@ -346,13 +340,11 @@ function bindStatusChecker() {
 }
 
 // =====================
-// 8) CABINET (GARAGE)
+// 8) CABINET (GARAGE) - cabinet.html
 // =====================
 function loadGarage(uid) {
-  const qCars = query(
-  collection(db, "cars"),
-  where("userUid", "==", uid)
-);
+  // Index talab qilmasin: orderBy olib tashladik
+  const qCars = query(collection(db, "cars"), where("userUid", "==", uid));
 
   onSnapshot(qCars, (snapshot) => {
     const garage = $("garage");
@@ -373,7 +365,6 @@ function loadGarage(uid) {
 
       const card = document.createElement("div");
       card.className = "cabinet-card";
-
       card.innerHTML = `
         <h4>${safeText(car.model)} (${Number(car.year)})</h4>
         <p style="margin: 5px 0;">Oxirgi moy: ${lastOil.toLocaleString()} km</p>
@@ -405,17 +396,73 @@ function loadGarage(uid) {
   });
 }
 
+function bindCabinetAddCar() {
+  if (!$("addCarBtn")) return;
+
+  $("addCarBtn")?.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      showToast("Avval kirish qiling!", "error");
+      return;
+    }
+
+    const model = $("carModel")?.value?.trim() || "";
+    const year = Number.parseInt($("carYearInput")?.value || "", 10);
+    const lastOil = Number.parseInt($("lastOilKm")?.value || "", 10);
+    const daily = Number.parseInt($("dailyKm")?.value || "", 10);
+
+    if (!model || Number.isNaN(year) || Number.isNaN(lastOil) || Number.isNaN(daily)) {
+      showToast("Barcha maydonlarni to'ldiring!", "error");
+      return;
+    }
+
+    const currentYear = new Date().getFullYear();
+    if (year < 1900 || year > currentYear || lastOil < 0 || daily < 1) {
+      showToast("Noto'g'ri qiymatlar!", "error");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "cars"), {
+        userUid: user.uid,
+        model,
+        year,
+        lastOil,
+        daily,
+        createdAt: new Date()
+      });
+
+      await sendTelegramMessage(
+        "🚗 Yangi mashina qo'shildi\n" +
+        `🏷 Model: ${model}\n` +
+        `📅 Yil: ${year}\n` +
+        `🛢 Oxirgi moy: ${lastOil} km\n` +
+        `📊 Kunlik: ${daily} km`
+      );
+
+      showToast("Mashina qo'shildi!", "success");
+
+      if ($("carModel")) $("carModel").value = "";
+      if ($("carYearInput")) $("carYearInput").value = "";
+      if ($("lastOilKm")) $("lastOilKm").value = "";
+      if ($("dailyKm")) $("dailyKm").value = "";
+    } catch (e) {
+      console.error(e);
+      showToast("Xatolik yuz berdi!", "error");
+    }
+  });
+}
+
 // =====================
-// 9) ADMIN PANEL
+// 9) ADMIN PAGE - admin.html
 // =====================
-async function openAdminPanel() {
-  $("adminPanel")?.classList.remove("hidden");
-  $("adminPanel")?.scrollIntoView({ behavior: "smooth" });
+async function loadAdminLists() {
+  const usersList = $("allUsersList");
+  const carsList = $("allCarsList");
+  if (usersList) usersList.innerHTML = "";
+  if (carsList) carsList.innerHTML = "";
 
   const usersSnap = await getDocs(collection(db, "users"));
-  const usersList = $("allUsersList");
-  if (usersList) usersList.innerHTML = "";
-
   usersSnap.forEach((docSnap) => {
     const u = docSnap.data();
     const card = document.createElement("div");
@@ -431,9 +478,6 @@ async function openAdminPanel() {
   });
 
   const carsSnap = await getDocs(collection(db, "cars"));
-  const carsList = $("allCarsList");
-  if (carsList) carsList.innerHTML = "";
-
   carsSnap.forEach((docSnap) => {
     const c = docSnap.data();
     const card = document.createElement("div");
@@ -448,9 +492,11 @@ async function openAdminPanel() {
 }
 
 // =====================
-// 10) CHAT
+// 10) CHAT (faqat index.html bo'lsa)
 // =====================
 function bindChat() {
+  if (!$("chatButton") || !$("chatBox") || !$("chatMessages")) return;
+
   $("chatButton")?.addEventListener("click", () => $("chatBox")?.classList.toggle("show"));
   $("closeChat")?.addEventListener("click", () => $("chatBox")?.classList.remove("show"));
 
@@ -476,7 +522,8 @@ function bindChat() {
     }
 
     const userMsg = document.createElement("p");
-    userMsg.style.cssText = "background: var(--primary); color: white; padding: 10px; border-radius: 10px; margin: 5px 0; text-align: right;";
+    userMsg.style.cssText =
+      "background: var(--primary); color: white; padding: 10px; border-radius: 10px; margin: 5px 0; text-align: right;";
     userMsg.textContent = message;
     messagesDiv?.appendChild(userMsg);
 
@@ -509,10 +556,13 @@ function bindChat() {
 }
 
 // =====================
-// 11) SERVICES (Express/Fuel)
+// 11) SERVICES (faqat index.html)
 // =====================
 function bindServices() {
-  document.querySelectorAll("[data-service]").forEach((btn) => {
+  const btns = document.querySelectorAll("[data-service]");
+  if (!btns.length) return;
+
+  btns.forEach((btn) => {
     btn.addEventListener("click", async () => {
       const service = btn.getAttribute("data-service");
       const user = auth.currentUser;
@@ -540,10 +590,13 @@ function bindServices() {
 }
 
 // =====================
-// 12) SMOOTH SCROLL
+// 12) SMOOTH SCROLL (faqat # bo'lsa)
 // =====================
 function bindSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+  const anchors = document.querySelectorAll('a[href^="#"]');
+  if (!anchors.length) return;
+
+  anchors.forEach((a) => {
     a.addEventListener("click", (e) => {
       const href = a.getAttribute("href");
       if (!href || href === "#") return;
@@ -566,7 +619,7 @@ function bindSmoothScroll() {
 }
 
 // =====================
-// 13) BIND AUTH EVENTS
+// 13) AUTH EVENTS (har sahifa)
 // =====================
 function bindAuthEvents() {
   $("authLink")?.addEventListener("click", async (e) => {
@@ -580,6 +633,7 @@ function bindAuthEvents() {
   });
 
   $("startBtn")?.addEventListener("click", () => openAuthModal(false));
+
   $("switchAuthLink")?.addEventListener("click", (e) => {
     e.preventDefault();
     openAuthModal(!isLogin);
@@ -656,109 +710,31 @@ function bindAuthEvents() {
 }
 
 // =====================
-// 14) CABINET EVENTS
-// =====================
-function bindCabinetEvents() {
-  $("cabinetLink")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    const user = auth.currentUser;
-    if (!user) return;
-
-    $("cabinet")?.classList.remove("hidden");
-    $("cabinet")?.scrollIntoView({ behavior: "smooth" });
-  });
-
-  $("addCarBtn")?.addEventListener("click", async () => {
-    const user = auth.currentUser;
-    if (!user) {
-      showToast("Avval kirish qiling!", "error");
-      return;
-    }
-
-    const model = $("carModel")?.value?.trim() || "";
-    const year = Number.parseInt($("carYearInput")?.value || "", 10);
-    const lastOil = Number.parseInt($("lastOilKm")?.value || "", 10);
-    const daily = Number.parseInt($("dailyKm")?.value || "", 10);
-
-    if (!model || Number.isNaN(year) || Number.isNaN(lastOil) || Number.isNaN(daily)) {
-      showToast("Barcha maydonlarni to'ldiring!", "error");
-      return;
-    }
-
-    const currentYear = new Date().getFullYear();
-    if (year < 1900 || year > currentYear || lastOil < 0 || daily < 1) {
-      showToast("Noto'g'ri qiymatlar!", "error");
-      return;
-    }
-
-    try {
-      await addDoc(collection(db, "cars"), {
-        userUid: user.uid,
-        model,
-        year,
-        lastOil,
-        daily,
-        createdAt: new Date()
-      });
-
-      await sendTelegramMessage(
-        "🚗 Yangi mashina qo'shildi\n" +
-        `🏷 Model: ${model}\n` +
-        `📅 Yil: ${year}\n` +
-        `🛢 Oxirgi moy: ${lastOil} km\n` +
-        `📊 Kunlik: ${daily} km`
-      );
-
-      showToast("Mashina qo'shildi!", "success");
-
-      if ($("carModel")) $("carModel").value = "";
-      if ($("carYearInput")) $("carYearInput").value = "";
-      if ($("lastOilKm")) $("lastOilKm").value = "";
-      if ($("dailyKm")) $("dailyKm").value = "";
-    } catch (e) {
-      console.error(e);
-      showToast("Xatolik yuz berdi!", "error");
-    }
-  });
-}
-
-// =====================
-// 15) ADMIN EVENTS
-// =====================
-function bindAdminEvents() {
-  $("adminLink")?.addEventListener("click", async (e) => {
-    e.preventDefault();
-    await openAdminPanel();
-  });
-}
-
-// =====================
-// 16) BRAND CARD EVENTS
+// 14) BRAND CARDS (faqat index.html)
 // =====================
 function bindBrandCards() {
-  // Brand card click => open modal
-  document.querySelectorAll(".brand-card").forEach((card) => {
+  const cards = document.querySelectorAll(".brand-card");
+  if (!cards.length) return;
+
+  cards.forEach((card) => {
     card.addEventListener("click", () => {
       const brand = card.getAttribute("data-brand");
       if (brand) openBrandModal(brand);
     });
 
-    // ichidagi button bosilganda card click trigger bo'lmasin
     card.querySelectorAll("button, a").forEach((inner) => {
       inner.addEventListener("click", (e) => e.stopPropagation());
     });
   });
 
   $("closeBrandModal")?.addEventListener("click", closeBrandModal);
-
-  // modal fon bosilsa yopish (xohlasangiz)
   $("brandModal")?.addEventListener("click", (e) => {
     if (e.target && e.target.id === "brandModal") closeBrandModal();
   });
 }
 
 // =====================
-// 17) AUTH STATE
+// 15) AUTH STATE (har sahifa)
 // =====================
 function bindAuthState() {
   onAuthStateChanged(auth, async (user) => {
@@ -770,7 +746,6 @@ function bindAuthState() {
       if (authLink) authLink.textContent = "Chiqish";
       cabinetLink?.classList.remove("hidden");
 
-      // user doc
       const uq = query(collection(db, "users"), where("uid", "==", user.uid));
       const snap = await getDocs(uq);
 
@@ -779,40 +754,54 @@ function bindAuthState() {
         currentUserChatId = user.uid;
 
         if (ud.isAdmin) adminLink?.classList.remove("hidden");
-        $("welcomeText").textContent = `Xush kelibsiz, ${ud.name}! Email: ${ud.email}`;
+
+        // faqat cabinet.html'da bor bo'lishi mumkin
+        if ($("welcomeText")) {
+          $("welcomeText").textContent = `Xush kelibsiz, ${ud.name}! Email: ${ud.email}`;
+        }
+
+        // admin.html bo'lsa ro'yxatlarni yuklaymiz
+        if ($("adminPanel")) {
+          if (ud.isAdmin) {
+            await loadAdminLists();
+          } else {
+            showToast("Siz admin emassiz!", "error");
+          }
+        }
       }
 
-      loadGarage(user.uid);
+      // cabinet.html bo'lsa garage yuklaymiz
+      if ($("garage")) {
+        loadGarage(user.uid);
+      }
     } else {
       if (authLink) authLink.textContent = "Kirish";
       cabinetLink?.classList.add("hidden");
       adminLink?.classList.add("hidden");
-
-      $("cabinet")?.classList.add("hidden");
-      $("adminPanel")?.classList.add("hidden");
-
       currentUserChatId = null;
+
+      // cabinet/admin sahifalarda logout bo'lsa indexga qaytaramiz (xohlasangiz)
+      // window.location.href = "./index.html";
     }
   });
 }
 
 // =====================
-// 18) BOOTSTRAP
+// 16) BOOTSTRAP
 // =====================
 async function main() {
+  // carData faqat index uchun kerak, lekin zarar qilmaydi
   try {
     await loadCarData();
   } catch (e) {
-    console.error(e);
-    showToast("carData.json topilmadi!", "error");
+    console.warn("carData.json yuklanmadi (cabinet/admin sahifada normal):", e);
   }
 
   bindSmoothScroll();
   bindBrandCards();
   bindStatusChecker();
   bindAuthEvents();
-  bindCabinetEvents();
-  bindAdminEvents();
+  bindCabinetAddCar();
   bindChat();
   bindServices();
   bindAuthState();
