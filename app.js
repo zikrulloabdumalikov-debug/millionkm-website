@@ -103,16 +103,15 @@ async function sendTelegramMessage(message) {
     const data = await r.json().catch(() => ({}));
 
     if (!r.ok || !data.ok) {
-      console.error("Telegram error:", data);
-      showToast("Telegramga yuborilmadi", "error");
-      return false;
-    }
-    return true;
-  } catch (e) {
-    console.error("Telegram fetch error:", e);
-    showToast("Telegram bilan aloqa yo‘q", "error");
-    return false;
-  }
+  console.error("Telegram API xato:", data);
+  showToast(`Telegram xato: ${data?.description || "Unknown"}`, "error");
+  return false;
+}
+return true;
+} catch (e) {
+  console.error("Telegram fetch error:", e);
+  showToast(`Telegram fetch xato: ${e?.message || "Unknown"}`, "error");
+  return false;
 }
 
 // =====================
