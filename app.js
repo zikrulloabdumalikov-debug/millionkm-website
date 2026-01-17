@@ -558,12 +558,33 @@ function bindChat() {
 // =====================
 // 11) SERVICES (faqat index.html)
 // =====================
-function bindServices() {
-  const btns = document.querySelectorAll("[data-service]");
-  if (!btns.length) return;
+function openServiceModal(serviceKey) {
+  const modal = $("serviceModal");
+  if (!modal) return;
 
-  btns.forEach((btn) => {
-    btn.addEventListener("click", async () => {
+  // select value set
+  const typeSel = $("serviceType");
+  if (typeSel) typeSel.value = serviceKey || "";
+
+  // title
+  const title = $("serviceTitle");
+  if (title) {
+    title.textContent = serviceKey === "fuel"
+      ? "Million km Fuel buyurtmasi"
+      : "Million km Express buyurtmasi";
+  }
+
+  modal.classList.add("show");
+}
+
+function closeServiceModal() {
+  $("serviceModal")?.classList.remove("show");
+}
+
+function bindServices() {
+  // open modal on service buttons
+  document.querySelectorAll("[data-service]").forEach((btn) => {
+    btn.addEventListener("click", () => {
       const service = btn.getAttribute("data-service");
       const user = auth.currentUser;
 
@@ -573,19 +594,52 @@ function bindServices() {
         return;
       }
 
-      const name = prompt("Ismingiz:");
-      const phone = prompt("Telefon raqamingiz:");
-      if (!name || !phone) return;
-
-      await sendTelegramMessage(
-        "📦 Xizmat buyurtmasi\n" +
-        `🔧 Tur: ${service === "express" ? "Express" : "Fuel"}\n` +
-        `👤 Ism: ${name}\n` +
-        `📱 Telefon: ${phone}`
-      );
-
-      showToast("Buyurtma qabul qilindi! Tez orada aloqaga chiqamiz.", "success");
+      openServiceModal(service);
     });
+  });
+
+  $("closeServiceModal")?.addEventListener("click", closeServiceModal);
+
+  // submit
+  $("serviceSubmitBtn")?.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      showToast("Avval kirish qiling!", "error");
+      closeServiceModal();
+      openAuthModal(true);
+      return;
+    }
+
+    const name = ($("serviceName")?.value || "").trim();
+    const phone = ($("servicePhone")?.value || "").trim();
+    const service = $("serviceType")?.value || "";
+    const note = ($("serviceNote")?.value || "").trim();
+
+    if (!name || !phone || !service) {
+      showToast("Ism, telefon va xizmat turini kiriting!", "error");
+      return;
+    }
+
+    const serviceName =
+      service === "fuel" ? "Million km Fuel" :
+      service === "express" ? "Million km Express" :
+      service;
+
+    await sendTelegramMessage(
+      "📦 Xizmat buyurtmasi\n\n" +
+      `🔧 Tur: ${serviceName}\n` +
+      `👤 Ism: ${name}\n` +
+      `📱 Telefon: ${phone}\n` +
+      `📝 Izoh: ${note || "Yo'q"}`
+    );
+
+    showToast("Buyurtma yuborildi!", "success");
+
+    // clear + close
+    if ($("serviceName")) $("serviceName").value = "";
+    if ($("servicePhone")) $("servicePhone").value = "";
+    if ($("serviceNote")) $("serviceNote").value = "";
+    closeServiceModal();
   });
 }
 
