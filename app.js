@@ -846,20 +846,26 @@ function bindAuthState() {
 async function main() {
   // carData faqat index uchun kerak, lekin zarar qilmaydi
   try {
+ async function main() {
+  try {
     await loadCarData();
   } catch (e) {
     console.warn("carData.json yuklanmadi (cabinet/admin sahifada normal):", e);
   }
 
+  // ✅ ENG MUHIMI: status checker carData yuklangandan keyin ishlaydi
+  bindStatusChecker();
+
+  // qolganlari
   bindSmoothScroll();
   bindBrandCards();
-  bindStatusChecker();
   bindAuthEvents();
   bindCabinetAddCar();
   bindChat();
   bindServices();
   bindAuthState();
 }
-console.log("app.js ishladi ✅");
 
+console.log("app.js ishladi ✅");
 main();
+
