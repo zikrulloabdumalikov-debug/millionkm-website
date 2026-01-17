@@ -103,16 +103,20 @@ async function sendTelegramMessage(message) {
     const data = await r.json().catch(() => ({}));
 
     if (!r.ok || !data.ok) {
-  console.error("Telegram API xato:", data);
-  showToast(`Telegram xato: ${data?.description || "Unknown"}`, "error");
-  return false;
+      const details = `HTTP:${r.status} | ${data?.description || "Unknown"} | code:${data?.error_code || "?"}`;
+      console.error("Telegram API xato:", details, data);
+      showToast(`Telegram xato: ${data?.description || "Unknown"}`, "error");
+      return false;
+    }
+
+    return true;
+  } catch (e) {
+    console.error("Telegram fetch error:", e);
+    showToast(`Telegram fetch xato: ${e?.message || "Unknown"}`, "error");
+    return false;
+  }
 }
-return true;
-} catch (e) {
-  console.error("Telegram fetch error:", e);
-  showToast(`Telegram fetch xato: ${e?.message || "Unknown"}`, "error");
-  return false;
-}
+
 
 // =====================
 // 5) UI: AUTH MODAL
