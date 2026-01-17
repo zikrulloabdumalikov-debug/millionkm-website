@@ -347,10 +347,9 @@ function bindStatusChecker() {
 // =====================
 function loadGarage(uid) {
   const qCars = query(
-    collection(db, "cars"),
-    where("userUid", "==", uid),
-    orderBy("createdAt", "desc")
-  );
+  collection(db, "cars"),
+  where("userUid", "==", uid)
+);
 
   onSnapshot(qCars, (snapshot) => {
     const garage = $("garage");
