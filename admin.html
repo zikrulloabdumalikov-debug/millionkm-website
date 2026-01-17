@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | Million KM</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="animate">
+    <div class="nav-container">
+      <a class="logo" href="./index.html">Million km</a>
+      <div class="nav-links">
+        <a href="./index.html">Bosh sahifa</a>
+        <a href="./cabinet.html">Kabinet</a>
+        <a href="#" id="authLink">Chiqish</a>
+      </div>
+    </div>
+  </nav>
+
+  <section id="adminPanel" style="display:block; padding-top:120px;">
+    <h2 class="section-title">Admin Panel</h2>
+    <h3>Foydalanuvchilar</h3>
+    <div id="allUsersList" class="admin-grid"></div>
+    <h3>Mashinalar</h3>
+    <div id="allCarsList" class="admin-grid"></div>
+  </section>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
