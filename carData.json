@@ -1,1 +1,24 @@
+{
+  "chevrolet": {
+    "Nexia 3": { "maxAge": 5, "maxKm": 100000, "desc": "Oddiy, ishonchli va shahar hayoti uchun mo'ljallangan avtomobil." },
+    "Cobalt": { "maxAge": 5, "maxKm": 100000, "desc": "Keng salon, yumshoq yurish va doimiy qulaylik bilan har kuni yangi maromda." },
+    "Gentra": { "maxAge": 5, "maxKm": 100000, "desc": "Har yo'l sharoitida siz bilan bo'lishga mos, barqaror va oddiy haydovchilik tajribasi." },
+    "Onix": { "maxAge": 3, "maxKm": 50000, "desc": "Zamonaviy interyer va yorqin dizaynga ega, hayotingizni qulaylashtiruvchi o'rtacha klass avtomobil." },
+    "Tracker": { "maxAge": 3, "maxKm": 50000, "desc": "Sport uslubida, shahar burchaklari va kundalik yo'llarni ochib beruvchi ixcham SUV." },
+    "Malibu": { "maxAge": 5, "maxKm": 50000, "desc": "Barqaror va tekis yurish, keng salon va ishonchli texnologiyalar bilan oila va ish uchun ideal." },
+    "Equinox": { "maxAge": 3, "maxKm": 50000, "desc": "Yuqori texnologiya, zamonaviy dizayn va haydash zavqini birlashtirgan SUV." },
+    "Traverse": { "maxAge": 3, "maxKm": 50000, "desc": "Katta yurishlar va oilaviy sayohatlar uchun keng SUV, har safar yangi ufqlarni kashf eting." },
+    "Tahoe": { "maxAge": 3, "maxKm": 50000, "desc": "Premium klass SUV, kuch va qulaylikni bir avtomobilda his eting." }
+  },
+  "kia": {
+    "Sonet": { "maxAge": 3, "maxKm": 50000, "desc": "Shahar uchun yaratilgan ixcham SUV. Zamonaviy, qulay va energiya tejovchi." },
+    "K5": { "maxAge": 3, "maxKm": 50000, "desc": "Uslub va kuch birlashgan biznes sedan. Barqaror yurish, keng salon va ilg'or texnologiyalar." },
+    "Sportage": { "maxAge": 3, "maxKm": 50000, "desc": "Ishonchli va keng SUV. Oila uchun ideal, xavfsiz va zamonaviy." }
+  },
+  "liauto": {
+    "L9": { "maxAge": 3, "maxKm": 50000, "desc": "Premium elektr SUV. Zamonaviy texnologiya va qulaylikning uyg'unligi." },
+    "L7": { "maxAge": 3, "maxKm": 50000, "desc": "Oilaviy elektr avtomobil. Keng salon va yuqori xavfsizlik." },
+    "L6": { "maxAge": 3, "maxKm": 50000, "desc": "Ixcham elektr SUV. Shahar va uzoq sayohatlar uchun ideal." }
+  }
+}
 
