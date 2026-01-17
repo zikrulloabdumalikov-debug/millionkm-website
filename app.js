@@ -860,5 +860,6 @@ async function main() {
   bindServices();
   bindAuthState();
 }
+console.log("app.js ishladi ✅");
 
 main();
