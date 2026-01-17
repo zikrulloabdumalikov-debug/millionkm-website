@@ -454,7 +454,6 @@ nav {
 
 /* CABINET + ADMIN */
 #cabinet, #adminPanel {
-  display: none;
   padding: 100px 20px;
   max-width: 1200px;
   margin: 0 auto;
