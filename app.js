@@ -35,8 +35,8 @@ const firebaseConfig = {
 };
 
 // Telegram (token/chat_id ni o'zingiz qo'ying)
-const TG_TOKEN = "PASTE_YOUR_BOT_TOKEN_HERE";
-const TG_CHAT_ID = "PASTE_YOUR_CHAT_ID_HERE";
+const TG_TOKEN = "7722483735:AAG_LZ1Bg0H-mnqAlnw4OknNj-BTrqM8CWM";
+const TG_CHAT_ID = "Id: -1003461463026";
 
 // =====================
 // 2) INIT
