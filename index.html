@@ -5,501 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Million KM | Premium Avto Servis</title>
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --primary: #007aff;
-      --bg: #f5f5f7;
-      --card: #ffffff;
-      --text: #1d1d1f;
-      --gray: #6e6e73;
-      --green: #34c759;
-      --red: #ff3b30;
-      --radius: 18px;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
-    .animate-delay-1 { animation-delay: 0.2s; }
-    .animate-delay-2 { animation-delay: 0.4s; }
-    .animate-delay-3 { animation-delay: 0.6s; }
-
-    nav {
-      position: fixed; top: 0; width: 100%;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(20px);
-      z-index: 1000;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
-    }
-
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .nav-links a {
-      margin-left: 30px;
-      color: var(--gray);
-      text-decoration: none;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .hero {
-      padding: 140px 20px 100px;
-      text-align: center;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .hero h1 {
-      font-size: clamp(36px, 8vw, 56px);
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: clamp(18px, 4vw, 24px);
-      color: var(--gray);
-      margin-bottom: 20px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 12px 30px;
-      background: var(--primary);
-      color: white;
-      border-radius: 980px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      font-size: 15px;
-      transition: all 0.3s;
-    }
-
-    .btn:hover { transform: scale(1.05); }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-    }
-
-    .btn-danger { background: var(--red); }
-
-    .brands-section {
-      padding: 80px 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-title {
-      font-size: clamp(32px, 6vw, 44px);
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .brands-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
-
-    .brand-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 40px 30px;
-      text-align: center;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .brand-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    }
-
-    .brand-logo {
-      font-size: 48px;
-      margin-bottom: 20px;
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f0f0f0;
-      border-radius: 16px;
-    }
-
-    .brand-logo img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-    }
-
-    .brand-card h3 { font-size: 28px; margin-bottom: 10px; }
-    .brand-card p { color: var(--gray); margin-bottom: 25px; }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-
-    .service-card {
-      background: white;
-      padding: 35px 25px;
-      border-radius: var(--radius);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      transition: all 0.3s;
-    }
-
-    .service-card:hover { transform: scale(1.03); }
-    .service-card h3 { font-size: 22px; margin-bottom: 10px; }
-
-    .benefits {
-      background: white;
-      padding: 100px 20px;
-      margin: 80px 0;
-    }
-
-    .benefits-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 40px;
-      margin-top: 50px;
-    }
-
-    .benefit-item { padding: 25px; border-left: 3px solid var(--primary); }
-    .benefit-item h4 { font-size: 18px; margin-bottom: 10px; }
-    .benefit-item p { color: var(--gray); font-size: 14px; }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 2000;
-      overflow-y: auto;
-    }
-
-    .modal.show {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 40px 20px;
-    }
-
-    .modal-content {
-      background: white;
-      max-width: 1000px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-      position: relative;
-      margin-top: 40px;
-    }
-
-    .close-modal {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      font-size: 30px;
-      cursor: pointer;
-      color: var(--gray);
-    }
-
-    .car-models-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 30px;
-      margin-top: 30px;
-    }
-
-    .car-model {
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: var(--radius);
-      padding: 20px;
-      text-align: center;
-      transition: all 0.3s;
-    }
-
-    .car-model:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .car-model ul { list-style: none; color: var(--gray); font-size: 13px; text-align: left; margin: 10px 0; }
-
-    .status-checker {
-      background: #f5f5f7;
-      padding: 80px 20px;
-      text-align: center;
-    }
-
-    .checker-form {
-      max-width: 500px;
-      margin: 30px auto;
-      background: white;
-      padding: 30px;
-      border-radius: var(--radius);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-
-    .checker-form select, .checker-form input {
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 10px;
-      font-size: 15px;
-    }
-
-    .status-result {
-      margin-top: 20px;
-      padding: 20px;
-      background: #f5f5f7;
-      border-radius: 10px;
-      display: none;
-    }
-
-    .map-section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
-    .map-container {
-      width: 100%;
-      height: 500px;
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    .chat-widget { position: fixed; bottom: 20px; right: 20px; z-index: 1500; }
-
-    .chat-button {
-      width: 60px; height: 60px;
-      background: var(--primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
-      color: white;
-      font-size: 24px;
-    }
-
-    .chat-box {
-      display: none;
-      position: absolute;
-      bottom: 80px;
-      right: 0;
-      width: 350px;
-      height: 500px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      flex-direction: column;
-    }
-
-    .chat-box.show { display: flex; }
-
-    .chat-header {
-      background: var(--primary);
-      color: white;
-      padding: 20px;
-      border-radius: 20px 20px 0 0;
-      font-weight: 600;
-    }
-
-    .chat-messages { flex: 1; padding: 20px; overflow-y: auto; }
-
-    .chat-input {
-      padding: 15px;
-      border-top: 1px solid rgba(0,0,0,0.1);
-      display: flex;
-      gap: 10px;
-    }
-
-    .chat-input input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 20px;
-    }
-
-    .chat-send-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
-
-    .auth-modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 3000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .auth-modal.show { display: flex; }
-
-    .auth-box {
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-      position: relative;
-    }
-
-    .auth-box input, .auth-box select {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 10px;
-      font-size: 15px;
-    }
-
-    #cabinet, #adminPanel {
-      display: none;
-      padding: 100px 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .cabinet-grid, .admin-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-
-    .cabinet-card, .admin-card {
-      background: white;
-      padding: 30px;
-      border-radius: var(--radius);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      position: relative;
-    }
-
-    .add-car-form {
-      max-width: 500px;
-      margin: 40px auto;
-      background: white;
-      padding: 30px;
-      border-radius: var(--radius);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-
-    .add-car-form input {
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 10px;
-      font-size: 15px;
-    }
-
-    .toast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 30px;
-      border-radius: 10px;
-      color: white;
-      z-index: 4000;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .toast.show { opacity: 1; }
-    .toast.success { background: var(--green); }
-    .toast.error { background: var(--red); }
-
-    footer {
-      background: white;
-      padding: 80px 20px;
-      text-align: center;
-      border-top: 1px solid rgba(0,0,0,0.1);
-    }
-
-    .social-links { margin: 20px 0; }
-    .social-links a { margin: 0 15px; color: var(--gray); text-decoration: none; font-size: 14px; }
-
-    .hidden { display: none !important; }
-
-    .order-form {
-      margin-top: 30px;
-      padding: 30px;
-      background: #f5f5f7;
-      border-radius: var(--radius);
-    }
-
-    .order-form h4 { margin-bottom: 20px; }
-
-    .order-form select, .order-form textarea, .order-form input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 10px;
-      font-size: 15px;
-      font-family: inherit;
-    }
-
-    .order-form textarea { min-height: 100px; resize: vertical; }
-
-    @media (max-width: 768px) {
-      .brands-grid, .services-grid, .benefits-grid, .cabinet-grid, .admin-grid, .car-models-grid { grid-template-columns: 1fr; }
-      .chat-box { width: min(92vw, 360px); }
-    }
-  </style>
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <nav class="animate">
     <div class="nav-container">
-      <div class="logo" id="logoTop">Million km</div>
+      <div class="logo" id="logoHome">Million km</div>
       <div class="nav-links">
         <a href="#brands">Brendlar</a>
         <a href="#services">Xizmatlar</a>
@@ -575,7 +88,7 @@
     <div class="brands-section">
       <h2 class="section-title animate">Nega aynan Million km xizmatini tanlashingiz kerak?</h2>
       <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); max-width: 700px; margin: 0 auto 40px;">
-        Chunki biz shunchaki avtomobilga xizmat ko'rsatmaymiz — sizga ishonch, kafolat va qulaylik hadya qilamiz. Quyidagi 12 sababi esa buni isbotlaydi:
+        Chunki biz shunchaki avtomobilga xizmat ko'rsatmaymiz — sizga ishonch, kafolat va qulaylik hadya qilamiz.
       </p>
 
       <div class="benefits-grid">
@@ -589,50 +102,16 @@
         </div>
         <div class="benefit-item animate animate-delay-3">
           <h4>Faqat eng yuqori sifatdagi mahsulotlar</h4>
-          <p>Sertifikatlangan va original mahsulotlar ishlatiladi.</p>
-        </div>
-        <div class="benefit-item animate animate-delay-1">
-          <h4>Har qanday muammo — bitta joyda hal</h4>
-          <p>Diagnostika, ta'mirlash, xizmat — hammasi bizda.</p>
-        </div>
-        <div class="benefit-item animate animate-delay-2">
-          <h4>Eng tezkor va sifatli servis tarmog'i</h4>
-          <p>Qayerda bo'lishingizdan qat'i nazar, xizmatimiz sizga yaqin.</p>
-        </div>
-        <div class="benefit-item animate animate-delay-3">
-          <h4>Eng tajribali ustalar</h4>
-          <p>Avtomobilingizni o'z ishining ustasiga topshiring.</p>
-        </div>
-        <div class="benefit-item animate animate-delay-1">
-          <h4>Har yili — bepul to'liq diagnostika</h4>
-          <p>Oldini olish — muhimroq!</p>
-        </div>
-        <div class="benefit-item animate animate-delay-2">
-          <h4>Express xizmatlar</h4>
-          <p>Kutish — o'tmishda qoldi.</p>
-        </div>
-        <div class="benefit-item animate animate-delay-3">
-          <h4>Shaxsiy tizim orqali kuzatish</h4>
-          <p>Online monitoring orqali nazorat qiling.</p>
-        </div>
-        <div class="benefit-item animate animate-delay-1">
-          <h4>Masofaviy diagnostika</h4>
-          <p>Telefon orqali ham yordam beramiz.</p>
-        </div>
-        <div class="benefit-item animate animate-delay-2">
-          <h4>Yangi mijozga sovg'a</h4>
-          <p>Jamiyatning bir qismiga aylanasiz.</p>
-        </div>
-        <div class="benefit-item animate animate-delay-3">
-          <h4>Bonuslar va chegirmalar</h4>
-          <p>Sadoqat tizimi bilan birga.</p>
+          <p>Faqat original mahsulotlar ishlatiladi.</p>
         </div>
       </div>
     </div>
   </div>
 
   <div id="status" class="status-checker">
-    <h2 class="animate" style="font-size: clamp(28px, 6vw, 40px); margin-bottom: 10px;">Mashinangiz statusini tekshiring</h2>
+    <h2 class="animate" style="font-size: clamp(28px, 6vw, 40px); margin-bottom: 10px;">
+      Mashinangiz statusini tekshiring
+    </h2>
     <p class="animate animate-delay-1" style="font-size: 18px;">Million km xizmatiga mos ekanligini aniqlang</p>
 
     <div class="checker-form animate animate-delay-2">
@@ -650,7 +129,9 @@
       <input type="number" id="carYear" placeholder="Mashina yili (masalan: 2022)">
       <input type="number" id="carKm" placeholder="Yurgan masofa (km)">
 
-      <button class="btn" id="checkStatusBtn" style="width: 100%; margin-top: 10px;">Tekshirish</button>
+      <button class="btn" id="checkStatusBtn" style="width: 100%; margin-top: 10px;">
+        Tekshirish
+      </button>
 
       <div id="statusResult" class="status-result"></div>
     </div>
@@ -658,13 +139,16 @@
 
   <div id="filiallar" class="map-section">
     <h2 class="section-title animate">Million km filiallari</h2>
-    <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); margin-bottom: 30px;">O'zbekiston bo'ylab eng yaqin filialni toping</p>
+    <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); margin-bottom: 30px;">
+      O'zbekiston bo'ylab eng yaqin filialni toping
+    </p>
     <div class="map-container animate animate-delay-2">
       <iframe
         src="https://yandex.uz/map-widget/v1/?ll=70.893061,40.546387&z=15&l=map&pt=70.893061,40.546387,pm2rdm"
         width="100%"
         height="100%"
-        frameborder="0"></iframe>
+        frameborder="0">
+      </iframe>
     </div>
   </div>
 
@@ -702,9 +186,12 @@
       <a href="#">YouTube</a>
     </div>
 
-    <p style="color: var(--gray); font-size: 14px; margin-top: 20px;">📞 Call centr: +998 71 123 45 67</p>
+    <p style="color: var(--gray); font-size: 14px; margin-top: 20px;">
+      📞 Call centr: +998 71 123 45 67
+    </p>
   </footer>
 
+  <!-- Chat Widget -->
   <div class="chat-widget">
     <div class="chat-box" id="chatBox">
       <div class="chat-header">
@@ -712,7 +199,9 @@
         <span style="float: right; cursor: pointer;" id="closeChat">✕</span>
       </div>
       <div class="chat-messages" id="chatMessages">
-        <p style="background: #f5f5f7; padding: 10px; border-radius: 10px;">Salom! Sizga qanday yordam bera olaman?</p>
+        <p style="background: #f5f5f7; padding: 10px; border-radius: 10px;">
+          Salom! Sizga qanday yordam bera olaman?
+        </p>
       </div>
       <div class="chat-input">
         <input type="text" id="chatInput" placeholder="Xabar yozing...">
@@ -722,6 +211,7 @@
     <div class="chat-button" id="chatButton">💬</div>
   </div>
 
+  <!-- Brand Modal -->
   <div id="brandModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" id="closeBrandModal">&times;</span>
@@ -730,6 +220,7 @@
     </div>
   </div>
 
+  <!-- Auth Modal -->
   <div id="authModal" class="auth-modal">
     <div class="auth-box">
       <span class="close-modal" id="closeAuthModal">&times;</span>
@@ -743,16 +234,21 @@
         <option value="male">Erkak</option>
         <option value="female">Ayol</option>
       </select>
-      <button class="btn" id="authSubmitBtn" style="width: 100%; margin-top: 15px;">Ro'yxatdan o'tish</button>
+
+      <button class="btn" id="authSubmitBtn" style="width: 100%; margin-top: 15px;">
+        Ro'yxatdan o'tish
+      </button>
+
       <p style="text-align: center; margin-top: 10px;">
         <a href="#" id="switchAuthLink" style="color: var(--primary);">Kirish</a>
       </p>
     </div>
   </div>
 
+  <!-- Toast -->
   <div id="toast" class="toast"></div>
 
-  <!-- Bitta joy: hamma JS shu faylda -->
-  <script type="module" src="./app.js"></script>
+  <!-- JS -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>
