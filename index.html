@@ -229,5 +229,28 @@
 
   <!-- JS -->
   <script type="module" src="app.js"></script>
+  <!-- SERVICE ORDER MODAL -->
+<div id="serviceModal" class="auth-modal">
+  <div class="auth-box">
+    <span class="close-modal" id="closeServiceModal">&times;</span>
+    <h2 id="serviceTitle">Xizmat buyurtmasi</h2>
+
+    <input id="serviceName" type="text" placeholder="Ismingiz">
+    <input id="servicePhone" type="tel" placeholder="Telefon raqamingiz">
+
+    <select id="serviceType">
+      <option value="">Xizmat turini tanlang</option>
+      <option value="express">Million km Express</option>
+      <option value="fuel">Million km Fuel</option>
+    </select>
+
+    <textarea id="serviceNote" placeholder="Izoh (ixtiyoriy)"></textarea>
+
+    <button class="btn" id="serviceSubmitBtn" style="width:100%; margin-top:15px;">
+      Yuborish
+    </button>
+  </div>
+</div>
+
 </body>
 </html>
