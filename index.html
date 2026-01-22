@@ -254,6 +254,26 @@
 
   <div id="toast" class="toast"></div>
 
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js"></script
+   <script>
+  const navToggle = document.getElementById("navToggle");
+  const navLinks  = document.getElementById("navLinks");
+
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => {
+      navToggle.classList.toggle("open");
+      navLinks.classList.toggle("open");
+    });
+
+    // link bosilganda menyu yopilsin
+    navLinks.querySelectorAll("a").forEach(a => {
+      a.addEventListener("click", () => {
+        navToggle.classList.remove("open");
+        navLinks.classList.remove("open");
+      });
+    });
+  }
+</script>
+                                      
 </body>
 </html>
