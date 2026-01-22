@@ -287,9 +287,18 @@ function openBrandModal(brand) {
 
     // Batafsil
     card.querySelector(".details-btn")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    card.querySelector(".details-box")?.classList.toggle("hidden");
-  });
+  e.stopPropagation();
+  // agar order-form ochiq bo'lsa yopamiz
+  card.querySelector(".order-form")?.classList.add("hidden");
+  card.querySelector(".details-box")?.classList.toggle("hidden");
+});
+
+card.querySelector(".order-model-btn")?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  // agar details ochiq bo'lsa yopamiz
+  card.querySelector(".details-box")?.classList.add("hidden");
+  card.querySelector(".order-form")?.classList.toggle("hidden");
+});
     
     // 3..12 tanlash
     const serviceSelect = card.querySelector(".service-type");
