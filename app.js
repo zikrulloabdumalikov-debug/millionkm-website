@@ -767,21 +767,29 @@ function bindAuthEvents() {
 // 14) BRAND CARDS (faqat index.html)
 // =====================
 function bindBrandCards() {
-  const cards = document.querySelectorAll(".brand-card");
-  if (!cards.length) return;
+  // Brand card click => open modal
+  document.querySelectorAll(".brand-card").forEach((card) => {
+    const brand = card.getAttribute("data-brand");
 
-  cards.forEach((card) => {
+    // Card bosilganda ochilsin
     card.addEventListener("click", () => {
-      const brand = card.getAttribute("data-brand");
       if (brand) openBrandModal(brand);
     });
 
-    card.querySelectorAll("button, a").forEach((inner) => {
-      inner.addEventListener("click", (e) => e.stopPropagation());
-    });
+    // ✅ Ichidagi "Modellarni tanlash" button bosilganda ham ochilsin
+    const btn = card.querySelector("button");
+    if (btn) {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // card click bilan 2 marta ketmasin
+        if (brand) openBrandModal(brand);
+      });
+    }
   });
 
   $("closeBrandModal")?.addEventListener("click", closeBrandModal);
+
+  // modal fon bosilsa yopish
   $("brandModal")?.addEventListener("click", (e) => {
     if (e.target && e.target.id === "brandModal") closeBrandModal();
   });
