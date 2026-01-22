@@ -286,11 +286,11 @@ function openBrandModal(brand) {
     });
 
     // Batafsil
-    card.querySelector(".details-model-btn")?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      card.querySelector(".details-box")?.classList.toggle("hidden");
-    });
-
+    card.querySelector(".details-btn")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    card.querySelector(".details-box")?.classList.toggle("hidden");
+  });
+    
     // 3..12 tanlash
     const serviceSelect = card.querySelector(".service-type");
     const yearWrap = card.querySelector(".year-count-wrap");
