@@ -568,4 +568,142 @@ footer {
   min-height: 90px;
   resize: vertical;
 }
+/* =========================
+   MOBILE RESPONSIVE (PHONE)
+   ========================= */
+@media (max-width: 768px) {
+
+  /* Navbar */
+  .nav-container {
+    padding: 10px 14px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .nav-links a {
+    margin-left: 0 !important;
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: #f2f2f4;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 110px 14px 60px;
+  }
+  .hero h1 {
+    font-size: 32px !important;
+    line-height: 1.15;
+  }
+  .hero p {
+    font-size: 16px !important;
+    margin-bottom: 12px;
+  }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    max-width: 420px;
+    padding: 14px 18px;
+    font-size: 15px;
+  }
+  .btn.btn-secondary {
+    margin-left: 0 !important;
+    margin-top: 10px;
+  }
+
+  /* Sections */
+  .brands-section {
+    padding: 45px 14px;
+  }
+  .section-title {
+    font-size: 28px !important;
+    margin-bottom: 30px;
+  }
+
+  /* Cards */
+  .brand-card,
+  .service-card {
+    padding: 22px 18px;
+  }
+
+  /* Status checker form */
+  .checker-form {
+    padding: 18px;
+  }
+  .checker-form select,
+  .checker-form input {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  /* Modal */
+  .modal.show {
+    padding: 14px;
+    align-items: flex-start;
+  }
+  .modal-content {
+    padding: 18px;
+    margin-top: 70px;
+    border-radius: 18px;
+    max-height: 85vh;
+  }
+
+  /* Model cards in modal */
+  .car-models-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+  .car-model {
+    padding: 16px;
+  }
+  .car-model h4 {
+    font-size: 18px;
+  }
+
+  /* Order form */
+  .order-form {
+    padding: 16px;
+    margin-top: 14px;
+  }
+  .order-form select,
+  .order-form textarea,
+  .order-form input {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  /* Chat widget */
+  .chat-box {
+    width: calc(100vw - 24px) !important;
+    height: 70vh !important;
+    right: 0;
+  }
+
+  /* Map */
+  .map-container {
+    height: 320px;
+  }
+
+  /* Cabinet/Admin grids */
+  .cabinet-grid,
+  .admin-grid,
+  .brands-grid,
+  .services-grid,
+  .benefits-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Juda kichik ekranlar (iPhone SE) */
+@media (max-width: 380px) {
+  .hero h1 { font-size: 28px !important; }
+  .nav-links a { font-size: 12px; padding: 6px 8px; }
+}
 
