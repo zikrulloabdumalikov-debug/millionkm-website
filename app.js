@@ -64,15 +64,26 @@ function showToast(message, type = "success") {
 }
 
 function safeText(v) {
-  return String(v ?? "");
+  // innerHTML ichiga qo'ymaslik uchun minimal escape
+  const s = String(v ?? "");
+  return s
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function brandTitle(brandKey) {
   return brandKey ? brandKey.charAt(0).toUpperCase() + brandKey.slice(1) : "";
 }
 
+function formatUZS(n) {
+  if (typeof n !== "number" || Number.isNaN(n)) return "";
+  return n.toLocaleString("ru-RU") + " so'm";
+}
+
 async function loadCarData() {
-  // faqat index.html'da kerak bo'lishi mumkin, lekin yuklab qo'yamiz
   const res = await fetch("./carData.json", { cache: "no-store" });
   if (!res.ok) throw new Error("carData.json yuklanmadi");
   carData = await res.json();
@@ -88,7 +99,7 @@ async function sendTelegramMessage(message) {
   const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
   const payload = {
     chat_id: TG_CHAT_ID,
-    text: safeText(message),
+    text: String(message ?? ""),
     disable_web_page_preview: true
   };
 
@@ -114,6 +125,37 @@ async function sendTelegramMessage(message) {
     return false;
   }
 }
+
+// =====================
+// 4.1) PACKAGE CONTENT (taqqos)
+// =====================
+const ONE_TIME_LIST = [
+  "Avtomobil modeli bo‘yicha to‘g‘ri motor moyi tanlovi",
+  "Dvigatel uchun aniq va yetarli hajmda motor moyi",
+  "Moy filtrini almashtirish",
+  "Havo filtrini almashtirish",
+  "Salon filtrini almashtirish",
+  "Moy darajasi va tizimni tekshirish",
+  "Dvigatel ishga tushirilgach yakuniy nazorat",
+  "Keyingi moy almashtirishgacha kafolat",
+  "Keyingi servis uchun belgilash (stiker / eslatma)",
+  "Bonus: avtomobil ustki qismini bepul avtomoyka",
+  "Barcha xizmatlar tajribali mutaxassislar tomonidan bajariladi"
+];
+
+const YEAR_LIST = [
+  ...ONE_TIME_LIST,
+  "Million km oila a’zolari safiga qo‘shilasiz",
+  "Maxsus oilaviy futbolka sovg‘a",
+  "Telegramdagi maxsus guruh video darsliklari",
+  "Doimiy foydalanilsa, 1 000 000 km gacha muammosiz yurish kafolati",
+  "Shaxsiy avtomobil holatini kuzatish va texnik maslahatlar",
+  "Har bir xizmatdan keyin yakuniy xulosa va tavsiyalar",
+  "Mutaxassislar bilan savol-javoblar",
+  "Yil oxirida maxsus sertifikat",
+  "Uzoq masofa yurganlar uchun maxsus belgi",
+  "Shukurullohon Abdumalikov bilan 12 marta jonli efir"
+];
 
 // =====================
 // 5) AUTH MODAL
@@ -170,30 +212,65 @@ function openBrandModal(brand) {
   Object.entries(models).forEach(([model, data]) => {
     const card = document.createElement("div");
     card.className = "car-model";
+
+    const price = typeof data?.priceOneTime === "number" ? data.priceOneTime : null;
+    const priceText = price ? `💳 ${formatUZS(price)}` : "⏳ Tez kunda";
+
     card.innerHTML = `
       <h4>${safeText(model)}</h4>
-      <p style="color: var(--gray); font-size: 14px; margin: 10px 0;">${safeText(data.desc)}</p>
+
       <ul>
         <li>• Maksimal yosh: ${Number(data.maxAge)} yil</li>
         <li>• Maksimal km: ${Number(data.maxKm).toLocaleString()} km</li>
       </ul>
 
-      <div style="margin-top: 10px; font-size: 12px;">
-        <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; margin-right: 5px;">1 martalik</span>
-        <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px;">1 yillik</span>
+      <div style="margin-top:12px; padding:10px; background:#f5f5f7; border-radius:12px; font-size:14px;">
+        <b>1 martalik moy almashtirish:</b>
+        <div style="margin-top:6px; font-size:16px;">${priceText}</div>
       </div>
 
-      <button class="btn btn-secondary order-model-btn" style="margin-top: 15px; width: 100%; font-size: 13px;">
-        Xarid qilish
-      </button>
+      <div style="display:flex; gap:10px; margin-top: 14px;">
+        <button class="btn btn-secondary order-model-btn" style="flex:1; font-size:13px;">Xarid qilish</button>
+        <button class="btn btn-secondary details-model-btn" style="flex:1; font-size:13px;">Batafsil</button>
+      </div>
+
+      <div class="details-box hidden" style="margin-top:14px; padding:16px; background:#f5f5f7; border-radius:16px;">
+        <h4 style="margin-bottom:10px;">Paketlar taqqos</h4>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div style="background:#fff; border-radius:14px; padding:12px;">
+            <b>1 martalik xizmat</b>
+            <ul style="margin-top:8px; padding-left:16px; color: var(--text); font-size:13px;">
+              ${ONE_TIME_LIST.map(x => `<li>${safeText(x)}</li>`).join("")}
+            </ul>
+          </div>
+
+          <div style="background:#fff; border-radius:14px; padding:12px;">
+            <b>1 yillik xizmat</b>
+            <ul style="margin-top:8px; padding-left:16px; color: var(--text); font-size:13px;">
+              ${YEAR_LIST.map(x => `<li>${safeText(x)}</li>`).join("")}
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <div class="order-form hidden">
         <h4>Buyurtma berish</h4>
+
         <select class="service-type">
           <option value="">Xizmat turini tanlang</option>
-          <option value="1year">1 yillik xizmat</option>
           <option value="1time">1 martalik xizmat</option>
+          <option value="1year">1 yillik xizmat</option>
         </select>
+
+        <div class="year-count-wrap hidden" style="margin-top:10px;">
+          <div style="font-size:13px; color:var(--gray); margin-bottom:8px;">
+            1 yil uchun xizmatlar soni (min 3, max 12) ni tanlang:
+          </div>
+          <div class="year-count-buttons" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+          <input type="hidden" class="year-count" value="3">
+        </div>
+
         <textarea class="problem-desc" placeholder="Mashinangizda qanday muammo bor? (ixtiyoriy)"></textarea>
         <input type="tel" class="contact-phone" placeholder="Telefon raqamingiz">
         <button class="btn submit-order-btn" style="width: 100%; margin-top: 10px;">Buyurtma berish</button>
@@ -202,19 +279,65 @@ function openBrandModal(brand) {
 
     container.appendChild(card);
 
+    // Xarid qilish form
     card.querySelector(".order-model-btn")?.addEventListener("click", (e) => {
       e.stopPropagation();
       card.querySelector(".order-form")?.classList.toggle("hidden");
     });
 
+    // Batafsil
+    card.querySelector(".details-model-btn")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      card.querySelector(".details-box")?.classList.toggle("hidden");
+    });
+
+    // 3..12 tanlash
+    const serviceSelect = card.querySelector(".service-type");
+    const yearWrap = card.querySelector(".year-count-wrap");
+    const yearBtns = card.querySelector(".year-count-buttons");
+    const yearInput = card.querySelector(".year-count");
+
+    function renderYearButtons(selected = 3) {
+      if (!yearBtns || !yearInput) return;
+      yearBtns.innerHTML = "";
+      for (let i = 3; i <= 12; i++) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = i + " ta";
+        b.style.cssText = `
+          padding:8px 12px; border-radius:999px; border:1px solid var(--primary);
+          background:${i === selected ? "var(--primary)" : "transparent"};
+          color:${i === selected ? "#fff" : "var(--primary)"};
+          cursor:pointer; font-size:13px;
+        `;
+        b.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          yearInput.value = String(i);
+          renderYearButtons(i);
+        });
+        yearBtns.appendChild(b);
+      }
+    }
+
+    renderYearButtons(3);
+
+    serviceSelect?.addEventListener("change", () => {
+      const v = serviceSelect.value;
+      if (v === "1year") yearWrap?.classList.remove("hidden");
+      else yearWrap?.classList.add("hidden");
+    });
+
+    // Submit
     card.querySelector(".submit-order-btn")?.addEventListener("click", async (e) => {
       e.stopPropagation();
 
       const serviceType = card.querySelector(".service-type")?.value || "";
+      const yearCount = card.querySelector(".year-count")?.value || "3";
       const problemDesc = card.querySelector(".problem-desc")?.value || "";
-      const phone = card.querySelector(".contact-phone")?.value || "";
+      const phone = (card.querySelector(".contact-phone")?.value || "").trim();
 
-      if (!serviceType || !phone.trim()) {
+      if (!serviceType || !phone) {
         showToast("Xizmat turini va telefon raqamini kiriting!", "error");
         return;
       }
@@ -228,7 +351,10 @@ function openBrandModal(brand) {
         if (!snap.empty) userName = snap.docs[0].data().name || "Mijoz";
       }
 
-      const serviceTypeName = serviceType === "1year" ? "1 yillik xizmat" : "1 martalik xizmat";
+      const serviceTypeName =
+        serviceType === "1year"
+          ? `1 yillik xizmat (${yearCount} ta servis)`
+          : "1 martalik xizmat";
 
       await sendTelegramMessage(
         "🚗 Yangi buyurtma\n\n" +
@@ -236,6 +362,7 @@ function openBrandModal(brand) {
         `🚘 Brend: ${brandTitle(brand)}\n` +
         `📦 Model: ${model}\n` +
         `⚙️ Xizmat: ${serviceTypeName}\n` +
+        `💳 1 martalik narx: ${price ? formatUZS(price) : "Tez kunda"}\n` +
         `📱 Telefon: ${phone}\n` +
         `📝 Muammo: ${problemDesc ? problemDesc : "Ko'rsatilmagan"}`
       );
@@ -245,6 +372,9 @@ function openBrandModal(brand) {
       if (card.querySelector(".service-type")) card.querySelector(".service-type").value = "";
       if (card.querySelector(".problem-desc")) card.querySelector(".problem-desc").value = "";
       if (card.querySelector(".contact-phone")) card.querySelector(".contact-phone").value = "";
+      if (card.querySelector(".year-count")) card.querySelector(".year-count").value = "3";
+      yearWrap?.classList.add("hidden");
+      renderYearButtons(3);
     });
   });
 
@@ -343,7 +473,6 @@ function bindStatusChecker() {
 // 8) CABINET (GARAGE) - cabinet.html
 // =====================
 function loadGarage(uid) {
-  // Index talab qilmasin: orderBy olib tashladik
   const qCars = query(collection(db, "cars"), where("userUid", "==", uid));
 
   onSnapshot(qCars, (snapshot) => {
@@ -406,7 +535,7 @@ function bindCabinetAddCar() {
       return;
     }
 
-    const model = $("carModel")?.value?.trim() || "";
+    const model = ($("carModel")?.value || "").trim();
     const year = Number.parseInt($("carYearInput")?.value || "", 10);
     const lastOil = Number.parseInt($("lastOilKm")?.value || "", 10);
     const daily = Number.parseInt($("dailyKm")?.value || "", 10);
@@ -502,7 +631,7 @@ function bindChat() {
 
   async function sendChatMessage() {
     const input = $("chatInput");
-    const message = input?.value?.trim() || "";
+    const message = (input?.value || "").trim();
     if (!message) return;
 
     const messagesDiv = $("chatMessages");
@@ -562,11 +691,9 @@ function openServiceModal(serviceKey) {
   const modal = $("serviceModal");
   if (!modal) return;
 
-  // select value set
   const typeSel = $("serviceType");
   if (typeSel) typeSel.value = serviceKey || "";
 
-  // title
   const title = $("serviceTitle");
   if (title) {
     title.textContent = serviceKey === "fuel"
@@ -582,7 +709,6 @@ function closeServiceModal() {
 }
 
 function bindServices() {
-  // open modal on service buttons
   document.querySelectorAll("[data-service]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const service = btn.getAttribute("data-service");
@@ -600,7 +726,6 @@ function bindServices() {
 
   $("closeServiceModal")?.addEventListener("click", closeServiceModal);
 
-  // submit
   $("serviceSubmitBtn")?.addEventListener("click", async () => {
     const user = auth.currentUser;
     if (!user) {
@@ -635,7 +760,6 @@ function bindServices() {
 
     showToast("Buyurtma yuborildi!", "success");
 
-    // clear + close
     if ($("serviceName")) $("serviceName").value = "";
     if ($("servicePhone")) $("servicePhone").value = "";
     if ($("serviceNote")) $("serviceNote").value = "";
@@ -696,10 +820,10 @@ function bindAuthEvents() {
   $("closeAuthModal")?.addEventListener("click", closeAuthModal);
 
   $("authSubmitBtn")?.addEventListener("click", async () => {
-    const name = $("userName")?.value?.trim() || "";
-    const email = $("userEmail")?.value?.trim() || "";
-    const password = $("userPassword")?.value?.trim() || "";
-    const phone = $("userPhone")?.value?.trim() || "";
+    const name = ($("userName")?.value || "").trim();
+    const email = ($("userEmail")?.value || "").trim();
+    const password = ($("userPassword")?.value || "").trim();
+    const phone = ($("userPhone")?.value || "").trim();
     const gender = $("userGender")?.value || "";
 
     if (isLogin) {
@@ -718,7 +842,6 @@ function bindAuthEvents() {
       return;
     }
 
-    // register
     if (!name || !email || !password || !phone || !gender) {
       showToast("Barcha maydonlarni to'ldiring!", "error");
       return;
@@ -767,21 +890,18 @@ function bindAuthEvents() {
 // 14) BRAND CARDS (faqat index.html)
 // =====================
 function bindBrandCards() {
-  // Brand card click => open modal
   document.querySelectorAll(".brand-card").forEach((card) => {
     const brand = card.getAttribute("data-brand");
 
-    // Card bosilganda ochilsin
     card.addEventListener("click", () => {
       if (brand) openBrandModal(brand);
     });
 
-    // ✅ Ichidagi "Modellarni tanlash" button bosilganda ham ochilsin
     const btn = card.querySelector("button");
     if (btn) {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
-        e.stopPropagation(); // card click bilan 2 marta ketmasin
+        e.stopPropagation();
         if (brand) openBrandModal(brand);
       });
     }
@@ -789,7 +909,6 @@ function bindBrandCards() {
 
   $("closeBrandModal")?.addEventListener("click", closeBrandModal);
 
-  // modal fon bosilsa yopish
   $("brandModal")?.addEventListener("click", (e) => {
     if (e.target && e.target.id === "brandModal") closeBrandModal();
   });
@@ -817,33 +936,22 @@ function bindAuthState() {
 
         if (ud.isAdmin) adminLink?.classList.remove("hidden");
 
-        // faqat cabinet.html'da bor bo'lishi mumkin
         if ($("welcomeText")) {
           $("welcomeText").textContent = `Xush kelibsiz, ${ud.name}! Email: ${ud.email}`;
         }
 
-        // admin.html bo'lsa ro'yxatlarni yuklaymiz
         if ($("adminPanel")) {
-          if (ud.isAdmin) {
-            await loadAdminLists();
-          } else {
-            showToast("Siz admin emassiz!", "error");
-          }
+          if (ud.isAdmin) await loadAdminLists();
+          else showToast("Siz admin emassiz!", "error");
         }
       }
 
-      // cabinet.html bo'lsa garage yuklaymiz
-      if ($("garage")) {
-        loadGarage(user.uid);
-      }
+      if ($("garage")) loadGarage(user.uid);
     } else {
       if (authLink) authLink.textContent = "Kirish";
       cabinetLink?.classList.add("hidden");
       adminLink?.classList.add("hidden");
       currentUserChatId = null;
-
-      // cabinet/admin sahifalarda logout bo'lsa indexga qaytaramiz (xohlasangiz)
-      // window.location.href = "./index.html";
     }
   });
 }
@@ -852,19 +960,18 @@ function bindAuthState() {
 // 16) BOOTSTRAP
 // =====================
 async function main() {
-  // carData faqat index uchun kerak, lekin zarar qilmaydi
   try {
     await loadCarData();
   } catch (e) {
     console.warn("carData.json yuklanmadi (cabinet/admin sahifada normal):", e);
   }
 
-  // ✅ status checker carData yuklangandan keyin ishlaydi
+  // carData kerak bo'ladiganlar oldin
   bindStatusChecker();
+  bindBrandCards();
 
   // qolganlari
   bindSmoothScroll();
-  bindBrandCards();
   bindAuthEvents();
   bindCabinetAddCar();
   bindChat();
