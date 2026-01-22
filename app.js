@@ -229,10 +229,10 @@ function openBrandModal(brand) {
         <div style="margin-top:6px; font-size:16px;">${priceText}</div>
       </div>
 
-      <div style="display:flex; gap:10px; margin-top: 14px;">
-        <button class="btn btn-secondary order-model-btn" style="flex:1; font-size:13px;">Xarid qilish</button>
-        <button class="btn btn-secondary details-model-btn" style="flex:1; font-size:13px;">Batafsil</button>
-      </div>
+      <div class="btn-row" style="display:flex; gap:10px; margin-top: 12px;">
+  <button class="btn btn-secondary order-model-btn" style="flex:1; font-size: 13px;">Xarid qilish</button>
+  <button class="btn details-btn" style="flex:1; font-size: 13px;">Batafsil</button>
+</div>
 
       <div class="details-box hidden" style="margin-top:14px; padding:16px; background:#f5f5f7; border-radius:16px;">
         <h4 style="margin-bottom:10px;">Paketlar taqqos</h4>
