@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Million KM | Premium Avto Servis</title>
+
+  <!-- FAVICON -->
+  <link rel="icon" href="./favicon.jpg" type="image/jpeg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+  
+<body>
+  <nav class="animate">
+    <div class="nav-container">
+      <div class="logo" id="logoHome">Million km</div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menyu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="#brands">Brendlar</a>
+        <a href="#services">Xizmatlar</a>
+        <a href="#benefits">Afzalliklar</a>
+        <a href="#filiallar">Filiallar</a>
+        <a href="#" id="authLink">Kirish</a>
+        <a href="./cabinet.html" id="cabinetLink" class="hidden">Kabinet</a>
+        <a href="./admin.html" id="adminLink" class="hidden">Admin</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1 class="animate animate-delay-1">Million km</h1>
+    <p class="animate animate-delay-2">Ko'pchilik dvigatelni ta'mirlaydi.</p>
+    <p class="animate animate-delay-2">Biz esa uni saqlab qolamiz.</p>
+    <button class="btn animate animate-delay-3" id="startBtn">Hozir boshlash</button>
+    <button class="btn btn-secondary animate animate-delay-3" style="margin-left: 10px;" id="statusBtn">Statusni tekshirish</button>
+  </div>
+
+  <div id="brands" class="brands-section">
+    <h2 class="section-title animate">Qo'llab-quvvatlanadigan brendlar</h2>
+    <div class="brands-grid">
+      <div class="brand-card animate animate-delay-1" data-brand="chevrolet">
+        <div class="brand-logo">
+          <img src="https://www.carlogos.org/car-logos/chevrolet-logo.png" alt="Chevrolet">
+        </div>
+        <h3>Chevrolet</h3>
+        <p>Million km standartlariga mos eng so'nggi Chevrolet modellari</p>
+        <button class="btn">Modellarni tanlash</button>
+      </div>
+
+      <div class="brand-card animate animate-delay-2" data-brand="kia">
+        <div class="brand-logo">
+          <img src="https://www.carlogos.org/car-logos/kia-logo.png" alt="Kia">
+        </div>
+        <h3>Kia</h3>
+        <p>Million km standartlariga mos eng so'nggi Kia modellari</p>
+        <button class="btn">Modellarni tanlash</button>
+      </div>
+
+      <div class="brand-card animate animate-delay-3" data-brand="liauto">
+        <div class="brand-logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Li_Auto_logo.svg/200px-Li_Auto_logo.svg.png" alt="Li Auto">
+        </div>
+        <h3>Li Auto</h3>
+        <p>Million km standartlariga mos eng so'nggi Li Auto modellari</p>
+        <button class="btn">Modellarni tanlash</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="services" class="brands-section">
+    <h2 class="section-title animate">Maxsus xizmatlar</h2>
+    <div class="services-grid">
+      <div class="service-card animate animate-delay-1">
+        <h3>🚀 Million km Express</h3>
+        <p>Million km standardi asosida, manzilga borib xizmat ko'rsatish</p>
+        <button class="btn" style="margin-top: 15px;" data-service="express">Xizmatni tanlash</button>
+      </div>
+
+      <div class="service-card animate animate-delay-2">
+        <h3>⛽ Million km Fuel</h3>
+        <p>Million km talablariga mos, sifatli yoqilg'i yetkazib berish</p>
+        <button class="btn" style="margin-top: 15px;" data-service="fuel">Xarid qilish</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="benefits" class="benefits">
+    <div class="brands-section">
+      <h2 class="section-title animate">Nega aynan Million km xizmatini tanlashingiz kerak?</h2>
+      <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); max-width: 700px; margin: 0 auto 40px;">
+        Chunki biz shunchaki avtomobilga xizmat ko'rsatmaymiz — sizga ishonch, kafolat va qulaylik hadya qilamiz.
+      </p>
+
+      <div class="benefits-grid">
+        <div class="benefit-item animate animate-delay-1">
+          <h4>Million kilometrgacha kafolat — bozorda yagona!</h4>
+          <p>Avtomobilingizga million kmgacha texnik kafolat beramiz.</p>
+        </div>
+        <div class="benefit-item animate animate-delay-2">
+          <h4>Har safar moy almashtirishda — bepul avtomoyka</h4>
+          <p>Mashinangiz doim silliq va toza bo'ladi.</p>
+        </div>
+        <div class="benefit-item animate animate-delay-3">
+          <h4>Faqat eng yuqori sifatdagi mahsulotlar</h4>
+          <p>Faqat original mahsulotlar ishlatiladi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="status" class="status-checker">
+    <h2 class="animate" style="font-size: clamp(28px, 6vw, 40px); margin-bottom: 10px;">
+      Mashinangiz statusini tekshiring
+    </h2>
+    <p class="animate animate-delay-1" style="font-size: 18px;">Million km xizmatiga mos ekanligini aniqlang</p>
+
+    <div class="checker-form animate animate-delay-2">
+      <select id="brandSelect">
+        <option value="">Brend tanlang</option>
+        <option value="chevrolet">Chevrolet</option>
+        <option value="kia">Kia</option>
+        <option value="liauto">Li Auto</option>
+      </select>
+
+      <select id="modelSelect">
+        <option value="">Avval brend tanlang</option>
+      </select>
+
+      <input type="number" id="carYear" placeholder="Mashina yili (masalan: 2022)">
+      <input type="number" id="carKm" placeholder="Yurgan masofa (km)">
+
+      <button class="btn" id="checkStatusBtn" style="width: 100%; margin-top: 10px;">
+        Tekshirish
+      </button>
+
+      <div id="statusResult" class="status-result"></div>
+    </div>
+  </div>
+
+  <div id="filiallar" class="map-section">
+    <h2 class="section-title animate">Million km filiallari</h2>
+    <p class="animate animate-delay-1" style="text-align: center; color: var(--gray); margin-bottom: 30px;">
+      O'zbekiston bo'ylab eng yaqin filialni toping
+    </p>
+    <div class="map-container animate animate-delay-2">
+      <iframe
+        src="https://yandex.uz/map-widget/v1/?ll=70.893061,40.546387&z=15&l=map&pt=70.893061,40.546387,pm2rdm"
+        width="100%"
+        height="100%"
+        frameborder="0">
+      </iframe>
+    </div>
+  </div>
+
+  <footer class="animate">
+    <h3>Million km</h3>
+    <p style="color: var(--gray); margin: 10px 0;">Dvigatel uchun yangi avlod ishonchi</p>
+
+    <div class="social-links">
+      <a href="#">Instagram</a>
+      <a href="#">Telegram</a>
+      <a href="#">YouTube</a>
+    </div>
+
+    <p style="color: var(--gray); font-size: 14px; margin-top: 20px;">
+      📞 Call centr: +998 71 123 45 67
+    </p>
+  </footer>
+
+  <!-- Chat Widget -->
+  <div class="chat-widget">
+    <div class="chat-box" id="chatBox">
+      <div class="chat-header">
+        Million km Support
+        <span style="float: right; cursor: pointer;" id="closeChat">✕</span>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <p style="background: #f5f5f7; padding: 10px; border-radius: 10px;">
+          Salom! Sizga qanday yordam bera olaman?
+        </p>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Xabar yozing...">
+        <button class="chat-send-btn" id="sendChatBtn">✈️</button>
+      </div>
+    </div>
+    <div class="chat-button" id="chatButton">💬</div>
+  </div>
+
+  <!-- Brand Modal -->
+  <div id="brandModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeBrandModal">&times;</span>
+      <h2 id="modalTitle">Modellar</h2>
+      <div id="carModelsContainer" class="car-models-grid"></div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="auth-modal">
+    <div class="auth-box">
+      <span class="close-modal" id="closeAuthModal">&times;</span>
+      <h2 id="authTitle">Ro'yxatdan o'tish</h2>
+      <input type="text" id="userName" placeholder="Ismingiz">
+      <input type="email" id="userEmail" placeholder="Email">
+      <input type="password" id="userPassword" placeholder="Parol">
+      <input type="tel" id="userPhone" placeholder="Telefon raqami">
+      <select id="userGender">
+        <option value="">Jinsni tanlang</option>
+        <option value="male">Erkak</option>
+        <option value="female">Ayol</option>
+      </select>
+
+      <button class="btn" id="authSubmitBtn" style="width: 100%; margin-top: 15px;">
+        Ro'yxatdan o'tish
+      </button>
+
+      <p style="text-align: center; margin-top: 10px;">
+        <a href="#" id="switchAuthLink" style="color: var(--primary);">Kirish</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- JS -->
+<!-- SERVICE ORDER MODAL -->
+<div id="serviceModal" class="auth-modal">
+  <div class="auth-box">
+    <span class="close-modal" id="closeServiceModal">&times;</span>
+    <h2 id="serviceTitle">Xizmat buyurtmasi</h2>
+
+    <input id="serviceName" type="text" placeholder="Ismingiz">
+    <input id="servicePhone" type="tel" placeholder="Telefon raqamingiz">
+
+    <select id="serviceType">
+      <option value="">Xizmat turini tanlang</option>
+      <option value="express">Million km Express</option>
+      <option value="fuel">Million km Fuel</option>
+    </select>
+
+    <textarea id="serviceNote" placeholder="Izoh (ixtiyoriy)"></textarea>
+
+    <button class="btn" id="serviceSubmitBtn" style="width:100%; margin-top:15px;">
+      Yuborish
+    </button>
+  </div>
+</div>
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

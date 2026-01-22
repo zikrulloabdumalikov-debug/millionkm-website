@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kabinet | Million KM</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <nav class="animate">
+    <div class="nav-container">
+      <a class="logo" id="logoHome" href="./index.html">Million km</a>
+      <div class="nav-links">
+        <a href="./index.html#brands">Brendlar</a>
+        <a href="./index.html#services">Xizmatlar</a>
+        <a href="./index.html#benefits">Afzalliklar</a>
+        <a href="./index.html#filiallar">Filiallar</a>
+
+        <a href="./cabinet.html" id="cabinetLink" class="hidden">Kabinet</a>
+        <a href="./admin.html" id="adminLink" class="hidden">Admin</a>
+        <a href="#" id="authLink">Kirish</a>
+      </div>
+    </div>
+  </nav>
+
+  <section id="cabinet" class="brands-section" style="padding-top:120px;">
+    <h2 class="section-title">Mening Kabinetim</h2>
+    <p id="welcomeText" style="text-align:center; color:var(--gray); margin-bottom:40px;"></p>
+
+    <div class="add-car-form">
+      <h3>Mashina qo'shish</h3>
+      <input id="carModel" placeholder="Mashina modeli">
+      <input id="carYearInput" type="number" placeholder="Mashina yili">
+      <input id="lastOilKm" type="number" placeholder="Oxirgi moy almashtirilgan probeg">
+      <input id="dailyKm" type="number" placeholder="Kunlik o'rtacha yurish (km)">
+      <button class="btn" style="width:100%; margin-top:15px;" id="addCarBtn">Mashina qo'shish</button>
+    </div>
+
+    <div id="garage" class="cabinet-grid"></div>
+  </section>
+
+  <!-- AUTH MODAL (app.js ishlashi uchun kerak) -->
+  <div id="authModal" class="auth-modal">
+    <div class="auth-box">
+      <span class="close-modal" id="closeAuthModal">&times;</span>
+      <h2 id="authTitle">Ro'yxatdan o'tish</h2>
+      <input type="text" id="userName" placeholder="Ismingiz">
+      <input type="email" id="userEmail" placeholder="Email">
+      <input type="password" id="userPassword" placeholder="Parol">
+      <input type="tel" id="userPhone" placeholder="Telefon raqami">
+      <select id="userGender">
+        <option value="">Jinsni tanlang</option>
+        <option value="male">Erkak</option>
+        <option value="female">Ayol</option>
+      </select>
+      <button class="btn" id="authSubmitBtn" style="width: 100%; margin-top: 15px;">
+        Ro'yxatdan o'tish
+      </button>
+      <p style="text-align: center; margin-top: 10px;">
+        <a href="#" id="switchAuthLink" style="color: var(--primary);">Kirish</a>
+      </p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
