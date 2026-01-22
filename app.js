@@ -293,13 +293,6 @@ function openBrandModal(brand) {
   card.querySelector(".details-box")?.classList.toggle("hidden");
 });
 
-card.querySelector(".order-model-btn")?.addEventListener("click", (e) => {
-  e.stopPropagation();
-  // agar details ochiq bo'lsa yopamiz
-  card.querySelector(".details-box")?.classList.add("hidden");
-  card.querySelector(".order-form")?.classList.toggle("hidden");
-});
-    
     // 3..12 tanlash
     const serviceSelect = card.querySelector(".service-type");
     const yearWrap = card.querySelector(".year-count-wrap");
